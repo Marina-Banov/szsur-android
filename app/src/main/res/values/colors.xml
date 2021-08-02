@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_dark">#FF1F2055</color>
+    <color name="purple_medium_dark">#323369</color>
+    <color name="purple_szsur">#FF3E408B</color>
+    <color name="purple_szsur_alpha">#333E408B</color>
+    <color name="purple_medium_light">#FF6E6BBC</color>
+    <color name="purple_light">#FFBBB9ED</color>
+    <color name="purple_very_light">#EDE7F6</color>
+    <color name="blue_light">#FFE8EEF4</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="gray">#FF6C6C6C</color>
+    <color name="gray_dark">#FF202020</color>
+    <color name="gray_light">#FFBFBFBF</color>
+    <color name="black">#FF000000</color>
+    <color name="black_light">#FF121212</color>
+</resources>

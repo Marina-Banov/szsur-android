@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.settings.SettingsFragment">
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:background="?attr/screensBackgroundColor"
+      android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="300dp"
+        app:srcCompat="@drawable/ic_launcher_foreground"
+        app:tint="?attr/colorPrimary"
+        android:id="@+id/user_home_img"
+        android:background="@drawable/settings_layout_border"/>
+
+    <LinearLayout
+        android:id="@+id/dark_mode"
+        style="@style/Widget.SZSUR.SettingsItem">
+
+      <ImageView
+        android:id="@+id/ic_dark_mode"
+        app:srcCompat="@drawable/ic_dark_mode"
+        style="@style/Widget.SZSUR.SettingsItemIcon"/>
+
+      <TextView
+          android:text="@string/dark_mode"
+          style="@style/TextAppearance.SZSUR.UserSettings"/>
+
+      <androidx.appcompat.widget.SwitchCompat
+          android:id="@+id/sw_dark_mode"
+          style="@style/Widget.SZSUR.SettingsSwitch"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/event_notification"
+        style="@style/Widget.SZSUR.SettingsItem">
+
+      <ImageView
+          android:id="@+id/ic_event_notification"
+          app:srcCompat="@drawable/ic_calendar"
+          style="@style/Widget.SZSUR.SettingsItemIcon"/>
+
+      <TextView
+          android:text="@string/event_notifications"
+          style="@style/TextAppearance.SZSUR.UserSettings"/>
+
+      <androidx.appcompat.widget.SwitchCompat
+          android:id="@+id/sw_event_notification"
+          style="@style/Widget.SZSUR.SettingsSwitch" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/survey_notification"
+        style="@style/Widget.SZSUR.SettingsItem">
+
+      <ImageView
+          android:id="@+id/ic_survey_notification"
+          app:srcCompat="@drawable/ic_chart"
+          style="@style/Widget.SZSUR.SettingsItemIcon"/>
+
+      <TextView
+          android:text="@string/survey_notifications"
+          style="@style/TextAppearance.SZSUR.UserSettings"/>
+
+      <androidx.appcompat.widget.SwitchCompat
+          android:id="@+id/sw_survey_notification"
+          style="@style/Widget.SZSUR.SettingsSwitch"/>
+
+    </LinearLayout>
+
+    <LinearLayout style="@style/Widget.SZSUR.SettingsItem" />
+
+    <LinearLayout
+        android:id="@+id/logout"
+        style="@style/Widget.SZSUR.SettingsItem">
+
+      <ImageButton
+          android:id="@+id/btn_logout"
+          style="@style/Widget.SZSUR.SettingsItemIcon"
+          app:srcCompat="@drawable/ic_logout"
+          android:backgroundTint="?attr/screensBackgroundColor"/>
+
+      <TextView
+          style="@style/TextAppearance.SZSUR.UserSettings"
+          android:layout_weight="8"
+          android:text="@string/action_sign_out" />
+
+    </LinearLayout>
+
+  </LinearLayout>
+</layout>

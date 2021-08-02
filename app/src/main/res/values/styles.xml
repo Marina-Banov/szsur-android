@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TextAppearance.SZSUR.WelcomeTitle" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textColor">@color/blue_light</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">36sp</item>
+    </style>
+
+    <style name="TextAppearance.SZSUR.QuestionTitle" parent="TextAppearance.AppCompat.Title">
+
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="TextAppearance.SZSUR.SurveyQuestionsTitle" parent="TextAppearance.AppCompat.Title">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textSize">25sp</item>
+    </style>
+
+    <style name="TextAppearance.SZSUR.WelcomeDescription" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:lineSpacingExtra">@dimen/spacing_extra_small</item>
+    </style>
+
+    <style name="ThemeOverlay.SZSUR.TextInputLayout" parent="">
+        <item name="colorPrimary">@color/purple_light</item>
+        <item name="colorOnSurface">@color/purple_light</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="colorControlActivated">@color/purple_light</item>
+        <item name="editTextStyle">@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox.Dense</item>
+    </style>
+
+    <style name="Widget.SZSUR.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/spacing_normal</item>
+        <item name="android:layout_marginEnd">@dimen/spacing_normal</item>
+        <item name="android:paddingStart">@dimen/spacing_extra_small</item>
+        <item name="android:paddingEnd">@dimen/spacing_extra_small</item>
+        <item name="boxStrokeColor">@drawable/input_outlined</item>
+        <item name="android:textColorHint">@drawable/input_outlined</item>
+        <item name="materialThemeOverlay">@style/ThemeOverlay.SZSUR.TextInputLayout</item>
+    </style>
+
+    <style name="ThemeOverlay.SZSUR.ProgressBar" parent="">
+        <item name="colorAccent">@color/white</item>
+    </style>
+
+    <style name="ShapeAppearance.SZSUR.RoundedCorners" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/spacing_small</item>
+    </style>
+
+    <style name="TextAppearance.SZSUR.CardDetailsTitle" parent="">
+        <item name="android:textColor">?attr/accentTextColor</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.SZSUR.DetailsTitle" parent="">
+        <item name="android:textColor">?attr/accentTextColor</item>
+        <item name="android:textSize">26sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.SZSUR.CardDetails" parent="">
+        <item name="android:textColor">?attr/lightTextColor</item>
+    </style>
+
+    <style name="TextAppearance.SZSUR.DetailsDescription" parent="">
+        <item name="android:textColor">?attr/lightTextColor</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textIsSelectable">true</item>
+        <item name="android:autoLink">web|phone|email</item>
+        <item name="android:textColorLink">?attr/colorPrimary</item>
+    </style>
+
+    <style name="Widget.SZSUR.Chip.Choice" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@drawable/tag_style_bg</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="chipStrokeColor">?attr/colorPrimary</item>
+        <item name="chipSurfaceColor">@android:color/transparent</item>
+        <item name="android:textColor">@drawable/tag_style</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:clickable">true</item>
+    </style>
+
+    <style name="Widget.SZSUR.BottomBackButton" parent="">
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:text">@string/return_btn</item>
+        <item name="android:textColor">?attr/accentTextColor</item>
+        <item name="backgroundTint">?attr/backButtonColor</item>
+    </style>
+
+    <style name="Widget.SZSUR.SurveyButton" parent="">
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:text">@string/survey_complete</item>
+        <item name="android:textColor">?attr/accentTextColor</item>
+        <item name="backgroundTint">?attr/colorSecondary</item>
+    </style>
+
+    <style name="Widget.SZSUR.ActionButton" parent="">
+        <item name="android:textColor">?attr/accentTextColor</item>
+        <item name="backgroundTint">?attr/actionButtonBackground</item>
+    </style>
+
+    <style name="ThemeOverlay.SZSUR.FormControl" parent="">
+        <item name="colorControlActivated">?attr/colorPrimary</item>
+        <item name="colorControlHighlight">?attr/colorPrimary</item>
+    </style>
+
+    <style name="TextAppearance.SZSUR.UserSettings" parent="">
+        <item name="android:textColor">?attr/accentTextColor</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_weight">6</item>
+    </style>
+
+    <style name="Widget.SZSUR.SettingsItem" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/settings_layout_border</item>
+    </style>
+
+    <style name="Widget.SZSUR.SettingsSwitch" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:padding">@dimen/spacing_normal</item>
+        <item name="android:layout_weight">2</item>
+        <item name="android:theme">@style/Widget.SZSUR.CompoundButton.Switch</item>
+    </style>
+
+    <style name="Widget.SZSUR.SettingsItemIcon" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="tint">?attr/colorPrimary</item>
+        <item name="android:layout_weight">2</item>
+        <item name="android:layout_marginTop">@dimen/spacing_extra_small</item>
+        <item name="android:layout_marginBottom">@dimen/spacing_extra_small</item>
+        <item name="android:padding">@dimen/spacing_small</item>
+    </style>
+
+    <style name="Widget.SZSUR.CompoundButton.Switch" parent="Widget.AppCompat.CompoundButton.Switch">
+        <item name="colorControlActivated">?attr/colorPrimary</item>
+        <item name="colorControlNormal">?attr/colorPrimary</item>
+        <item name="colorSwitchThumbNormal">?attr/lightTextColor</item> <!-- inactive thumb color -->
+        <item name="android:colorForeground">?attr/lightTextColor</item><!-- inactive track color (30% transparency) -->
+    </style>
+</resources>

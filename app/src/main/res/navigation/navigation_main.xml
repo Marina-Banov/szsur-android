@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_main"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="hr.uniri.szsur.ui.MainFragment"
+        android:label="MainFragment"
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_eventDetailsFragment"
+            app:destination="@id/eventDetailsFragment"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:exitAnim="@anim/wait"
+            app:popExitAnim="@anim/slide_out_bottom" />
+        <action
+            android:id="@+id/action_mainFragment_to_surveyDetailsFragment"
+            app:destination="@id/surveyDetailsFragment"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:exitAnim="@anim/wait"
+            app:popExitAnim="@anim/slide_out_bottom" />
+        <action
+            android:id="@+id/action_mainFragment_to_surveyResultsDetailsFragment"
+            app:destination="@id/surveyResultsDetailsFragment"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:exitAnim="@anim/wait"
+            app:popExitAnim="@anim/slide_out_bottom" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/eventDetailsFragment"
+        android:name="hr.uniri.szsur.ui.event_details.EventDetailsFragment"
+        android:label="EventDetailsFragment"
+        tools:layout="@layout/fragment_event_details">
+        <argument
+            android:name="event"
+            app:argType="hr.uniri.szsur.data.model.Event" />
+    </fragment>
+    <fragment
+        android:id="@+id/surveyDetailsFragment"
+        android:name="hr.uniri.szsur.ui.survey_details.SurveyDetailsFragment"
+        android:label="fragment_survey_details"
+        tools:layout="@layout/fragment_survey_details" >
+        <argument
+            android:name="surveyModel"
+            app:argType="hr.uniri.szsur.data.model.SurveyModel" />
+
+        <action
+            android:id="@+id/action_surveyDetailsFragment_to_surveyQuestionsFragment"
+            app:destination="@id/surveyQuestionsFragment"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:exitAnim="@anim/wait"
+            app:popExitAnim="@anim/slide_out_bottom"/>
+    </fragment>
+    <fragment
+        android:id="@+id/surveyResultsDetailsFragment"
+        android:name="hr.uniri.szsur.ui.survey_details.SurveyResultsDetailsFragment"
+        android:label="SurveyResultsDetailsFragment"
+        tools:layout="@layout/fragment_survey_results_details">
+        <argument
+            android:name="surveyModel"
+            app:argType="hr.uniri.szsur.data.model.SurveyModel" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/surveyQuestionsFragment"
+        android:name="hr.uniri.szsur.ui.survey_questions.SurveyQuestionsFragment"
+        android:label="SurveyQuestionsFragment" >
+        <argument
+            android:name="questions"
+            app:argType="hr.uniri.szsur.data.model.Questions" />
+
+        <argument
+            android:name="surveyModel"
+            app:argType="hr.uniri.szsur.data.model.SurveyModel" />
+    </fragment>
+</navigation>

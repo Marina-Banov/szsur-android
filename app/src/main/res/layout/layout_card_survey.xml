@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="survey"
+            type="hr.uniri.szsur.data.model.SurveyModel" />
+        <variable
+            name="isFavorite"
+            type="Boolean" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="@dimen/spacing_small"
+        app:cardUseCompatPadding="true"
+        app:cardBackgroundColor="?attr/cardBackgroundColor"
+        app:cardElevation="@dimen/spacing_extra_small"
+        app:cardCornerRadius="@dimen/spacing_small">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+
+            <TextView
+                android:id="@+id/survey_title"
+                style="@style/TextAppearance.SZSUR.CardDetailsTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_margin="@dimen/spacing_small"
+                android:layout_toStartOf="@id/survey_image"
+                app:text="@{survey.title}"
+                tools:text="@string/survey_dummy_title" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                app:surveyStatusIcon="@{survey}"
+                android:padding="@dimen/spacing_small"
+                android:layout_margin="@dimen/spacing_small"
+                tools:src="@drawable/ic_check" />
+
+            <ImageButton
+                android:id="@+id/favorites_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_toStartOf="@id/survey_image"
+                android:padding="@dimen/spacing_small"
+                android:layout_margin="@dimen/spacing_small"
+                app:backgroundTint="?attr/cardBackgroundColor"
+                tools:srcCompat="@drawable/ic_favorite"
+                app:favoriteIcon="@{isFavorite}"
+                app:tint="?attr/colorPrimary" />
+
+            <ImageView
+                android:id="@+id/survey_image"
+                android:layout_width="168dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:scaleType="centerCrop"
+                app:imageUrl="@{survey.image}"
+                tools:src="@drawable/dummy"
+                android:contentDescription="TODO" />
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="viewModel"
+            type="hr.uniri.szsur.ui.survey_details.SurveyDetailsViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/results_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/detailsBackgroundColor">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/survey_results_details_go_back_btn"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            tools:ignore="NotSibling">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/spacing_normal"
+                android:paddingBottom="@dimen/spacing_normal">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/survey_results_details_img_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:layout_marginBottom="@dimen/spacing_extra_small">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/details_img"
+                        android:layout_width="fill_parent"
+                        android:layout_height="230dp"
+                        android:scaleType="centerCrop"
+                        app:imageUrl="@{viewModel.surveyModel.image}"
+                        tools:src="@drawable/dummy"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearance.SZSUR.RoundedCorners" />
+
+                    <com.google.android.material.button.MaterialButton
+                        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
+                        android:id="@+id/favorites_button"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_marginEnd="@dimen/spacing_normal"
+                        app:cornerRadius="24dp"
+                        tools:icon="@drawable/ic_favorite"
+                        app:favoriteIcon="@{viewModel.isFavorite}"
+                        app:iconGravity="top"
+                        app:iconTint="?attr/accentTextColor"
+                        app:layout_constraintBottom_toBottomOf="@+id/details_img"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/details_img" />
+
+                    <TextView
+                        android:id="@+id/results_title"
+                        style="@style/TextAppearance.SZSUR.DetailsTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_normal"
+                        android:layout_marginEnd="@dimen/spacing_normal"
+                        android:text="@string/survey_results"
+                        app:layout_constraintEnd_toStartOf="@+id/favorites_button"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="@+id/details_img"
+                        app:layout_constraintTop_toBottomOf="@+id/details_img" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/survey_results_details_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.surveyModel.title}"
+                    tools:text="@string/survey_dummy_title"
+                    style="@style/TextAppearance.SZSUR.DetailsTitle" />
+
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/survey_tag_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:singleLine="true"
+                    android:layout_marginTop="20dp"/>
+
+                <HorizontalScrollView
+                    android:id="@+id/horizontal_scroll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp">
+
+                    <LinearLayout
+                        android:id="@+id/gallery"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal" />
+
+                </HorizontalScrollView>
+
+
+
+                <TextView
+                    android:id="@+id/survey_results_details_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.surveyModel.description}"
+                    tools:text="@string/dummy_description"
+                    style="@style/TextAppearance.SZSUR.DetailsDescription"
+                    android:layout_marginTop="20dp"/>
+
+            </LinearLayout>
+
+
+        </ScrollView>
+
+        <Button
+            android:id="@+id/survey_results_details_go_back_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            style="@style/Widget.SZSUR.BottomBackButton"
+            android:layout_marginTop="20dp"/>
+    </RelativeLayout>
+</layout>

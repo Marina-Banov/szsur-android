@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="event"
+            type="hr.uniri.szsur.data.model.Event" />
+        <variable
+            name="isFavorite"
+            type="Boolean" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="@dimen/spacing_small"
+        app:cardUseCompatPadding="true"
+        app:cardBackgroundColor="?attr/cardBackgroundColor"
+        app:cardElevation="@dimen/spacing_extra_small"
+        app:cardCornerRadius="@dimen/spacing_small">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="175dp"
+                app:imageUrl="@{event.image}"
+                tools:src="@drawable/dummy"
+                android:id="@+id/home_img"
+                android:scaleType="centerCrop"/>
+
+            <LinearLayout
+                android:id="@+id/fragment_home_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/home_img"
+                android:layout_alignParentStart="true"
+                android:gravity="start"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_small"
+                android:layout_toStartOf="@+id/times">
+
+                <TextView
+                    android:id="@+id/home_row_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{event.title}"
+                    tools:text="@string/event_dummy_title"
+                    style="@style/TextAppearance.SZSUR.CardDetailsTitle"/>
+
+                <TextView
+                    android:id="@+id/home_row_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{event.startTime.toLocaleString()}"
+                    tools:text="@string/event_dummy_time"
+                    style="@style/TextAppearance.SZSUR.CardDetails"/>
+
+                <TextView
+                    android:id="@+id/home_row_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:textLocation="@{event}"
+                    tools:text="@string/event_dummy_location"
+                    style="@style/TextAppearance.SZSUR.CardDetails"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@id/times"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_below="@id/home_img"
+                android:layout_alignParentEnd="true"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_toStartOf="@+id/times"
+                android:layout_alignTop="@id/fragment_home_info"
+                android:layout_alignBottom="@id/fragment_home_info">
+
+                <ImageView
+                    android:id="@+id/show_details_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:padding="@dimen/spacing_small"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    app:srcCompat="@drawable/ic_more"
+                    app:backgroundTint="?attr/cardBackgroundColor" />
+
+                <ImageButton
+                    android:id="@+id/favorites_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:padding="@dimen/spacing_small"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:layout_marginEnd="@dimen/spacing_small"
+                    tools:srcCompat="@drawable/ic_favorite"
+                    app:favoriteIcon="@{isFavorite}"
+                    app:tint="?attr/colorPrimary"
+                    app:backgroundTint="?attr/cardBackgroundColor" />
+
+            </LinearLayout>
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

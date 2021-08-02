@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="viewModel"
+            type="hr.uniri.szsur.ui.event_details.EventDetailsViewModel" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/detailsBackgroundColor">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/go_back_btn"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:layout_marginEnd="@dimen/spacing_normal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/spacing_normal"
+                android:paddingBottom="@dimen/spacing_normal">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/details_img_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:layout_marginBottom="@dimen/spacing_normal">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/details_img"
+                        android:layout_width="fill_parent"
+                        android:layout_height="230dp"
+                        android:scaleType="centerCrop"
+                        app:imageUrl="@{viewModel.event.image}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:shapeAppearanceOverlay="@style/ShapeAppearance.SZSUR.RoundedCorners"
+                        tools:src="@drawable/dummy" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/favorites_button"
+                        style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_marginEnd="@dimen/spacing_normal"
+                        app:cornerRadius="24dp"
+                        app:favoriteIcon="@{viewModel.isFavorite}"
+                        app:iconGravity="top"
+                        app:iconTint="?attr/accentTextColor"
+                        app:layout_constraintBottom_toBottomOf="@+id/details_img"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/details_img"
+                        tools:icon="@drawable/ic_favorite" />
+
+                    <TextView
+                        android:id="@+id/details_title"
+                        style="@style/TextAppearance.SZSUR.DetailsTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_normal"
+                        android:layout_marginEnd="@dimen/spacing_normal"
+                        android:text="@{viewModel.event.title}"
+                        app:layout_constraintEnd_toStartOf="@+id/favorites_button"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="@+id/details_img"
+                        app:layout_constraintTop_toBottomOf="@+id/details_img"
+                        tools:text="@string/event_dummy_title" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/details_time"
+                    style="@style/TextAppearance.SZSUR.DetailsDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:autoLink="none"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:text="@{viewModel.event.startTime.toLocaleString()}"
+                    tools:text="@string/event_dummy_time"
+                    app:drawableStartCompat="@drawable/ic_calendar"
+                    android:drawablePadding="@dimen/spacing_small"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/details_organizer"
+                    style="@style/TextAppearance.SZSUR.DetailsDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:text="@{viewModel.event.organisation}"
+                    tools:text="@string/event_dummy_organisation"
+                    app:drawableStartCompat="@drawable/ic_university"
+                    android:drawablePadding="@dimen/spacing_small"
+                    android:gravity="center" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_small">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/spacing_small"
+                        app:locationIcon="@{viewModel.event}"
+                        tools:srcCompat="@drawable/ic_place"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/details_location"
+                            style="@style/TextAppearance.SZSUR.DetailsDescription"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:textLocation="@{viewModel.event}"
+                            tools:text="@string/event_dummy_location" />
+
+                        <TextView
+                            android:id="@+id/details_location_details"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:autoLink="web"
+                            android:textColorLink="?attr/colorPrimary"
+                            app:textLocationDetails="@{viewModel.event}"
+                            tools:text="@string/event_dummy_location"
+                            style="@style/TextAppearance.SZSUR.DetailsDescription" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <com.google.android.gms.maps.MapView
+                    android:id="@+id/mapView"
+                    android:layout_width="match_parent"
+                    android:layout_height="140dp"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:visibility="gone"
+                    app:uiZoomGestures="false"
+                    app:uiScrollGestures="false"
+                    app:uiRotateGestures="false"
+                    app:uiTiltGestures="false" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/tag_group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:singleLine="true"
+                    android:layout_marginBottom="@dimen/spacing_small" />
+
+                <TextView
+                    android:id="@+id/details_main"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.event.description}"
+                    tools:text="@string/dummy_description"
+                    style="@style/TextAppearance.SZSUR.DetailsDescription" />
+            </LinearLayout>
+        </ScrollView>
+
+        <Button
+            android:id="@+id/go_back_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            style="@style/Widget.SZSUR.BottomBackButton" />
+    </RelativeLayout>
+</layout>

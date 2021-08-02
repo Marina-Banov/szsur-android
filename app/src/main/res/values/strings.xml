@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SZSUR</string>
+    <string name="app_version">1.0.0</string>
+
+    <string name="welcome_title_text">Dobrodošao/la u aplikaciju SZSUR!</string>
+    <string name="welcome_description_text">U ovoj aplikaciji možeš vidjeti najnovije događaje organizirane od strane tvog studentskog zbora i pomoći nam u tome da studentima Tehničkog fakulteta ponudimo još zanimljivog sadržaja odgovaranjem na naše ankete. Da bi započeo korištenje ove aplikacije, prijavi se:</string>
+    <string name="about_us_text">
+        Cilj Studentskog zbora Sveučilišta u Rijeci je osigurati da se dostojanstveno postiže akademski uspjeh te popularizirati
+        studente kao vrijednu zajednicu i značajan dio hrvatskog društva. Kako bi uspješno savladali sve prepreke važno je pravovremeno
+        primiti svaku informaciju koja može kritično utjecati na vaš studij. Zato vas odabrani studenti predstavljaju u odlučujućim
+        tijelima Sveučilišta u Rijeci te samoga Tehničkog fakulteta te čuvaju i bore se za poboljšanje vaših prava.
+
+        \nStudentski život podrazumijeva radove, kolokvije ispite i mnoge druge obaveze. u tom dijelu sudjeluje u financiranju
+        studentskih projekata, organiziranju raznih predavanja, tečajeva za dobivanje dodatnog iskustva i znanja, pomoć pri
+        ostvarivanju mobilnosti itd.
+
+        \nOsim nastavnih postoje i posebne izvannastavne aktivnosti koje spajaju ugodno sa korisnim tako da se organiziraju izleti,
+        kazališne predstave, brucošijade itd.
+
+        \nKako bi se bolje povezali sa našim studentima kreirana je mobilna aplikacija. U ovoj aplikaciji možeš vidjeti najnovije događaje
+        organizirane od strane tvog studentskog zbora. Možeš nam pomoći u tome da studentima Tehničkog fakulteta poboljšamo kvalitetu
+        studiranja i ponudimo još zanimljivog sadržaj odgovaranjem na naše ankete.
+
+
+    </string>
+    <string name="prompt_email">E-mail</string>
+    <string name="invalid_email">E-mail nije ispravan</string>
+    <string name="login_with_email">Prijava s e-mail adresom</string>
+    <string name="email_sent">Na tvoju adresu smo poslali e-mail s uputama. Provjeri poštanski sandučić.</string>
+    <string name="login_with_google">Prijava s Google računom</string>
+    <string name="login_anonymous">ili <u>nastavi bez prijave</u>\n(neke značajke možda neće biti dostupne)</string>
+    <string name="login_failed">Prijava nije uspjela</string>
+    <string name="action_sign_out">Odjava</string>
+
+    <string name="dark_mode">Tamni način</string>
+    <string name="event_notifications">Primaj obavijesti o najdražim događajima</string>
+    <string name="survey_notifications">Primaj obavijesti o najdražim anketama</string>
+
+    <string name="filter_by_tags">Pretraga po tagovima:</string>
+
+    <string name="tag">Tag</string>
+    <string name="return_btn">Povratak</string>
+    <string name="dummy_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
+
+    <string name="event_search_hint">Potraži događaj…</string>
+    <string name="event_online">Online događaj</string>
+    <string name="event_dummy_title">RITEH cool event</string>
+    <string name="event_dummy_time">Datum, vrijeme</string>
+    <string name="event_dummy_location">Lokacija</string>
+    <string name="event_dummy_organisation">Organizator</string>
+
+    <string name="survey_search_hint">Potraži anketu…</string>
+    <string name="survey_tab_title_new">NOVE ANKETE</string>
+    <string name="survey_tab_title_results">REZULTATI ANKETA</string>
+    <string name="survey_dummy_title">SZ želi znati!</string>
+    <string name="survey_complete">Riješi</string>
+    <string name="survey_see_results">Prikaži rezultate</string>
+    <string name="survey_results">REZULTATI ANKETE:</string>
+
+    <string name="about_title">O nama</string>
+    <string name="about_feedback">Imaš li neko pitanje za nas?</string>
+    <string name="about_feedback_btn">Javi nam se!</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_favorites_fragment">Hello favorites fragment</string>
+    <string name="povratak">POVRATAK</string>
+    <string name="send_answers">POŠALJI ODGOVORE</string>
+
+    <string name="hello_survey_fragment">Hello survey fragment</string>
+    <string name="hello_info_fragment">Hello info fragment</string>
+
+    <string name="channel_name">SZSUR app</string>
+    <string name="channel_description">SZSUR notification</string>
+    <string name="notification_title">Pripremi se!</string>
+    <string name="notification_text">Uskoro počinje događaj Studentskog Zbora!</string>
+    <string name="default_notification_channel_id">1234</string>
+
+    <string name="msg_token_fmt" translatable="false">FCM registration Token: %s</string>
+    <string name="fcm_message">FCM Message</string>
+
+    <string name="theme">day</string>
+    <string name="notifications">Y</string>
+</resources>

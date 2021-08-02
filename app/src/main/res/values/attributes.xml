@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="accentTextColor" format="reference|color" />
+    <attr name="lightTextColor" format="reference|color" />
+    <attr name="screensBackgroundColor" format="reference|color" />
+    <attr name="detailsBackgroundColor" format="reference|color" />
+    <attr name="backButtonColor" format="reference|color" />
+    <attr name="actionButtonBackground" format="reference|color" />
+    <attr name="cardButtonBackground" format="reference|color" />
+    <attr name="chipTextColorChecked" format="reference|color" />
+    <attr name="questionCardBackgroundColor" format="reference|color" />
+    <attr name="borderColor" format="reference|color" />
+</resources>
