@@ -9,7 +9,7 @@ import com.google.firebase.storage.StorageReference
 class FirestoreRepository {
 
     val TAG = "FIRESTORE_REPOSITORY"
-    private val storageURL = "gs://szsur-7a759.appspot.com/"
+    private val storageURL = "gs://szsur-7e723.appspot.com/"
     var firestoreDB = FirebaseFirestore.getInstance()
     var storage = FirebaseStorage.getInstance()
     var user = FirebaseAuth.getInstance().currentUser
