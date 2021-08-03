@@ -59,7 +59,7 @@ class EventDetailsFragment : Fragment() {
             viewModel.updateFavorites(it.favorites)
         })
 
-        if (!event.online) {
+        if (event.googlePlace != null && !event.online) {
             initMapView(savedInstanceState, event.googlePlace!!)
         }
 

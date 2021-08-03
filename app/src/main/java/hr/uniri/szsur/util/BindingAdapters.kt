@@ -69,13 +69,13 @@ fun setLocationText(view: TextView, event: Event) {
     view.text = if (event.online) {
         view.context.getString(R.string.event_online)
     } else {
-        event.googlePlace!!.name
+        event.googlePlace?.name
     }
 }
 
 @BindingAdapter("textLocationDetails")
 fun setLocationDetails(view: TextView, event: Event) {
-    view.text = if (event.online) event.location else event.googlePlace!!.address
+    view.text = if (event.online) event.location else event.googlePlace?.address
 }
 
 @BindingAdapter("locationIcon")
