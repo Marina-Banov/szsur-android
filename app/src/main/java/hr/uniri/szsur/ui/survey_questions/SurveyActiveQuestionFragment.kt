@@ -1,6 +1,6 @@
 package hr.uniri.szsur.ui.survey_questions
 
-import android.app.Dialog
+
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.ktx.auth
@@ -19,8 +18,7 @@ import com.google.firebase.ktx.Firebase
 import hr.uniri.szsur.R
 import hr.uniri.szsur.data.repository.UserRepository
 import hr.uniri.szsur.databinding.FragmentSurveyActiveQuestionBinding
-import hr.uniri.szsur.databinding.FragmentSurveyQuestionsBinding
-import hr.uniri.szsur.ui.survey_details.SurveyDetailsFragmentDirections
+
 
 
 class SurveyActiveQuestionFragment : Fragment() {
@@ -33,9 +31,9 @@ class SurveyActiveQuestionFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
-        val application = requireActivity().application
+        requireActivity().application
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_survey_active_question, container, false)
         binding.lifecycleOwner = this
 
@@ -50,8 +48,8 @@ class SurveyActiveQuestionFragment : Fragment() {
         val radioGroup = binding.activeSurveyRadioGroup
         var checked = false
         for (item in surveyModel.activeQuestionChoices){
-            var radioButton = RadioButton(radioGroup.context)
-            radioButton.setText(item)
+            val radioButton = RadioButton(radioGroup.context)
+            radioButton.text = item
             radioGroup.addView(radioButton)
             if(!checked){
                 radioButton.isChecked = true
@@ -60,11 +58,11 @@ class SurveyActiveQuestionFragment : Fragment() {
             }
         }
 
-        radioGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { group, checkedId ->
+        radioGroup.setOnCheckedChangeListener { group, checkedId ->
             val radio: RadioButton = group.findViewById(checkedId)
             answer = radio.text.toString()
 
-        })
+        }
 
         binding.sendAnswersButton.setOnClickListener {
             val data = hashMapOf(

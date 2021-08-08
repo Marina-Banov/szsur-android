@@ -8,14 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.activity.OnBackPressedCallback
 import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.observe
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -25,12 +20,7 @@ import hr.uniri.szsur.data.model.Question
 import hr.uniri.szsur.data.model.Questions
 import hr.uniri.szsur.data.model.SurveyModel
 import hr.uniri.szsur.databinding.*
-import hr.uniri.szsur.ui.survey.SurveyPagerAdapter
-import hr.uniri.szsur.ui.survey.SurveyViewModel
-import hr.uniri.szsur.ui.survey_details.SurveyDetailsFragmentDirections
-import hr.uniri.szsur.util.GlideApp
-import java.util.*
-import kotlin.collections.ArrayList
+
 
 class SurveyQuestionsFragment : Fragment() {
 
@@ -42,9 +32,9 @@ class SurveyQuestionsFragment : Fragment() {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
-        val application = requireActivity().application
+        requireActivity().application
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_survey_questions, container, false)
         binding.lifecycleOwner = this
 
@@ -58,15 +48,15 @@ class SurveyQuestionsFragment : Fragment() {
         for(i in questions){
             when(i.type){
                 "single-choice" -> {
-                    var view = generateRadioGroupCard(i)
+                    val view = generateRadioGroupCard(i)
                     questionList.addView(view)
                 }
                 "multiple-choice" -> {
-                    var view = generateCheckboxCard(i)
+                    val view = generateCheckboxCard(i)
                     questionList.addView(view)
                 }
                 else -> {
-                    var view = generateInputTextCard(i)
+                    val view = generateInputTextCard(i)
                     questionList.addView(view)
                 }
             }
@@ -88,8 +78,8 @@ class SurveyQuestionsFragment : Fragment() {
     }
 
     private fun validateAnswers() : Boolean{
-        for(i in 0..questions.size-1){
-            if (questions[i].required == false) continue
+        for(i in 0 until questions.size){
+            if (!questions[i].required) continue
             if(answers[i.toString()] is String && answers[i.toString()] == "") return false
             if(answers[i.toString()] is MutableList<*> && (answers[i.toString()] as MutableList<*>).isEmpty()) return false
         }
@@ -102,11 +92,11 @@ class SurveyQuestionsFragment : Fragment() {
             .addOnSuccessListener {
                 firestore.collection("users").document(Firebase.auth.currentUser!!.uid)
                         .update("solved_surveys", FieldValue.arrayUnion(surveyModel.documentId))
-                var dialog = Dialog(this.requireContext())
+                val dialog = Dialog(this.requireContext())
                 dialog.setContentView(R.layout.survey_answered_dialog)
-                var surveyDialogTitle = dialog.findViewById<TextView>(R.id.survey_title)
+                val surveyDialogTitle = dialog.findViewById<TextView>(R.id.survey_title)
                 surveyDialogTitle.text = surveyModel.title
-                var goBackButton = dialog.findViewById<Button>(R.id.go_back_button)
+                val goBackButton = dialog.findViewById<Button>(R.id.go_back_button)
                 goBackButton.setOnClickListener {
                     val fmManager: FragmentManager = requireActivity().supportFragmentManager
                     fmManager.popBackStack()
@@ -126,11 +116,11 @@ class SurveyQuestionsFragment : Fragment() {
     private fun generateInputTextCard(q: Question): View {
         val binding = LayoutCardInputTextBinding.inflate(LayoutInflater.from(context))
         binding.question = q
-        answers.put(q.order, "")
-        var inputText = binding.inputText
-        inputText.doOnTextChanged { text, start, before, count ->
+        answers[q.order] = ""
+        val inputText = binding.inputText
+        inputText.doOnTextChanged { text, _, _, _ ->
             if (text != null) {
-                answers.put(q.order, text.toString())
+                answers[q.order] = text.toString()
             }
         }
 
@@ -139,22 +129,22 @@ class SurveyQuestionsFragment : Fragment() {
     private fun generateCheckboxCard(q: Question): View {
         val binding = LayoutCardCheckboxBinding.inflate(LayoutInflater.from(context))
         binding.question = q
-        answers.put(q.order, mutableListOf<String>())
-        var checkboxContainer = binding.checkboxContainer
+        answers[q.order] = mutableListOf<String>()
+        val checkboxContainer = binding.checkboxContainer
         for (item in q.choices){
-            var checkBox = CheckBox(checkboxContainer.context)
-            checkBox.setText(item)
+            val checkBox = CheckBox(checkboxContainer.context)
+            checkBox.text = item
             checkboxContainer.addView(checkBox)
 
             checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
                 if(isChecked){
-                    var list = answers[q.order] as MutableList<String>
+                    val list = answers[q.order] as MutableList<String>
                     list.add(buttonView.text.toString())
-                    answers.put(q.order, list)
+                    answers[q.order] = list
                 }else{
-                    var list = answers[q.order] as MutableList<String>
+                    val list = answers[q.order] as MutableList<String>
                     if (list.contains(buttonView.text.toString())) list.remove(buttonView.text.toString())
-                    answers.put(q.order, list)
+                    answers[q.order] = list
                 }
             }
         }
@@ -169,22 +159,21 @@ class SurveyQuestionsFragment : Fragment() {
         var checked = false
         for (item in q.choices){
 
-            var radioButton = RadioButton(radioGroup.context)
-            radioButton.setText(item)
+            val radioButton = RadioButton(radioGroup.context)
+            radioButton.text = item
             radioGroup.addView(radioButton)
             if(!checked){
                 radioButton.isChecked = true
                 checked = true
-                answers.put(q.order, radioButton.text)
+                answers[q.order] = radioButton.text
             }
         }
 
-        radioGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { group, checkedId ->
+        radioGroup.setOnCheckedChangeListener { group, checkedId ->
+            val radio: RadioButton = group.findViewById(checkedId)
+            answers[q.order] = radio.text
 
-            val radio:RadioButton = group.findViewById(checkedId)
-            answers.put(q.order, radio.text)
-
-        })
+        }
 
         return binding.root
     }

@@ -16,7 +16,7 @@ data class Question(
 ) : Parcelable {
         override fun toString(): String {
                 var s = order + ". " + question
-                if (required == true){
+                if (required){
                         s = "* " + s
                 }
                 return s

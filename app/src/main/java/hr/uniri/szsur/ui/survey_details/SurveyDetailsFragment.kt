@@ -45,7 +45,7 @@ class SurveyDetailsFragment : Fragment() {
         userRepository.user.observe(viewLifecycleOwner, {
             viewModel.updateFavorites(it.favorites)
             if (it.solved_surveys.contains(surveyModel.documentId)){
-                if (surveyModel.active == true){
+                if (surveyModel.active){
                     binding.filloutSurveyButton.text = "PRIKAŽI REZULTATE"
                 }else{
                     binding.filloutSurveyButton.visibility = View.GONE
@@ -55,7 +55,7 @@ class SurveyDetailsFragment : Fragment() {
         })
 
         viewModel.surveyModel.observe(viewLifecycleOwner, {
-            for (tag in (it!!).tags) {
+            for (tag in (it).tags) {
                 val chip = layoutInflater.inflate(R.layout.layout_chip, binding.surveyTagGroup, false) as Chip
                 chip.text = tag
                 chip.isClickable = false
@@ -66,7 +66,7 @@ class SurveyDetailsFragment : Fragment() {
         binding.surveyDetailsGoBackBtn.setOnClickListener { requireActivity().onBackPressed() }
 
         binding.filloutSurveyButton.setOnClickListener {
-            if(viewModel.surveyModel.value!!.active == true){
+            if(viewModel.surveyModel.value!!.active){
                 if (binding.filloutSurveyButton.text.equals("Riješi")){
                     findNavController().navigate(SurveyDetailsFragmentDirections.
                     actionSurveyDetailsFragmentToSurveyActiveQuestionFragment(viewModel.surveyModel.value!!))
@@ -81,9 +81,9 @@ class SurveyDetailsFragment : Fragment() {
                     .orderBy("order", Query.Direction.ASCENDING)
                     .get()
                     .addOnSuccessListener {
-                        var questions : Questions = Questions()
+                        val questions = Questions()
                         for(document in it){
-                            var q = document.toObject(Question::class.java)
+                            val q = document.toObject(Question::class.java)
                             questions.add(q)
 
                         }
