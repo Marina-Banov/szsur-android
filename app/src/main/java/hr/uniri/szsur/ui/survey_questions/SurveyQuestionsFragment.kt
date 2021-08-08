@@ -36,6 +36,7 @@ class SurveyQuestionsFragment : Fragment() {
 
     private lateinit var binding: FragmentSurveyQuestionsBinding
     private var answers = hashMapOf<String, Any>()
+    private lateinit var questions: Questions
     private var firestore = FirebaseFirestore.getInstance()
 
 
@@ -47,7 +48,7 @@ class SurveyQuestionsFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_survey_questions, container, false)
         binding.lifecycleOwner = this
 
-        val questions =SurveyQuestionsFragmentArgs.fromBundle(requireArguments()).questions
+        questions =SurveyQuestionsFragmentArgs.fromBundle(requireArguments()).questions
         val surveyModel = SurveyQuestionsFragmentArgs.fromBundle(requireArguments()).surveyModel
 
         val surveyTitle = binding.surveyTitle
@@ -74,7 +75,7 @@ class SurveyQuestionsFragment : Fragment() {
 
         binding.sendAnswersButton.setOnClickListener {
             if (validateAnswers()) saveAnswersAndRedirect(surveyModel)
-            else Toast.makeText(this.context, "Svako pitanje mora biti ispunjeno!", Toast.LENGTH_LONG).show()
+            else Toast.makeText(this.context, "Svako pitanje označeno sa * mora biti ispunjeno!", Toast.LENGTH_LONG).show()
 
         }
 
@@ -87,9 +88,10 @@ class SurveyQuestionsFragment : Fragment() {
     }
 
     private fun validateAnswers() : Boolean{
-        for(i in answers){
-            if(i.value is String && i.value == "") return false
-            if(i.value is MutableList<*> && (i.value as MutableList<*>).isEmpty()) return false
+        for(i in 0..questions.size-1){
+            if (questions[i].required == false) continue
+            if(answers[i.toString()] is String && answers[i.toString()] == "") return false
+            if(answers[i.toString()] is MutableList<*> && (answers[i.toString()] as MutableList<*>).isEmpty()) return false
         }
         return true
     }
