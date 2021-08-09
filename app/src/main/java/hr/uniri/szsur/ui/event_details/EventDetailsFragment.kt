@@ -1,10 +1,8 @@
 package hr.uniri.szsur.ui.event_details
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +21,7 @@ import hr.uniri.szsur.data.repository.UserRepository
 import hr.uniri.szsur.databinding.FragmentEventDetailsBinding
 import hr.uniri.szsur.util.CreateNotification
 import hr.uniri.szsur.util.handleClick
+import hr.uniri.szsur.util.SharedPreferenceUtils
 
 
 class EventDetailsFragment : Fragment() {
@@ -31,7 +30,6 @@ class EventDetailsFragment : Fragment() {
     private lateinit var viewModel: EventDetailsViewModel
     private var userRepository = UserRepository.getInstance(FirebaseFirestore.getInstance())
     private var googleMap: GoogleMap? = null
-    private lateinit var sharedPreferences: SharedPreferences
 
     companion object {
         const val MAPS_QUERY = "https://www.google.com/maps/search/?api=1&query="
@@ -45,8 +43,6 @@ class EventDetailsFragment : Fragment() {
         val application = requireActivity().application
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_event_details, container, false)
         binding.lifecycleOwner = this
-
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireActivity())
 
         val event = EventDetailsFragmentArgs.fromBundle(requireArguments()).event
         val viewModelFactory = EventDetailsViewModelFactory(event, application)
@@ -81,7 +77,7 @@ class EventDetailsFragment : Fragment() {
     }
 
     private fun sendNotification() {
-        if (sharedPreferences.getBoolean(RECEIVE_NOTIFICATIONS, true)) {
+        if (SharedPreferenceUtils.getBoolean(RECEIVE_NOTIFICATIONS, true) == true) {
             CreateNotification.createNotificationChannel(activity)
         }
     }

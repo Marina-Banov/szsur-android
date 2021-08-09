@@ -1,8 +1,6 @@
 package hr.uniri.szsur.ui.favorites
 
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.preference.PreferenceManager
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,13 +14,13 @@ import hr.uniri.szsur.data.repository.UserRepository
 import hr.uniri.szsur.databinding.FragmentFavoritesBinding
 import hr.uniri.szsur.ui.MainFragmentDirections
 import hr.uniri.szsur.util.CreateNotification
+import hr.uniri.szsur.util.SharedPreferenceUtils
 
 
 class FavoritesFragment : Fragment() {
 
     private lateinit var binding: FragmentFavoritesBinding
     private var userRepository = UserRepository.getInstance(FirebaseFirestore.getInstance())
-    private lateinit var sharedPreferences: SharedPreferences
 
     companion object {
         private const val RECEIVE_NOTIFICATIONS = "RECEIVE_NOTIFICATIONS"
@@ -33,7 +31,6 @@ class FavoritesFragment : Fragment() {
                               savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_favorites, container, false)
         binding.lifecycleOwner = this
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireActivity())
 
         val viewModel = ViewModelProvider(this).get(FavoritesViewModel::class.java)
         binding.viewModel = viewModel
@@ -71,7 +68,7 @@ class FavoritesFragment : Fragment() {
     }
 
     private fun sendNotification() {
-        if (sharedPreferences.getBoolean(RECEIVE_NOTIFICATIONS, true)) {
+        if (SharedPreferenceUtils.getBoolean(RECEIVE_NOTIFICATIONS, true) == true) {
             CreateNotification.createNotificationChannel(activity)
         }
     }

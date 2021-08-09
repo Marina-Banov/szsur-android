@@ -1,11 +1,7 @@
 package hr.uniri.szsur.ui.login
 
 import android.content.Intent
-import android.content.SharedPreferences
-import android.content.res.Configuration
 import android.os.Bundle
-import android.preference.PreferenceManager
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -23,18 +19,18 @@ import hr.uniri.szsur.BuildConfig.APPLICATION_ID
 import hr.uniri.szsur.BuildConfig.VERSION_NAME
 import hr.uniri.szsur.ui.MainActivity
 import hr.uniri.szsur.R
+import hr.uniri.szsur.util.SharedPreferenceUtils
 
 
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var sharedPreferences: SharedPreferences
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
 
     private val onAuthComplete = OnCompleteListener<AuthResult> { task ->
         _loading.value = false
         if (task.isSuccessful) {
-            sharedPreferences.edit().remove(USER_EMAIL_KEY).apply()
+            SharedPreferenceUtils.remove(USER_EMAIL_KEY)
             navigateToMainActivity()
         } else {
             showLoginFailed()
@@ -55,11 +51,12 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         auth = Firebase.auth
 
-        val nightMode = sharedPreferences.getInt(NIGHT_MODE, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-        AppCompatDelegate.setDefaultNightMode(nightMode)
+        val nightMode = SharedPreferenceUtils.getInt(NIGHT_MODE, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        if (nightMode != null) {
+            AppCompatDelegate.setDefaultNightMode(nightMode)
+        }
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -74,7 +71,7 @@ class LoginActivity : AppCompatActivity() {
             navigateToMainActivity()
         } else {
             val emailLink = intent.data.toString()
-            val email = sharedPreferences.getString(USER_EMAIL_KEY, "")
+            val email = SharedPreferenceUtils.getString(USER_EMAIL_KEY, "")
             if (email != null && auth.isSignInWithEmailLink(emailLink)) {
                 // TODO is it possible to reauthenticate user with these credentials?
                 //  FirebaseAuthActionCodeException...
@@ -120,7 +117,7 @@ class LoginActivity : AppCompatActivity() {
 
         auth.sendSignInLinkToEmail(email, actionCodeSettings).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                sharedPreferences.edit().putString(USER_EMAIL_KEY, email).apply()
+                SharedPreferenceUtils.putString(USER_EMAIL_KEY, email)
                 Toast.makeText(applicationContext, R.string.email_sent, Toast.LENGTH_LONG).show()
             } else {
                 showLoginFailed()
