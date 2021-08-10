@@ -10,7 +10,6 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.*
 import com.google.android.material.chip.Chip
-import com.google.firebase.firestore.FirebaseFirestore
 import hr.uniri.szsur.R
 import hr.uniri.szsur.data.repository.EnumsRepository
 import hr.uniri.szsur.databinding.LayoutSearchFilterBinding
@@ -21,7 +20,6 @@ class SearchFilter(ctx: Context, attributeSet: AttributeSet? = null):
     LinearLayout(ctx, attributeSet) {
 
     private var binding: LayoutSearchFilterBinding
-    private var enumsRepository = EnumsRepository.getInstance(FirebaseFirestore.getInstance())
 
     private val _selectedTags = MutableLiveData<ArrayList<String>>()
     val selectedTags: LiveData<ArrayList<String>>
@@ -45,7 +43,7 @@ class SearchFilter(ctx: Context, attributeSet: AttributeSet? = null):
 
         _selectedTags.value = ArrayList()
 
-        enumsRepository.tags.observe(ctx, Observer {
+        EnumsRepository.tags.observe(ctx, Observer {
             for (tag in it) {
                 val chip = inflater.inflate(R.layout.layout_chip, binding.filter, false) as Chip
                 chip.text = tag

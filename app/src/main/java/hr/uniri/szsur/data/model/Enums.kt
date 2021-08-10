@@ -1,5 +1,5 @@
 package hr.uniri.szsur.data.model
 
-interface Enums { val values: ArrayList<*> }
+interface Enums { val values: List<*> }
 
-class Tags: Enums { override val values: ArrayList<String> = ArrayList() }
+data class Tags(override val values: List<String> = ArrayList()): Enums

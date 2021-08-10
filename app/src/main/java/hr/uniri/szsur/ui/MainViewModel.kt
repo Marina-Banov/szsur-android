@@ -15,17 +15,29 @@ class MainViewModel : ViewModel() {
 
     private val firestore = FirebaseFirestore.getInstance()
     private var userRepository = UserRepository.getInstance(firestore)
-    private var enumsRepository = EnumsRepository.getInstance(firestore)
     private var eventsRepository = EventsRepository.getInstance(firestore)
 
+    private val viewModelJob = Job()
+    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
+
     init {
-        val coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
+        // TODO good reason to put splash screen
+        if (EnumsRepository.tags.value?.size == 0) {
+            coroutineScope.launch {
+                EnumsRepository.tags.value =
+                    EnumsRepository.get(EnumsRepository.TAGS) as ArrayList<String>
+            }
+        }
         coroutineScope.launch {
-            // TODO good reason to put splash screen
             userRepository.user.value = userRepository.get()
-            enumsRepository.tags.value =
-                enumsRepository.get(enumsRepository.TAGS) as ArrayList<String>
+            EnumsRepository.tags.value =
+                EnumsRepository.get(EnumsRepository.TAGS) as ArrayList<String>
             eventsRepository.events.value = eventsRepository.get()
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
     }
 }
