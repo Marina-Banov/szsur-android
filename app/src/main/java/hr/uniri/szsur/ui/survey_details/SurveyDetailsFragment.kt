@@ -45,12 +45,17 @@ class SurveyDetailsFragment : Fragment() {
         userRepository.user.observe(viewLifecycleOwner, {
             viewModel.updateFavorites(it.favorites)
             if (it.solved_surveys.contains(surveyModel.documentId)){
-                binding.filloutSurveyButton.visibility = View.GONE
+                if (surveyModel.active){
+                    binding.filloutSurveyButton.text = "PRIKAŽI REZULTATE"
+                }else{
+                    binding.filloutSurveyButton.visibility = View.GONE
+                }
+
             }
         })
 
         viewModel.surveyModel.observe(viewLifecycleOwner, {
-            for (tag in (it!!).tags) {
+            for (tag in (it).tags) {
                 val chip = layoutInflater.inflate(R.layout.layout_chip, binding.surveyTagGroup, false) as Chip
                 chip.text = tag
                 chip.isClickable = false
@@ -61,14 +66,24 @@ class SurveyDetailsFragment : Fragment() {
         binding.surveyDetailsGoBackBtn.setOnClickListener { requireActivity().onBackPressed() }
 
         binding.filloutSurveyButton.setOnClickListener {
-            firestore.collection("surveys").document(viewModel.surveyModel.value!!.documentId)
+            if(viewModel.surveyModel.value!!.active){
+                if (binding.filloutSurveyButton.text.equals("Riješi")){
+                    findNavController().navigate(SurveyDetailsFragmentDirections.
+                    actionSurveyDetailsFragmentToSurveyActiveQuestionFragment(viewModel.surveyModel.value!!))
+                }else{
+                    findNavController().navigate(SurveyDetailsFragmentDirections.
+                    actionSurveyDetailsFragmentToSurveyActiveResultsFragment(viewModel.surveyModel.value!!))
+                }
+
+            }else{
+                firestore.collection("surveys").document(viewModel.surveyModel.value!!.documentId)
                     .collection("questions")
                     .orderBy("order", Query.Direction.ASCENDING)
                     .get()
                     .addOnSuccessListener {
-                        var questions : Questions = Questions()
+                        val questions = Questions()
                         for(document in it){
-                            var q = document.toObject(Question::class.java)
+                            val q = document.toObject(Question::class.java)
                             questions.add(q)
 
                         }
@@ -78,9 +93,10 @@ class SurveyDetailsFragment : Fragment() {
                     .addOnFailureListener{
                         Log.d("SurveyDetailsFragment", it.toString())
                     }
+            }
+
 
         }
-
         binding.favoritesButton.setOnClickListener {
             handleClick(viewModel.surveyModel.value!!.documentId, null)
         }
