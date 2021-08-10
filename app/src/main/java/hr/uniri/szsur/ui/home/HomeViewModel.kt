@@ -3,7 +3,6 @@ package hr.uniri.szsur.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.firebase.firestore.FirebaseFirestore
 import hr.uniri.szsur.data.model.Event
 import hr.uniri.szsur.data.repository.EventsRepository
 import hr.uniri.szsur.util.filterByTags
@@ -16,7 +15,6 @@ import java.util.ArrayList
 
 class HomeViewModel : ViewModel() {
 
-    private val eventsRepository = EventsRepository.getInstance(FirebaseFirestore.getInstance())
     private val viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
@@ -27,9 +25,11 @@ class HomeViewModel : ViewModel() {
 
     init {
         coroutineScope.launch {
-            val list = eventsRepository.get()
-            _events.value = list
-            _displayEvents.value = list
+            if (EventsRepository.events.value?.size == 0) {
+                EventsRepository.events.value = EventsRepository.get() as ArrayList<Event>
+            }
+            _events.value = EventsRepository.events.value
+            _displayEvents.value = EventsRepository.events.value
         }
     }
 

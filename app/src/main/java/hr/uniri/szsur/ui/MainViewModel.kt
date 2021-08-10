@@ -3,19 +3,17 @@ package hr.uniri.szsur.ui
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import hr.uniri.szsur.data.repository.EnumsRepository
-import hr.uniri.szsur.data.repository.EventsRepository
 import hr.uniri.szsur.data.repository.UserRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import java.util.ArrayList
+import kotlin.collections.ArrayList
 
 class MainViewModel : ViewModel() {
 
     private val firestore = FirebaseFirestore.getInstance()
     private var userRepository = UserRepository.getInstance(firestore)
-    private var eventsRepository = EventsRepository.getInstance(firestore)
 
     private val viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
@@ -28,11 +26,9 @@ class MainViewModel : ViewModel() {
                     EnumsRepository.get(EnumsRepository.TAGS) as ArrayList<String>
             }
         }
+
         coroutineScope.launch {
             userRepository.user.value = userRepository.get()
-            EnumsRepository.tags.value =
-                EnumsRepository.get(EnumsRepository.TAGS) as ArrayList<String>
-            eventsRepository.events.value = eventsRepository.get()
         }
     }
 

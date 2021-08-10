@@ -20,7 +20,6 @@ import java.util.ArrayList
 class FavoritesViewModel: ViewModel() {
 
     private val firestore = FirebaseFirestore.getInstance()
-    private val eventsRepository = EventsRepository.getInstance(firestore)
     private val surveysRepository = SurveysRepository()
     private val userRepository = UserRepository.getInstance(firestore)
     private val viewModelJob = Job()
@@ -41,7 +40,7 @@ class FavoritesViewModel: ViewModel() {
     init {
         // TODO quite inefficient
         coroutineScope.launch {
-            _items.value = eventsRepository.get() as ArrayList<Filterable>
+            _items.value = EventsRepository.events.value as ArrayList<Filterable>
             _items.value!!.addAll(surveysRepository.get(SurveyFilter.ALL) as ArrayList<Filterable>)
             filterFavorites()
         }

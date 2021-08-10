@@ -2,6 +2,8 @@ package hr.uniri.szsur.data.network
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import hr.uniri.szsur.data.model.Event
+import hr.uniri.szsur.data.model.HurrDurrEvent
 import hr.uniri.szsur.data.model.Tags
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -22,6 +24,9 @@ private val retrofit = Retrofit.Builder()
 interface ApiService {
     @GET("enums/tags")
     suspend fun getTags(): Tags
+
+    @GET("events")
+    suspend fun getEvents(): List<HurrDurrEvent>
 }
 
 object Api {
