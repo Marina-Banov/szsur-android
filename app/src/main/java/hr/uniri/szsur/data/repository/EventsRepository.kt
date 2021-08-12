@@ -22,18 +22,21 @@ object EventsRepository {
         try {
             val events = Api.retrofitService.getEvents()
             val result = ArrayList<Event>()
+
             for (e in events) {
-                val newE = Event(e)
+                val _e = Api.getEventFromJson(e)
                 if (!e.online) {
-                    newE.googlePlace = PlacesRepository.get(e.location, listOf(
+                    val place = PlacesRepository.get(e.location, listOf(
                         Place.Field.ID,
                         Place.Field.NAME,
                         Place.Field.ADDRESS,
                         Place.Field.LAT_LNG,
                     ))
+                    _e.setOnsiteLocation(place)
                 }
-                result.add(newE)
+                result.add(_e)
             }
+
             result
         } catch (e: Exception) {
             Log.e(TAG, e.toString())

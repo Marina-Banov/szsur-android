@@ -10,7 +10,8 @@ import kotlinx.coroutines.withContext
 
 object PlacesRepository {
 
-    private val TAG = "PlacesRepository"
+    private const val TAG = "PlacesRepository"
+
     lateinit var client: PlacesClient
 
     suspend fun get(placeId: String, placeFields: List<Place.Field>) = withContext(Dispatchers.IO) {
