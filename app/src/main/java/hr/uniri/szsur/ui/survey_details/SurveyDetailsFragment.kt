@@ -24,7 +24,6 @@ import hr.uniri.szsur.util.handleClick
 class SurveyDetailsFragment : Fragment() {
 
     private lateinit var binding: FragmentSurveyDetailsBinding
-    private var userRepository = UserRepository.getInstance(FirebaseFirestore.getInstance())
     private var firestore = FirebaseFirestore.getInstance()
 
     override fun onCreateView(
@@ -41,8 +40,8 @@ class SurveyDetailsFragment : Fragment() {
         val viewModel = ViewModelProvider(this, viewModelFactory).get(SurveyDetailsViewModel::class.java)
         binding.viewModel = viewModel
 
-        viewModel.updateFavorites(userRepository.user.value!!.favorites)
-        userRepository.user.observe(viewLifecycleOwner, {
+        viewModel.updateFavorites(UserRepository.user.value!!.favorites)
+        UserRepository.user.observe(viewLifecycleOwner, {
             viewModel.updateFavorites(it.favorites)
             if (it.solved_surveys.contains(surveyModel.documentId)){
                 binding.filloutSurveyButton.visibility = View.GONE

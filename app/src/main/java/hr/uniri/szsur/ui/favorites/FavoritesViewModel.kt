@@ -3,7 +3,6 @@ package hr.uniri.szsur.ui.favorites
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.firebase.firestore.FirebaseFirestore
 import hr.uniri.szsur.data.model.Filterable
 import hr.uniri.szsur.data.repository.EventsRepository
 import hr.uniri.szsur.data.repository.SurveysRepository
@@ -19,9 +18,7 @@ import java.util.ArrayList
 
 class FavoritesViewModel: ViewModel() {
 
-    private val firestore = FirebaseFirestore.getInstance()
     private val surveysRepository = SurveysRepository()
-    private val userRepository = UserRepository.getInstance(firestore)
     private val viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
@@ -51,7 +48,7 @@ class FavoritesViewModel: ViewModel() {
             return
         }
         _favoriteItems.value = ArrayList<Filterable>()
-        for (f in userRepository.user.value!!.favorites) {
+        for (f in UserRepository.user.value!!.favorites) {
             _items.value!!.find { it.documentId == f }?.let {
                 _favoriteItems.value!!.add(it)
             }

@@ -2,7 +2,6 @@ package hr.uniri.szsur.ui.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +20,7 @@ import hr.uniri.szsur.BuildConfig.APPLICATION_ID
 import hr.uniri.szsur.BuildConfig.VERSION_NAME
 import hr.uniri.szsur.ui.MainActivity
 import hr.uniri.szsur.R
+import hr.uniri.szsur.data.repository.UserRepository
 import hr.uniri.szsur.util.AppActivityResult
 import hr.uniri.szsur.util.SharedPreferenceUtils
 
@@ -72,6 +72,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+
         if (auth.currentUser != null) {
             navigateToMainActivity()
         } else {
@@ -158,13 +159,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun navigateToMainActivity() {
-        auth.currentUser?.getIdToken(true)?.addOnCompleteListener { task ->
-            if (task.isSuccessful && task.result.token != null) {
-                Log.i("loggedIn", task.result.token!!)
-            }
-            // TODO what if task wasn't successful?
-        }
-
+        UserRepository.uid = Firebase.auth.currentUser!!.uid
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()

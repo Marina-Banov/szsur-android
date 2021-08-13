@@ -19,7 +19,7 @@ class EventDetailsViewModel(e: Event, app: Application) : AndroidViewModel(app) 
         _event.value = e
     }
 
-    fun updateFavorites(favorites: ArrayList<String>) {
+    fun updateFavorites(favorites: List<String>) {
         _isFavorite.value = favorites.contains(_event.value!!.documentId)
     }
 }

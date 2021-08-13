@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.firestore.FirebaseFirestore
 import hr.uniri.szsur.data.model.SurveyModel
 import hr.uniri.szsur.data.repository.UserRepository
 import hr.uniri.szsur.databinding.LayoutCardSurveyBinding
@@ -16,11 +15,9 @@ class SurveyListAdapter(private val showDetailsListener: (survey: SurveyModel) -
 
     class ViewHolder(private var binding: LayoutCardSurveyBinding):
             RecyclerView.ViewHolder(binding.root) {
-        private var userRepository = UserRepository.getInstance(FirebaseFirestore.getInstance())
-
         fun bind(survey: SurveyModel) {
             binding.survey = survey
-            binding.isFavorite = userRepository.user.value!!.favorites.contains(survey.documentId)
+            binding.isFavorite = UserRepository.user.value!!.favorites.contains(survey.documentId)
             binding.favoritesButton.setOnClickListener {
                 handleClick(survey.documentId, null)
             }

@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import com.google.android.material.chip.Chip
-import com.google.firebase.firestore.FirebaseFirestore
 import hr.uniri.szsur.R
 import hr.uniri.szsur.databinding.FragmentSurveyResultsDetailsBinding
 import hr.uniri.szsur.util.GlideApp
@@ -26,7 +25,6 @@ import hr.uniri.szsur.util.handleClick
 class SurveyResultsDetailsFragment : Fragment() {
 
     private lateinit var binding: FragmentSurveyResultsDetailsBinding
-    private var userRepository = UserRepository.getInstance(FirebaseFirestore.getInstance())
     private lateinit var galery : LinearLayout
     private lateinit var dialog: Dialog
 
@@ -46,8 +44,8 @@ class SurveyResultsDetailsFragment : Fragment() {
         val viewModel = ViewModelProvider(this, viewModelFactory).get(SurveyDetailsViewModel::class.java)
         binding.viewModel = viewModel
 
-        viewModel.updateFavorites(userRepository.user.value!!.favorites)
-        userRepository.user.observe(viewLifecycleOwner, {
+        viewModel.updateFavorites(UserRepository.user.value!!.favorites)
+        UserRepository.user.observe(viewLifecycleOwner, {
             viewModel.updateFavorites(it.favorites)
         })
 

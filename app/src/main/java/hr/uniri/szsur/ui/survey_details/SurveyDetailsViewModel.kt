@@ -28,7 +28,7 @@ class SurveyDetailsViewModel(s: SurveyModel, app: Application) : AndroidViewMode
         _resultImages.value = firestoreRepository.getImageReferences(s.resultImages)
     }
 
-    fun updateFavorites(favorites: ArrayList<String>) {
+    fun updateFavorites(favorites: List<String>) {
         _isFavorite.value = favorites.contains(_surveyModel.value!!.documentId)
     }
 

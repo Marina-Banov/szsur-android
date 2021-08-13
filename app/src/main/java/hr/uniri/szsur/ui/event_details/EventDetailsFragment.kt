@@ -15,7 +15,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.material.chip.Chip
-import com.google.firebase.firestore.FirebaseFirestore
 import hr.uniri.szsur.R
 import hr.uniri.szsur.data.repository.UserRepository
 import hr.uniri.szsur.databinding.FragmentEventDetailsBinding
@@ -28,7 +27,6 @@ class EventDetailsFragment : Fragment() {
 
     private lateinit var binding: FragmentEventDetailsBinding
     private lateinit var viewModel: EventDetailsViewModel
-    private var userRepository = UserRepository.getInstance(FirebaseFirestore.getInstance())
     private var googleMap: GoogleMap? = null
 
     companion object {
@@ -50,8 +48,8 @@ class EventDetailsFragment : Fragment() {
                 .get(EventDetailsViewModel::class.java)
         binding.viewModel = viewModel
 
-        viewModel.updateFavorites(userRepository.user.value!!.favorites)
-        userRepository.user.observe(viewLifecycleOwner, {
+        viewModel.updateFavorites(UserRepository.user.value!!.favorites)
+        UserRepository.user.observe(viewLifecycleOwner, {
             viewModel.updateFavorites(it.favorites)
         })
 
