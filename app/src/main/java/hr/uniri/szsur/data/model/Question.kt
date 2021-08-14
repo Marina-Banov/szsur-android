@@ -13,7 +13,7 @@ data class Question(
         val question: String = "",
         val choices: List<String> = listOf()
 ) : Parcelable {
-        override fun toString(): String {
-                return order + ". " + question
-        }
+    override fun toString(): String {
+        return "$order. $question"
+    }
 }

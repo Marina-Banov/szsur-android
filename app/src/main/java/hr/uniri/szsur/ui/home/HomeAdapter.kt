@@ -10,17 +10,16 @@ import hr.uniri.szsur.databinding.LayoutCardEventBinding
 import hr.uniri.szsur.util.DiffCallback
 import hr.uniri.szsur.util.handleClick
 
-class HomeAdapter(private val showDetailsListener: (event: Event) -> Unit,
-                  private val sendNotification: () -> Unit) :
+class HomeAdapter(private val showDetailsListener: (event: Event) -> Unit) :
         ListAdapter<Event, HomeAdapter.ViewHolder>(DiffCallback()) {
 
     class ViewHolder(private var binding: LayoutCardEventBinding):
             RecyclerView.ViewHolder(binding.root) {
-        fun bind(event: Event, sendNotification: () -> Unit) {
+        fun bind(event: Event) {
             binding.event = event
-            binding.isFavorite = UserRepository.user.value!!.favorites.contains(event.documentId)
+            binding.isFavorite = UserRepository.user.value!!.favorites.any{ it.id == event.documentId }
             binding.favoritesButton.setOnClickListener {
-                handleClick(event.documentId, sendNotification)
+                handleClick(event.documentId, true)
             }
             binding.executePendingBindings()
         }
@@ -34,6 +33,6 @@ class HomeAdapter(private val showDetailsListener: (event: Event) -> Unit,
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val event = getItem(position)
         viewHolder.itemView.setOnClickListener { showDetailsListener(event) }
-        viewHolder.bind(event, sendNotification)
+        viewHolder.bind(event)
     }
 }

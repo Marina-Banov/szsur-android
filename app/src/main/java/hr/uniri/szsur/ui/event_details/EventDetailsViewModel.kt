@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import hr.uniri.szsur.data.model.Event
+import hr.uniri.szsur.data.model.FavoriteEntry
 
 class EventDetailsViewModel(e: Event, app: Application) : AndroidViewModel(app) {
     private val _event = MutableLiveData<Event>()
@@ -19,7 +20,7 @@ class EventDetailsViewModel(e: Event, app: Application) : AndroidViewModel(app) 
         _event.value = e
     }
 
-    fun updateFavorites(favorites: List<String>) {
-        _isFavorite.value = favorites.contains(_event.value!!.documentId)
+    fun updateFavorites(favorites: List<FavoriteEntry>) {
+        _isFavorite.value = favorites.any{ it.id == _event.value!!.documentId }
     }
 }

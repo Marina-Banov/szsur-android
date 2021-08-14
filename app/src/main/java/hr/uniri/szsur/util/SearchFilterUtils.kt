@@ -30,7 +30,7 @@ fun <T: Filterable> search(originalList: ArrayList<T>,
 
     val result = ArrayList<T>()
     for (item in originalList) {
-        if (item.title.toLowerCase().contains(query.toLowerCase())) {
+        if (item.title.lowercase().contains(query.lowercase())) {
             result.add(item)
         }
     }

@@ -14,12 +14,13 @@ import hr.uniri.szsur.ui.survey_list.SurveyListAdapter
 import hr.uniri.szsur.util.DiffCallback
 
 class  FavoritesAdapter(private val showEventDetailsListener: (event: Event) -> Unit,
-                        private val showSurveyDetailsListener: (survey: SurveyModel) -> Unit,
-                        private val sendNotification: () -> Unit) :
+                        private val showSurveyDetailsListener: (survey: SurveyModel) -> Unit) :
     ListAdapter<Filterable, RecyclerView.ViewHolder>(DiffCallback()) {
 
-    private val EVENT = 0
-    private val SURVEY = 1
+    companion object {
+        private const val EVENT = 0
+        private const val SURVEY = 1
+    }
 
     override fun getItemViewType(position: Int): Int {
         return if (getItem(position) is Event) EVENT else SURVEY
@@ -40,7 +41,7 @@ class  FavoritesAdapter(private val showEventDetailsListener: (event: Event) -> 
         viewHolder.apply {
             if (this is HomeAdapter.ViewHolder) {
                 itemView.setOnClickListener { showEventDetailsListener(item as Event) }
-                bind(item as Event, sendNotification)
+                bind(item as Event)
             } else if (this is SurveyListAdapter.ViewHolder) {
                 itemView.setOnClickListener { showSurveyDetailsListener(item as SurveyModel) }
                 bind(item as SurveyModel)

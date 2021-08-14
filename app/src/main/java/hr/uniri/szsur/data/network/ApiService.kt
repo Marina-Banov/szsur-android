@@ -2,15 +2,14 @@ package hr.uniri.szsur.data.network
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import hr.uniri.szsur.data.model.Event
-import hr.uniri.szsur.data.model.EventJson
-import hr.uniri.szsur.data.model.Tags
-import hr.uniri.szsur.data.model.User
+import hr.uniri.szsur.data.model.*
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.PUT
 import retrofit2.http.Path
 
 
@@ -43,6 +42,9 @@ interface ApiService {
 
     @GET("users/{id}")
     suspend fun getUser(@Path("id") id: String): User
+
+    @PUT("users/{id}/favorites")
+    suspend fun updateFavorites(@Path("id") id: String, @Body body: UpdateFavorite): String
 }
 
 object Api {

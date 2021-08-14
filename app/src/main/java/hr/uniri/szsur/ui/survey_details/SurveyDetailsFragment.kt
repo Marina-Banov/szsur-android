@@ -43,13 +43,13 @@ class SurveyDetailsFragment : Fragment() {
         viewModel.updateFavorites(UserRepository.user.value!!.favorites)
         UserRepository.user.observe(viewLifecycleOwner, {
             viewModel.updateFavorites(it.favorites)
-            if (it.solved_surveys.contains(surveyModel.documentId)){
+            if (it.solvedSurveys.contains(surveyModel.documentId)){
                 binding.filloutSurveyButton.visibility = View.GONE
             }
         })
 
         viewModel.surveyModel.observe(viewLifecycleOwner, {
-            for (tag in (it!!).tags) {
+            for (tag in (it).tags) {
                 val chip = layoutInflater.inflate(R.layout.layout_chip, binding.surveyTagGroup, false) as Chip
                 chip.text = tag
                 chip.isClickable = false
@@ -65,9 +65,9 @@ class SurveyDetailsFragment : Fragment() {
                     .orderBy("order", Query.Direction.ASCENDING)
                     .get()
                     .addOnSuccessListener {
-                        var questions : Questions = Questions()
+                        val questions = Questions()
                         for(document in it){
-                            var q = document.toObject(Question::class.java)
+                            val q = document.toObject(Question::class.java)
                             questions.add(q)
 
                         }
@@ -81,7 +81,7 @@ class SurveyDetailsFragment : Fragment() {
         }
 
         binding.favoritesButton.setOnClickListener {
-            handleClick(viewModel.surveyModel.value!!.documentId, null)
+            handleClick(viewModel.surveyModel.value!!.documentId, false)
         }
 
         return binding.root

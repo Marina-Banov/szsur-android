@@ -15,5 +15,4 @@ data class SurveyModel (
     var published: Boolean = false,
     var resultDescription: String = "",
     var resultImages: List<String> = listOf(),
-
 ) : Parcelable, Filterable

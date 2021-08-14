@@ -12,17 +12,11 @@ import hr.uniri.szsur.R
 import hr.uniri.szsur.data.repository.UserRepository
 import hr.uniri.szsur.databinding.FragmentFavoritesBinding
 import hr.uniri.szsur.ui.MainFragmentDirections
-import hr.uniri.szsur.util.CreateNotification
-import hr.uniri.szsur.util.SharedPreferenceUtils
 
 
 class FavoritesFragment : Fragment() {
 
     private lateinit var binding: FragmentFavoritesBinding
-
-    companion object {
-        private const val RECEIVE_NOTIFICATIONS = "RECEIVE_NOTIFICATIONS"
-    }
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -60,14 +54,8 @@ class FavoritesFragment : Fragment() {
                     MainFragmentDirections.actionMainFragmentToSurveyDetailsFragment(it)
                 )
             }
-        }, this::sendNotification)
+        })
 
         return binding.root
-    }
-
-    private fun sendNotification() {
-        if (SharedPreferenceUtils.getBoolean(RECEIVE_NOTIFICATIONS, true) == true) {
-            CreateNotification.createNotificationChannel(activity)
-        }
     }
 }

@@ -17,9 +17,9 @@ class SurveyListAdapter(private val showDetailsListener: (survey: SurveyModel) -
             RecyclerView.ViewHolder(binding.root) {
         fun bind(survey: SurveyModel) {
             binding.survey = survey
-            binding.isFavorite = UserRepository.user.value!!.favorites.contains(survey.documentId)
+            binding.isFavorite = UserRepository.user.value!!.favorites.any{ it.id == survey.documentId }
             binding.favoritesButton.setOnClickListener {
-                handleClick(survey.documentId, null)
+                handleClick(survey.documentId, false)
             }
             binding.executePendingBindings()
         }

@@ -2,14 +2,13 @@ package hr.uniri.szsur.data.repository
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import hr.uniri.szsur.data.model.User
+import hr.uniri.szsur.data.model.*
 import hr.uniri.szsur.data.network.Api
 import kotlinx.coroutines.*
 
 object UserRepository {
 
     private const val TAG = "UserRepository"
-    private const val FAVORITES = "favorites"
 
     var uid: String = ""
     var token: String = ""
@@ -28,13 +27,13 @@ object UserRepository {
         }
     }
 
-    suspend fun updateFavorites(favorites: List<String>) = withContext(Dispatchers.IO) {
-     /*   try {
-            val result = userDocument.update(FAVORITES, favorites).await()
+    suspend fun updateFavorites(body: UpdateFavorite) = withContext(Dispatchers.IO) {
+        try {
+            val result = Api.retrofitService.updateFavorites(uid, body)
             true
         } catch (e: Exception) {
             Log.e(TAG, e.toString())
             false
-        }*/
+        }
     }
 }

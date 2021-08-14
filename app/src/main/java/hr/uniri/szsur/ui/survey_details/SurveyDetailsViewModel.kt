@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.storage.StorageReference
 import hr.uniri.szsur.data.model.SurveyModel
 import hr.uniri.szsur.data.FirestoreRepository
+import hr.uniri.szsur.data.model.FavoriteEntry
 
 class SurveyDetailsViewModel(s: SurveyModel, app: Application) : AndroidViewModel(app) {
     private var firestoreRepository = FirestoreRepository()
@@ -28,8 +29,8 @@ class SurveyDetailsViewModel(s: SurveyModel, app: Application) : AndroidViewMode
         _resultImages.value = firestoreRepository.getImageReferences(s.resultImages)
     }
 
-    fun updateFavorites(favorites: List<String>) {
-        _isFavorite.value = favorites.contains(_surveyModel.value!!.documentId)
+    fun updateFavorites(favorites: List<FavoriteEntry>) {
+        _isFavorite.value = favorites.any{ it.id == _surveyModel.value!!.documentId }
     }
 
 }

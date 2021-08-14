@@ -62,9 +62,9 @@ class SurveyResultsDetailsFragment : Fragment() {
             galery.addView(imageView)
             imageView.setOnClickListener {
                 dialog.setContentView(R.layout.image_popup)
-                var popup_image = dialog.findViewById<ImageView>(R.id.popup_image)
+                val popupImage = dialog.findViewById<ImageView>(R.id.popup_image)
                 dialog.show()
-                GlideApp.with(popup_image).load(ref).into(popup_image)
+                GlideApp.with(popupImage).load(ref).into(popupImage)
             }
 
             imageView.requestLayout()
@@ -75,7 +75,7 @@ class SurveyResultsDetailsFragment : Fragment() {
         }
 
         viewModel.surveyModel.observe(viewLifecycleOwner, {
-            for (tag in (it!!).tags) {
+            for (tag in (it).tags) {
                 val chip = layoutInflater.inflate(R.layout.layout_chip, binding.surveyTagGroup, false) as Chip
                 chip.text = tag
                 chip.isClickable = false
@@ -87,7 +87,7 @@ class SurveyResultsDetailsFragment : Fragment() {
         binding.surveyResultsDetailsGoBackBtn.setOnClickListener { requireActivity().onBackPressed() }
 
         binding.favoritesButton.setOnClickListener {
-            handleClick(viewModel.surveyModel.value!!.documentId, null)
+            handleClick(viewModel.surveyModel.value!!.documentId, false)
         }
 
         return binding.root

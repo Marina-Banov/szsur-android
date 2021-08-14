@@ -2,16 +2,9 @@ package hr.uniri.szsur.data.model
 
 import android.os.Parcelable
 import com.google.android.libraries.places.api.model.Place
-import kotlinx.android.parcel.Parcelize
 import java.util.Date
+import kotlinx.android.parcel.Parcelize
 
-
-@Parcelize
-data class FirebaseDate(val _seconds: Long = 0, val _nanoseconds: Long = 0): Parcelable {
-    fun toDate(): Date {
-        return Date(this._seconds.times(1000))
-    }
-}
 
 @Parcelize
 data class Event(
