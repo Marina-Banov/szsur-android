@@ -3,6 +3,7 @@ package hr.uniri.szsur.data.network
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import hr.uniri.szsur.data.model.*
+import hr.uniri.szsur.data.repository.UserRepository
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -41,7 +42,7 @@ interface ApiService {
     suspend fun getEvents(): List<EventJson>
 
     @GET("users/{id}")
-    suspend fun getUser(@Path("id") id: String): User
+    suspend fun getUser(@Path("id") id: String): UserJson
 
     @PUT("users/{id}/favorites")
     suspend fun updateFavorites(@Path("id") id: String, @Body body: UpdateFavorite): String
@@ -62,6 +63,21 @@ object Api {
             eventJson.startTime.toDate(),
             eventJson.tags,
             eventJson.title,
+        )
+    }
+
+    fun getUserFromJson(userJson: UserJson): User {
+        val favorites = ArrayList<String>()
+        for (f in userJson.favorites) {
+            favorites.add(f.id)
+        }
+
+        return User(
+            UserRepository.uid,
+            userJson.isAdmin,
+            userJson.email,
+            favorites,
+            userJson.solvedSurveys,
         )
     }
 }

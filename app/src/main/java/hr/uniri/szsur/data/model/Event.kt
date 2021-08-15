@@ -2,6 +2,7 @@ package hr.uniri.szsur.data.model
 
 import android.os.Parcelable
 import com.google.android.libraries.places.api.model.Place
+import com.squareup.moshi.JsonClass
 import java.util.Date
 import kotlinx.android.parcel.Parcelize
 
@@ -31,6 +32,7 @@ data class Event(
     }
 }
 
+@JsonClass(generateAdapter = true)
 data class EventJson (
     val id: String = "",
     val title: String = "",

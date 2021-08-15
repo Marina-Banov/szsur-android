@@ -17,7 +17,7 @@ class HomeAdapter(private val showDetailsListener: (event: Event) -> Unit) :
             RecyclerView.ViewHolder(binding.root) {
         fun bind(event: Event) {
             binding.event = event
-            binding.isFavorite = UserRepository.user.value!!.favorites.any{ it.id == event.documentId }
+            binding.isFavorite = UserRepository.user.value!!.favorites.contains(event.documentId)
             binding.favoritesButton.setOnClickListener {
                 handleClick(event.documentId, true)
             }

@@ -18,9 +18,14 @@ object UserRepository {
         user.value = User()
     }
 
+    fun isUserRegistered(): Boolean {
+        return user.value!!.uid != ""
+    }
+
     suspend fun get() = withContext(Dispatchers.IO) {
         try {
-            Api.retrofitService.getUser(uid)
+            val result = Api.retrofitService.getUser(uid)
+            Api.getUserFromJson(result)
         } catch (e: Exception) {
             Log.e(TAG, e.toString())
             User()

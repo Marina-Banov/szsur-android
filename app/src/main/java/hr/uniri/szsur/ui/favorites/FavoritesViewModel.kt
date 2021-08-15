@@ -49,7 +49,7 @@ class FavoritesViewModel: ViewModel() {
         }
         _favoriteItems.value = ArrayList<Filterable>()
         for (f in UserRepository.user.value!!.favorites) {
-            _items.value!!.find { it.documentId == f.id }?.let {
+            _items.value!!.find { it.documentId == f }?.let {
                 _favoriteItems.value!!.add(it)
             }
         }
