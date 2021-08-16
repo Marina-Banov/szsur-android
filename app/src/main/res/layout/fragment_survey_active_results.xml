@@ -6,7 +6,7 @@
     <data>
         <variable
             name="survey"
-            type="hr.uniri.szsur.data.model.SurveyModel" />
+            type="hr.uniri.szsur.data.model.Survey" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

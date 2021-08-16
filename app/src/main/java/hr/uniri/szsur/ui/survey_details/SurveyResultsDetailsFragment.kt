@@ -74,7 +74,7 @@ class SurveyResultsDetailsFragment : Fragment() {
 
         }
 
-        viewModel.surveyModel.observe(viewLifecycleOwner, {
+        viewModel.survey.observe(viewLifecycleOwner, {
             for (tag in (it).tags) {
                 val chip = layoutInflater.inflate(R.layout.layout_chip, binding.surveyTagGroup, false) as Chip
                 chip.text = tag
@@ -87,7 +87,7 @@ class SurveyResultsDetailsFragment : Fragment() {
         binding.surveyResultsDetailsGoBackBtn.setOnClickListener { requireActivity().onBackPressed() }
 
         binding.favoritesButton.setOnClickListener {
-            handleClick(viewModel.surveyModel.value!!.documentId, false)
+            handleClick(viewModel.survey.value!!.documentId, false)
         }
 
         return binding.root

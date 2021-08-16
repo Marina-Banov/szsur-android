@@ -4,18 +4,18 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import hr.uniri.szsur.data.model.SurveyModel
+import hr.uniri.szsur.data.model.Survey
 import hr.uniri.szsur.data.repository.UserRepository
 import hr.uniri.szsur.databinding.LayoutCardSurveyBinding
 import hr.uniri.szsur.util.DiffCallback
 import hr.uniri.szsur.util.handleClick
 
-class SurveyListAdapter(private val showDetailsListener: (survey: SurveyModel) -> Unit) :
-        ListAdapter<SurveyModel, SurveyListAdapter.ViewHolder>(DiffCallback()) {
+class SurveyListAdapter(private val showDetailsListener: (survey: Survey) -> Unit) :
+        ListAdapter<Survey, SurveyListAdapter.ViewHolder>(DiffCallback()) {
 
     class ViewHolder(private var binding: LayoutCardSurveyBinding):
             RecyclerView.ViewHolder(binding.root) {
-        fun bind(survey: SurveyModel) {
+        fun bind(survey: Survey) {
             binding.survey = survey
             binding.isFavorite = UserRepository.user.value!!.favorites.contains(survey.documentId)
             binding.favoritesButton.setOnClickListener {

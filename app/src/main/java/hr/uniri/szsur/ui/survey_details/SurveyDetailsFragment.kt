@@ -53,7 +53,7 @@ class SurveyDetailsFragment : Fragment() {
             }
         })
 
-        viewModel.surveyModel.observe(viewLifecycleOwner, {
+        viewModel.survey.observe(viewLifecycleOwner, {
             for (tag in (it).tags) {
                 val chip = layoutInflater.inflate(R.layout.layout_chip, binding.surveyTagGroup, false) as Chip
                 chip.text = tag
@@ -65,17 +65,17 @@ class SurveyDetailsFragment : Fragment() {
         binding.surveyDetailsGoBackBtn.setOnClickListener { requireActivity().onBackPressed() }
 
         binding.filloutSurveyButton.setOnClickListener {
-            if(viewModel.surveyModel.value!!.active){
+            if(viewModel.survey.value!!.active){
                 if (binding.filloutSurveyButton.text.equals("Riješi")){
                     findNavController().navigate(SurveyDetailsFragmentDirections.
-                    actionSurveyDetailsFragmentToSurveyActiveQuestionFragment(viewModel.surveyModel.value!!))
+                    actionSurveyDetailsFragmentToSurveyActiveQuestionFragment(viewModel.survey.value!!))
                 }else{
                     findNavController().navigate(SurveyDetailsFragmentDirections.
-                    actionSurveyDetailsFragmentToSurveyActiveResultsFragment(viewModel.surveyModel.value!!))
+                    actionSurveyDetailsFragmentToSurveyActiveResultsFragment(viewModel.survey.value!!))
                 }
 
             }else{
-                firestore.collection("surveys").document(viewModel.surveyModel.value!!.documentId)
+                firestore.collection("surveys").document(viewModel.survey.value!!.documentId)
                     .collection("questions")
                     .orderBy("order", Query.Direction.ASCENDING)
                     .get()
@@ -87,7 +87,7 @@ class SurveyDetailsFragment : Fragment() {
 
                         }
                         findNavController().navigate(SurveyDetailsFragmentDirections.
-                        actionSurveyDetailsFragmentToSurveyQuestionsFragment(questions,viewModel.surveyModel.value!! ))
+                        actionSurveyDetailsFragmentToSurveyQuestionsFragment(questions,viewModel.survey.value!! ))
                     }
                     .addOnFailureListener{
                         Log.d("SurveyDetailsFragment", it.toString())
@@ -97,7 +97,7 @@ class SurveyDetailsFragment : Fragment() {
 
         }
         binding.favoritesButton.setOnClickListener {
-            handleClick(viewModel.surveyModel.value!!.documentId, false)
+            handleClick(viewModel.survey.value!!.documentId, false)
         }
 
         return binding.root

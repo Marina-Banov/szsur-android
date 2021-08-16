@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import hr.uniri.szsur.data.model.Filterable
 import hr.uniri.szsur.data.repository.EventsRepository
 import hr.uniri.szsur.data.repository.SurveysRepository
-import hr.uniri.szsur.data.repository.SurveysRepository.SurveyFilter
 import hr.uniri.szsur.data.repository.UserRepository
 import hr.uniri.szsur.util.filterByTags
 import hr.uniri.szsur.util.search
@@ -18,7 +17,6 @@ import java.util.ArrayList
 
 class FavoritesViewModel: ViewModel() {
 
-    private val surveysRepository = SurveysRepository()
     private val viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
@@ -39,7 +37,7 @@ class FavoritesViewModel: ViewModel() {
         _items.value = ArrayList<Filterable>()
         coroutineScope.launch {
             EventsRepository.events.value?.let { _items.value!!.addAll(it) }
-            _items.value!!.addAll(surveysRepository.get(SurveyFilter.ALL) as ArrayList<Filterable>)
+            SurveysRepository.surveys.value?.let { _items.value!!.addAll(it) }
             filterFavorites()
         }
     }

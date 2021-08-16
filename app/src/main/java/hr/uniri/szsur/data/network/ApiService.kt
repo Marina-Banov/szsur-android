@@ -8,10 +8,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.PUT
-import retrofit2.http.Path
+import retrofit2.http.*
 
 
 private const val BASE_URL = "https://us-central1-szsur-7e723.cloudfunctions.net/"
@@ -40,6 +37,9 @@ interface ApiService {
 
     @GET("events")
     suspend fun getEvents(): List<EventJson>
+
+    @GET("surveys")
+    suspend fun getSurveys(@Query("published") published: String): List<Survey>
 
     @GET("users/{id}")
     suspend fun getUser(@Path("id") id: String): UserJson

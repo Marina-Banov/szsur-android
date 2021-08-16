@@ -18,7 +18,7 @@ import com.google.firebase.ktx.Firebase
 import hr.uniri.szsur.R
 import hr.uniri.szsur.data.model.Question
 import hr.uniri.szsur.data.model.Questions
-import hr.uniri.szsur.data.model.SurveyModel
+import hr.uniri.szsur.data.model.Survey
 import hr.uniri.szsur.databinding.*
 
 
@@ -86,16 +86,16 @@ class SurveyQuestionsFragment : Fragment() {
         return true
     }
 
-    private fun saveAnswersAndRedirect(surveyModel: SurveyModel){
-        firestore.collection("surveys").document(surveyModel.documentId)
+    private fun saveAnswersAndRedirect(survey: Survey){
+        firestore.collection("surveys").document(survey.documentId)
             .collection("results").add(answers)
             .addOnSuccessListener {
                 firestore.collection("users").document(Firebase.auth.currentUser!!.uid)
-                        .update("solved_surveys", FieldValue.arrayUnion(surveyModel.documentId))
+                        .update("solved_surveys", FieldValue.arrayUnion(survey.documentId))
                 val dialog = Dialog(this.requireContext())
                 dialog.setContentView(R.layout.survey_answered_dialog)
                 val surveyDialogTitle = dialog.findViewById<TextView>(R.id.survey_title)
-                surveyDialogTitle.text = surveyModel.title
+                surveyDialogTitle.text = survey.title
                 val goBackButton = dialog.findViewById<Button>(R.id.go_back_button)
                 goBackButton.setOnClickListener {
                     val fmManager: FragmentManager = requireActivity().supportFragmentManager

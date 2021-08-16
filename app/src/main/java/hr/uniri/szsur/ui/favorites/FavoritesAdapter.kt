@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import hr.uniri.szsur.data.model.Event
 import hr.uniri.szsur.data.model.Filterable
-import hr.uniri.szsur.data.model.SurveyModel
+import hr.uniri.szsur.data.model.Survey
 import hr.uniri.szsur.databinding.LayoutCardEventBinding
 import hr.uniri.szsur.databinding.LayoutCardSurveyBinding
 import hr.uniri.szsur.ui.home.HomeAdapter
@@ -15,7 +15,7 @@ import hr.uniri.szsur.util.DiffCallback
 import java.lang.IllegalArgumentException
 
 class  FavoritesAdapter(private val showEventDetailsListener: (event: Event) -> Unit,
-                        private val showSurveyDetailsListener: (survey: SurveyModel) -> Unit) :
+                        private val showSurveyDetailsListener: (survey: Survey) -> Unit) :
     ListAdapter<Filterable, RecyclerView.ViewHolder>(DiffCallback()) {
 
     companion object {
@@ -26,7 +26,7 @@ class  FavoritesAdapter(private val showEventDetailsListener: (event: Event) -> 
     override fun getItemViewType(position: Int): Int {
         return when(getItem(position)) {
             is Event -> EVENT
-            is SurveyModel -> SURVEY
+            is Survey -> SURVEY
             else -> throw IllegalArgumentException()
         }
     }
@@ -56,9 +56,9 @@ class  FavoritesAdapter(private val showEventDetailsListener: (event: Event) -> 
             }
             is SurveyListAdapter.ViewHolder -> {
                 viewHolder.itemView.setOnClickListener {
-                    showSurveyDetailsListener(item as SurveyModel)
+                    showSurveyDetailsListener(item as Survey)
                 }
-                viewHolder.bind(item as SurveyModel)
+                viewHolder.bind(item as Survey)
             }
             else -> throw IllegalArgumentException()
         }

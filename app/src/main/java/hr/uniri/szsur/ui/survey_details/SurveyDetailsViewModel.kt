@@ -5,15 +5,15 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.storage.StorageReference
-import hr.uniri.szsur.data.model.SurveyModel
+import hr.uniri.szsur.data.model.Survey
 import hr.uniri.szsur.data.FirestoreRepository
 
 
-class SurveyDetailsViewModel(s: SurveyModel, app: Application) : AndroidViewModel(app) {
+class SurveyDetailsViewModel(s: Survey, app: Application) : AndroidViewModel(app) {
     private var firestoreRepository = FirestoreRepository()
 
-    private val _surveyModel = MutableLiveData<SurveyModel>()
-    val surveyModel: LiveData<SurveyModel>
+    private val _surveyModel = MutableLiveData<Survey>()
+    val survey: LiveData<Survey>
         get() = _surveyModel
 
     private val _resultImages = MutableLiveData<List<StorageReference>>()

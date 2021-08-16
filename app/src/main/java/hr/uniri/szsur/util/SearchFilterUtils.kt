@@ -1,7 +1,7 @@
 package hr.uniri.szsur.util
 
 import hr.uniri.szsur.data.model.Filterable
-import hr.uniri.szsur.data.model.SurveyModel
+import hr.uniri.szsur.data.model.Survey
 import java.util.ArrayList
 
 fun <T: Filterable> filterByTags(originalList: ArrayList<T>,
@@ -37,9 +37,9 @@ fun <T: Filterable> search(originalList: ArrayList<T>,
     return result
 }
 
-fun filterByStatus(originalList: ArrayList<SurveyModel>, status: Boolean):
-        ArrayList<SurveyModel> {
-    val result = ArrayList<SurveyModel>()
+fun filterByStatus(originalList: ArrayList<Survey>, status: Boolean):
+        ArrayList<Survey> {
+    val result = ArrayList<Survey>()
     for (item in originalList) {
         if (item.published == status) {
             result.add(item)

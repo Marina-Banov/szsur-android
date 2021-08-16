@@ -3,7 +3,7 @@ package hr.uniri.szsur.ui.survey
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import hr.uniri.szsur.data.model.SurveyModel
+import hr.uniri.szsur.data.model.Survey
 import hr.uniri.szsur.data.repository.SurveysRepository.SurveyFilter
 import hr.uniri.szsur.data.repository.SurveysRepository
 import hr.uniri.szsur.util.filterByTags
@@ -15,13 +15,13 @@ import kotlinx.coroutines.launch
 import java.util.ArrayList
 
 class SurveyViewModel: ViewModel() {
-    private val surveysRepository = SurveysRepository()
+
     private val viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
-    private val _surveys = MutableLiveData<ArrayList<SurveyModel>>()
-    private val _displaySurveys = MutableLiveData<ArrayList<SurveyModel>>()
-    val displaySurveys: LiveData<ArrayList<SurveyModel>>
+    private val _surveys = MutableLiveData<ArrayList<Survey>>()
+    private val _displaySurveys = MutableLiveData<ArrayList<Survey>>()
+    val displaySurveys: LiveData<ArrayList<Survey>>
         get() = _displaySurveys
 
     init {
@@ -30,8 +30,11 @@ class SurveyViewModel: ViewModel() {
 
     private fun getSurveys() {
         coroutineScope.launch {
-            _surveys.value = surveysRepository.get(SurveyFilter.ALL)
-            _displaySurveys.value = _surveys.value
+            if (SurveysRepository.surveys.value?.size == 0) {
+                SurveysRepository.surveys.value = SurveysRepository.get(SurveyFilter.ALL) as ArrayList<Survey>
+            }
+            _surveys.value = SurveysRepository.surveys.value
+            _displaySurveys.value = SurveysRepository.surveys.value
         }
     }
 
