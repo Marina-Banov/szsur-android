@@ -44,7 +44,12 @@ class SurveyDetailsFragment : Fragment() {
         UserRepository.user.observe(viewLifecycleOwner, {
             viewModel.updateFavorites(it.favorites)
             if (it.solvedSurveys.contains(surveyModel.documentId)){
-                binding.filloutSurveyButton.visibility = View.GONE
+                if (surveyModel.active){
+                    binding.filloutSurveyButton.text = "PRIKAŽI REZULTATE"
+                }else{
+                    binding.filloutSurveyButton.visibility = View.GONE
+                }
+
             }
         })
 
@@ -60,7 +65,17 @@ class SurveyDetailsFragment : Fragment() {
         binding.surveyDetailsGoBackBtn.setOnClickListener { requireActivity().onBackPressed() }
 
         binding.filloutSurveyButton.setOnClickListener {
-            firestore.collection("surveys").document(viewModel.surveyModel.value!!.documentId)
+            if(viewModel.surveyModel.value!!.active){
+                if (binding.filloutSurveyButton.text.equals("Riješi")){
+                    findNavController().navigate(SurveyDetailsFragmentDirections.
+                    actionSurveyDetailsFragmentToSurveyActiveQuestionFragment(viewModel.surveyModel.value!!))
+                }else{
+                    findNavController().navigate(SurveyDetailsFragmentDirections.
+                    actionSurveyDetailsFragmentToSurveyActiveResultsFragment(viewModel.surveyModel.value!!))
+                }
+
+            }else{
+                firestore.collection("surveys").document(viewModel.surveyModel.value!!.documentId)
                     .collection("questions")
                     .orderBy("order", Query.Direction.ASCENDING)
                     .get()
@@ -77,9 +92,10 @@ class SurveyDetailsFragment : Fragment() {
                     .addOnFailureListener{
                         Log.d("SurveyDetailsFragment", it.toString())
                     }
+            }
+
 
         }
-
         binding.favoritesButton.setOnClickListener {
             handleClick(viewModel.surveyModel.value!!.documentId, false)
         }

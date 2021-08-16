@@ -10,4 +10,6 @@
     <attr name="chipTextColorChecked" format="reference|color" />
     <attr name="questionCardBackgroundColor" format="reference|color" />
     <attr name="borderColor" format="reference|color" />
+    <attr name="percentageBarColor" format="reference|color" />
+    <attr name="percentageBarBackground" format="reference|color" />
 </resources>

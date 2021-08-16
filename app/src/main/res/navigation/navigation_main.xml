@@ -54,6 +54,17 @@
             app:enterAnim="@anim/slide_in_bottom"
             app:exitAnim="@anim/wait"
             app:popExitAnim="@anim/slide_out_bottom"/>
+
+
+        <action
+            android:id="@+id/action_surveyDetailsFragment_to_surveyActiveQuestionFragment"
+            app:destination="@id/surveyActiveQuestionFragment"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:exitAnim="@anim/wait"
+            app:popExitAnim="@anim/slide_out_bottom"/>
+        <action
+            android:id="@+id/action_surveyDetailsFragment_to_surveyActiveResultsFragment"
+            app:destination="@id/surveyActiveResultsFragment" />
     </fragment>
     <fragment
         android:id="@+id/surveyResultsDetailsFragment"
@@ -76,5 +87,26 @@
         <argument
             android:name="surveyModel"
             app:argType="hr.uniri.szsur.data.model.SurveyModel" />
+    </fragment>
+    <fragment
+        android:id="@+id/surveyActiveQuestionFragment"
+        android:name="hr.uniri.szsur.ui.survey_questions.SurveyActiveQuestionFragment"
+        android:label="SurveyActiveQuestionFragment">
+
+        <argument
+            android:name="surveyModel"
+            app:argType="hr.uniri.szsur.data.model.SurveyModel" />
+        <action
+            android:id="@+id/action_surveyActiveQuestionFragment_to_surveyActiveResultsFragment"
+            app:destination="@id/surveyActiveResultsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/surveyActiveResultsFragment"
+        android:name="hr.uniri.szsur.ui.survey_questions.SurveyActiveResultsFragment"
+        android:label="SurveyActiveResultsFragment" >
+
+    <argument
+        android:name="surveyModel"
+        app:argType="hr.uniri.szsur.data.model.SurveyModel" />
     </fragment>
 </navigation>
