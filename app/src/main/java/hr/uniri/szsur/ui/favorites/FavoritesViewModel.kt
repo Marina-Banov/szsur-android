@@ -36,8 +36,9 @@ class FavoritesViewModel: ViewModel() {
 
     init {
         // TODO quite inefficient
+        _items.value = ArrayList<Filterable>()
         coroutineScope.launch {
-            _items.value = EventsRepository.events.value as ArrayList<Filterable>
+            EventsRepository.events.value?.let { _items.value!!.addAll(it) }
             _items.value!!.addAll(surveysRepository.get(SurveyFilter.ALL) as ArrayList<Filterable>)
             filterFavorites()
         }
