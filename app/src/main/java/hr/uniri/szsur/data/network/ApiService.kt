@@ -39,6 +39,9 @@ interface ApiService {
     suspend fun getEvents(): List<EventJson>
 
     @GET("surveys")
+    suspend fun getSurveys(): List<Survey>
+
+    @GET("surveys")
     suspend fun getSurveys(@Query("published") published: String): List<Survey>
 
     @GET("users/{id}")

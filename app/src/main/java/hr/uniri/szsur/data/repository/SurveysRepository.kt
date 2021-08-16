@@ -24,7 +24,11 @@ object SurveysRepository {
 
     suspend fun get(filter: SurveyFilter) = withContext(Dispatchers.IO) {
         try {
-            Api.retrofitService.getSurveys(filter.value)
+            if (filter == SurveyFilter.ALL) {
+                Api.retrofitService.getSurveys()
+            } else {
+                Api.retrofitService.getSurveys(filter.value)
+            }
         } catch (e: Exception) {
             Log.e(TAG, e.toString())
             ArrayList()
