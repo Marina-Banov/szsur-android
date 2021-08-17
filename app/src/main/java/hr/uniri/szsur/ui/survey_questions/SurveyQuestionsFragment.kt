@@ -18,7 +18,6 @@ import com.google.firebase.ktx.Firebase
 import hr.uniri.szsur.R
 import hr.uniri.szsur.data.model.Question
 import hr.uniri.szsur.data.model.QuestionType
-import hr.uniri.szsur.data.model.Questions
 import hr.uniri.szsur.data.model.Survey
 import hr.uniri.szsur.databinding.*
 
@@ -27,43 +26,43 @@ class SurveyQuestionsFragment : Fragment() {
 
     private lateinit var binding: FragmentSurveyQuestionsBinding
     private var answers = hashMapOf<String, Any>()
-    private lateinit var questions: Questions
+    private lateinit var survey: Survey
     private var firestore = FirebaseFirestore.getInstance()
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-        // Inflate the layout for this fragment
-        requireActivity().application
+        survey = SurveyQuestionsFragmentArgs.fromBundle(requireArguments()).surveyModel
+
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_survey_questions, container, false)
         binding.lifecycleOwner = this
 
-        questions =SurveyQuestionsFragmentArgs.fromBundle(requireArguments()).questions
-        val surveyModel = SurveyQuestionsFragmentArgs.fromBundle(requireArguments()).surveyModel
+        binding.surveyTitle.text = survey.title
 
-        val surveyTitle = binding.surveyTitle
-        surveyTitle.text = surveyModel.title
-        val questionList = binding.questionsList
+        binding.questionsList.apply {
+            if (survey.questions == null)
+                return@apply
 
-        for (i in questions) {
-            when (i.type) {
-                QuestionType.SINGLE_CHOICE.value -> {
-                    val view = generateRadioGroupCard(i)
-                    questionList.addView(view)
-                }
-                QuestionType.MULTIPLE_CHOICE.value -> {
-                    val view = generateCheckboxCard(i)
-                    questionList.addView(view)
-                }
-                QuestionType.INPUT_TEXT.value -> {
-                    val view = generateInputTextCard(i)
-                    questionList.addView(view)
+            for (i in survey.questions!!) {
+                when (i.type) {
+                    QuestionType.SINGLE_CHOICE.value -> {
+                        val view = generateRadioGroupCard(i)
+                        addView(view)
+                    }
+                    QuestionType.MULTIPLE_CHOICE.value -> {
+                        val view = generateCheckboxCard(i)
+                        addView(view)
+                    }
+                    QuestionType.INPUT_TEXT.value -> {
+                        val view = generateInputTextCard(i)
+                        addView(view)
+                    }
                 }
             }
         }
 
         binding.sendAnswersButton.setOnClickListener {
-            if (validateAnswers()) saveAnswersAndRedirect(surveyModel)
+            if (validateAnswers()) saveAnswersAndRedirect(survey)
             else Toast.makeText(this.context, "Svako pitanje označeno sa * mora biti ispunjeno!", Toast.LENGTH_LONG).show()
         }
 
@@ -74,16 +73,18 @@ class SurveyQuestionsFragment : Fragment() {
         return binding.root
     }
 
-    private fun validateAnswers() : Boolean{
-        for(i in 0 until questions.size){
-            if (!questions[i].required) continue
-            if(answers[i.toString()] is String && answers[i.toString()] == "") return false
-            if(answers[i.toString()] is MutableList<*> && (answers[i.toString()] as MutableList<*>).isEmpty()) return false
+    private fun validateAnswers() : Boolean {
+        if (survey.questions == null)
+            return true
+        for (i in survey.questions!!.indices) {
+            if (!survey.questions!![i].required) continue
+            if (answers[i.toString()] is String && answers[i.toString()] == "") return false
+            if (answers[i.toString()] is MutableList<*> && (answers[i.toString()] as MutableList<*>).isEmpty()) return false
         }
         return true
     }
 
-    private fun saveAnswersAndRedirect(survey: Survey){
+    private fun saveAnswersAndRedirect(survey: Survey) {
         firestore.collection("surveys").document(survey.documentId)
             .collection("results").add(answers)
             .addOnSuccessListener {
@@ -123,6 +124,7 @@ class SurveyQuestionsFragment : Fragment() {
 
         return binding.root
     }
+
     private fun generateCheckboxCard(q: Question): View {
         val binding = LayoutCardCheckboxBinding.inflate(LayoutInflater.from(context))
         binding.question = q
@@ -174,7 +176,5 @@ class SurveyQuestionsFragment : Fragment() {
 
         return binding.root
     }
-
-
 
 }

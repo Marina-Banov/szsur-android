@@ -7,10 +7,18 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.storage.StorageReference
 import hr.uniri.szsur.data.model.Survey
 import hr.uniri.szsur.data.FirestoreRepository
+import hr.uniri.szsur.data.model.Question
+import hr.uniri.szsur.data.repository.SurveysRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 
-class SurveyDetailsViewModel(s: Survey, app: Application) : AndroidViewModel(app) {
+class SurveyDetailsViewModel(survey: Survey, app: Application) : AndroidViewModel(app) {
     private var firestoreRepository = FirestoreRepository()
+    private val viewModelJob = Job()
+    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
     private val _surveyModel = MutableLiveData<Survey>()
     val survey: LiveData<Survey>
@@ -25,8 +33,19 @@ class SurveyDetailsViewModel(s: Survey, app: Application) : AndroidViewModel(app
         get() = _isFavorite
 
     init {
-        _surveyModel.value = s
-        _resultImages.value = firestoreRepository.getImageReferences(s.resultImages)
+        val index = SurveysRepository.surveys.value!!.indexOf(survey)
+        if (survey.questions?.size == 0) {
+            getQuestions(index, survey.documentId)
+        }
+        _surveyModel.value = SurveysRepository.surveys.value!![index]
+        _resultImages.value = firestoreRepository.getImageReferences(survey.resultImages)
+    }
+
+    private fun getQuestions(index: Int, id: String) {
+        coroutineScope.launch {
+            val questions = SurveysRepository.getQuestions(id) as List<Question>
+            SurveysRepository.surveys.value!![index].questions = questions.sortedBy { it.order }
+        }
     }
 
     fun updateFavorites(favorites: List<String>) {

@@ -65,37 +65,20 @@ class SurveyDetailsFragment : Fragment() {
         binding.surveyDetailsGoBackBtn.setOnClickListener { requireActivity().onBackPressed() }
 
         binding.filloutSurveyButton.setOnClickListener {
-            if(viewModel.survey.value!!.active){
-                if (binding.filloutSurveyButton.text.equals("Riješi")){
+            if (viewModel.survey.value!!.active) {
+                if (binding.filloutSurveyButton.text.equals("Riješi")) {
                     findNavController().navigate(SurveyDetailsFragmentDirections.
                     actionSurveyDetailsFragmentToSurveyActiveQuestionFragment(viewModel.survey.value!!))
-                }else{
+                } else {
                     findNavController().navigate(SurveyDetailsFragmentDirections.
                     actionSurveyDetailsFragmentToSurveyActiveResultsFragment(viewModel.survey.value!!))
                 }
-
-            }else{
-                firestore.collection("surveys").document(viewModel.survey.value!!.documentId)
-                    .collection("questions")
-                    .orderBy("order", Query.Direction.ASCENDING)
-                    .get()
-                    .addOnSuccessListener {
-                        val questions = Questions()
-                        for(document in it){
-                            val q = document.toObject(Question::class.java)
-                            questions.add(q)
-
-                        }
-                        findNavController().navigate(SurveyDetailsFragmentDirections.
-                        actionSurveyDetailsFragmentToSurveyQuestionsFragment(questions,viewModel.survey.value!! ))
-                    }
-                    .addOnFailureListener{
-                        Log.d("SurveyDetailsFragment", it.toString())
-                    }
+            } else {
+                findNavController().navigate(SurveyDetailsFragmentDirections.
+                actionSurveyDetailsFragmentToSurveyQuestionsFragment(viewModel.survey.value!!))
             }
-
-
         }
+
         binding.favoritesButton.setOnClickListener {
             handleClick(viewModel.survey.value!!.documentId, false)
         }
