@@ -7,6 +7,7 @@ import hr.uniri.szsur.data.network.Api
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
+
 object SurveysRepository {
     enum class SurveyFilter(val value: String) {
         ALL(""),
@@ -32,6 +33,22 @@ object SurveysRepository {
         } catch (e: Exception) {
             Log.e(TAG, e.toString())
             ArrayList()
+        }
+    }
+
+    suspend fun getQuestions(id: String) = withContext(Dispatchers.IO) {
+        try {
+            Api.retrofitService.getSurveyQuestions(id)
+        } catch (e: Exception) {
+            Log.e(TAG, e.toString())
+        }
+    }
+
+    suspend fun getResults(id: String) = withContext(Dispatchers.IO) {
+        try {
+            Api.retrofitService.getSurveyResults(id)
+        } catch (e: Exception) {
+            Log.e(TAG, e.toString())
         }
     }
 }

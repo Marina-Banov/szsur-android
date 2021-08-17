@@ -8,27 +8,9 @@ import com.google.firebase.storage.StorageReference
 
 class FirestoreRepository {
 
-    val TAG = "FIRESTORE_REPOSITORY"
     private val storageURL = "gs://szsur-7e723.appspot.com/"
-    var firestoreDB = FirebaseFirestore.getInstance()
     var storage = FirebaseStorage.getInstance()
     var user = FirebaseAuth.getInstance().currentUser
-
-    /** Get published surveys */
-    fun getPublishedSurveys(): Query {
-        return firestoreDB.collection("surveys").whereEqualTo(
-            "published",
-            true
-        )
-    }
-
-    /** Get unpublished surveys */
-    fun getUnpublishedSurveys() : Query {
-        return firestoreDB.collection("surveys").whereEqualTo(
-            "published",
-            false
-        )
-    }
 
     /** Get image reference */
     fun getImageReference(imageURL: String) : StorageReference {

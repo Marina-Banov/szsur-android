@@ -17,6 +17,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import hr.uniri.szsur.R
 import hr.uniri.szsur.data.model.Question
+import hr.uniri.szsur.data.model.QuestionType
 import hr.uniri.szsur.data.model.Questions
 import hr.uniri.szsur.data.model.Survey
 import hr.uniri.szsur.databinding.*
@@ -28,7 +29,6 @@ class SurveyQuestionsFragment : Fragment() {
     private var answers = hashMapOf<String, Any>()
     private lateinit var questions: Questions
     private var firestore = FirebaseFirestore.getInstance()
-
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -45,34 +45,31 @@ class SurveyQuestionsFragment : Fragment() {
         surveyTitle.text = surveyModel.title
         val questionList = binding.questionsList
 
-        for(i in questions){
-            when(i.type){
-                "single-choice" -> {
+        for (i in questions) {
+            when (i.type) {
+                QuestionType.SINGLE_CHOICE.value -> {
                     val view = generateRadioGroupCard(i)
                     questionList.addView(view)
                 }
-                "multiple-choice" -> {
+                QuestionType.MULTIPLE_CHOICE.value -> {
                     val view = generateCheckboxCard(i)
                     questionList.addView(view)
                 }
-                else -> {
+                QuestionType.INPUT_TEXT.value -> {
                     val view = generateInputTextCard(i)
                     questionList.addView(view)
                 }
             }
-
         }
 
         binding.sendAnswersButton.setOnClickListener {
             if (validateAnswers()) saveAnswersAndRedirect(surveyModel)
             else Toast.makeText(this.context, "Svako pitanje označeno sa * mora biti ispunjeno!", Toast.LENGTH_LONG).show()
-
         }
 
         binding.returnButton.setOnClickListener {
             requireActivity().onBackPressed()
         }
-
 
         return binding.root
     }

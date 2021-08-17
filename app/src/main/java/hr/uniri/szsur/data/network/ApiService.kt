@@ -44,6 +44,12 @@ interface ApiService {
     @GET("surveys")
     suspend fun getSurveys(@Query("published") published: String): List<Survey>
 
+    @GET("surveys/{id}/questions")
+    suspend fun getSurveyQuestions(@Path("id") id: String): List<Question>
+
+    @GET("surveys/{id}/results")
+    suspend fun getSurveyResults(@Path("id") id: String): List<Any>
+
     @GET("users/{id}")
     suspend fun getUser(@Path("id") id: String): UserJson
 

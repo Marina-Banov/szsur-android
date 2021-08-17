@@ -32,3 +32,10 @@ data class FavoriteEntry(@Json(name="favoriteId") val id: String = "",
 data class UpdateFavorite(val liked: Boolean,
                           val isEvent: Boolean,
                           val favoriteId: String) : Parcelable
+
+
+enum class QuestionType(val value: String) {
+    SINGLE_CHOICE("single-choice"),
+    MULTIPLE_CHOICE("multiple-choice"),
+    INPUT_TEXT("input-text")
+}

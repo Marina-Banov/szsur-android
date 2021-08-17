@@ -46,7 +46,7 @@
         tools:layout="@layout/fragment_survey_details" >
         <argument
             android:name="surveyModel"
-            app:argType="hr.uniri.szsur.data.model.SurveyModel" />
+            app:argType="hr.uniri.szsur.data.model.Survey" />
 
         <action
             android:id="@+id/action_surveyDetailsFragment_to_surveyQuestionsFragment"
@@ -73,7 +73,7 @@
         tools:layout="@layout/fragment_survey_results_details">
         <argument
             android:name="surveyModel"
-            app:argType="hr.uniri.szsur.data.model.SurveyModel" />
+            app:argType="hr.uniri.szsur.data.model.Survey" />
     </fragment>
 
     <fragment
@@ -86,7 +86,7 @@
 
         <argument
             android:name="surveyModel"
-            app:argType="hr.uniri.szsur.data.model.SurveyModel" />
+            app:argType="hr.uniri.szsur.data.model.Survey" />
     </fragment>
     <fragment
         android:id="@+id/surveyActiveQuestionFragment"
@@ -95,7 +95,7 @@
 
         <argument
             android:name="surveyModel"
-            app:argType="hr.uniri.szsur.data.model.SurveyModel" />
+            app:argType="hr.uniri.szsur.data.model.Survey" />
         <action
             android:id="@+id/action_surveyActiveQuestionFragment_to_surveyActiveResultsFragment"
             app:destination="@id/surveyActiveResultsFragment" />
@@ -107,6 +107,6 @@
 
     <argument
         android:name="surveyModel"
-        app:argType="hr.uniri.szsur.data.model.SurveyModel" />
+        app:argType="hr.uniri.szsur.data.model.Survey" />
     </fragment>
 </navigation>

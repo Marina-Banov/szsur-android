@@ -20,13 +20,11 @@ import hr.uniri.szsur.data.repository.UserRepository
 import hr.uniri.szsur.databinding.FragmentSurveyActiveQuestionBinding
 
 
-
 class SurveyActiveQuestionFragment : Fragment() {
 
     private lateinit var binding: FragmentSurveyActiveQuestionBinding
     private lateinit var answer: String
     private var firestore = FirebaseFirestore.getInstance()
-    private var userRepository = UserRepository.getInstance(FirebaseFirestore.getInstance())
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,8 +38,8 @@ class SurveyActiveQuestionFragment : Fragment() {
         val surveyModel = SurveyActiveQuestionFragmentArgs.fromBundle(requireArguments()).surveyModel
         binding.survey = surveyModel
 
-        userRepository.user.observe(viewLifecycleOwner, {
-            if (it.solved_surveys.contains(surveyModel.documentId)){
+        UserRepository.user.observe(viewLifecycleOwner, {
+            if (it.solvedSurveys.contains(surveyModel.documentId)){
                 requireActivity().onBackPressed()
             }
         })
