@@ -1,7 +1,6 @@
 package hr.uniri.szsur.ui.survey_details
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,11 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import hr.uniri.szsur.R
-import hr.uniri.szsur.data.model.Question
-import hr.uniri.szsur.data.model.Questions
 import hr.uniri.szsur.data.repository.UserRepository
 import hr.uniri.szsur.databinding.FragmentSurveyDetailsBinding
 import hr.uniri.szsur.util.handleClick
@@ -24,13 +19,11 @@ import hr.uniri.szsur.util.handleClick
 class SurveyDetailsFragment : Fragment() {
 
     private lateinit var binding: FragmentSurveyDetailsBinding
-    private var firestore = FirebaseFirestore.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
         val application = requireActivity().application
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_survey_details, container, false)
         binding.lifecycleOwner = this

@@ -6,8 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.storage.StorageReference
 import hr.uniri.szsur.data.model.Survey
-import hr.uniri.szsur.data.FirestoreRepository
 import hr.uniri.szsur.data.model.Question
+import hr.uniri.szsur.data.repository.FirebaseStorageRepository
 import hr.uniri.szsur.data.repository.SurveysRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -16,7 +16,6 @@ import kotlinx.coroutines.launch
 
 
 class SurveyDetailsViewModel(survey: Survey, app: Application) : AndroidViewModel(app) {
-    private var firestoreRepository = FirestoreRepository()
     private val viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
@@ -38,7 +37,7 @@ class SurveyDetailsViewModel(survey: Survey, app: Application) : AndroidViewMode
             getQuestions(index, survey.documentId)
         }
         _surveyModel.value = SurveysRepository.surveys.value!![index]
-        _resultImages.value = firestoreRepository.getImageReferences(survey.resultImages)
+        _resultImages.value = FirebaseStorageRepository.getImageReferences(survey.resultImages)
     }
 
     private fun getQuestions(index: Int, id: String) {

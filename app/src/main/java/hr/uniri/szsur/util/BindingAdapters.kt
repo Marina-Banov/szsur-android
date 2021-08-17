@@ -8,10 +8,10 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import hr.uniri.szsur.R
-import hr.uniri.szsur.data.FirestoreRepository
 import hr.uniri.szsur.data.model.Event
 import hr.uniri.szsur.data.model.Filterable
 import hr.uniri.szsur.data.model.Survey
+import hr.uniri.szsur.data.repository.FirebaseStorageRepository
 import hr.uniri.szsur.ui.favorites.FavoritesAdapter
 import hr.uniri.szsur.ui.home.HomeAdapter
 import hr.uniri.szsur.ui.survey_list.SurveyListAdapter
@@ -19,7 +19,7 @@ import hr.uniri.szsur.ui.survey_list.SurveyListAdapter
 
 @BindingAdapter("imageUrl")
 fun loadImage(view: ImageView, url: String) {
-    val storageReference = FirestoreRepository().getImageReference(url)
+    val storageReference = FirebaseStorageRepository.getImageReference(url)
     GlideApp.with(view.context).load(storageReference).into(view)
 }
 
