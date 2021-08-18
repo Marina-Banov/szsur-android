@@ -51,4 +51,14 @@ object SurveysRepository {
             Log.e(TAG, e.toString())
         }
     }
+
+    suspend fun addResults(id: String, body: Any) = withContext(Dispatchers.IO) {
+        try {
+            Api.retrofitService.addSurveyResults(id, body)
+            true
+        } catch (e: Exception) {
+            Log.e(TAG, e.toString())
+            false
+        }
+    }
 }

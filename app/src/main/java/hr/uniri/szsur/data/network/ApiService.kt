@@ -5,6 +5,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import hr.uniri.szsur.data.model.*
 import hr.uniri.szsur.data.repository.UserRepository
 import okhttp3.OkHttpClient
+import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -50,11 +51,14 @@ interface ApiService {
     @GET("surveys/{id}/results")
     suspend fun getSurveyResults(@Path("id") id: String): List<Any>
 
+    @POST("surveys/{id}/results")
+    suspend fun addSurveyResults(@Path("id") id: String, @Body body: Any): ResponseBody
+
     @GET("users/{id}")
     suspend fun getUser(@Path("id") id: String): UserJson
 
     @PUT("users/{id}/favorites")
-    suspend fun updateFavorites(@Path("id") id: String, @Body body: UpdateFavorite): String
+    suspend fun updateFavorites(@Path("id") id: String, @Body body: UpdateFavorite): ResponseBody
 }
 
 object Api {

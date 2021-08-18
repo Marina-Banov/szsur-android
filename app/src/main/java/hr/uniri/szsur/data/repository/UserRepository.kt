@@ -34,7 +34,7 @@ object UserRepository {
 
     suspend fun updateFavorites(body: UpdateFavorite) = withContext(Dispatchers.IO) {
         try {
-            val result = Api.retrofitService.updateFavorites(uid, body)
+            Api.retrofitService.updateFavorites(uid, body)
             true
         } catch (e: Exception) {
             Log.e(TAG, e.toString())
