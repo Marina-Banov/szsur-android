@@ -19,6 +19,7 @@ import hr.uniri.szsur.R
 import hr.uniri.szsur.databinding.FragmentSurveyResultsDetailsBinding
 import hr.uniri.szsur.util.GlideApp
 import hr.uniri.szsur.data.repository.UserRepository
+import hr.uniri.szsur.util.SurveyViewModelFactory
 import hr.uniri.szsur.util.handleClick
 
 
@@ -40,7 +41,7 @@ class SurveyResultsDetailsFragment : Fragment() {
 
 
         val surveyModel = SurveyResultsDetailsFragmentArgs.fromBundle(requireArguments()).surveyModel
-        val viewModelFactory = SurveyDetailsViewModelFactory(surveyModel, application)
+        val viewModelFactory = SurveyViewModelFactory(surveyModel, application)
         val viewModel = ViewModelProvider(this, viewModelFactory).get(SurveyDetailsViewModel::class.java)
         binding.viewModel = viewModel
 

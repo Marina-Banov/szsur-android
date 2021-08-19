@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import hr.uniri.szsur.data.model.Survey
 import java.util.ArrayList
 
-class SurveyListViewModel() : ViewModel()  {
+class SurveyListViewModel : ViewModel()  {
 
     private val _surveys = MutableLiveData<ArrayList<Survey>>()
     val surveys: LiveData<ArrayList<Survey>>

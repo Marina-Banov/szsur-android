@@ -44,11 +44,16 @@ object SurveysRepository {
         }
     }
 
-    suspend fun getResults(id: String) = withContext(Dispatchers.IO) {
+    suspend fun getResults(id: String, active: Boolean) = withContext(Dispatchers.IO) {
         try {
-            Api.retrofitService.getSurveyResults(id)
+            if (active) {
+                Api.retrofitService.getActiveSurveyResults(id)
+            } else {
+                listOf()
+            }
         } catch (e: Exception) {
             Log.e(TAG, e.toString())
+            listOf()
         }
     }
 

@@ -49,7 +49,7 @@ interface ApiService {
     suspend fun getSurveyQuestions(@Path("id") id: String): List<Question>
 
     @GET("surveys/{id}/results")
-    suspend fun getSurveyResults(@Path("id") id: String): List<Any>
+    suspend fun getActiveSurveyResults(@Path("id") id: String): List<ActiveSurveyResult>
 
     @POST("surveys/{id}/results")
     suspend fun addSurveyResults(@Path("id") id: String, @Body body: Any): ResponseBody

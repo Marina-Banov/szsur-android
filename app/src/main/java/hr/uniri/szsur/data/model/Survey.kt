@@ -17,6 +17,6 @@ data class Survey (
     val activeQuestion: String = "",
     val activeQuestionChoices: List<String> = listOf(),
     var questions: List<Question>? = listOf(),
-    var results: List<Question>? = listOf(),
+    var results: Map<String, Int>? = mapOf(),
     override val tags: List<String> = listOf(),
 ) : Parcelable, Filterable
