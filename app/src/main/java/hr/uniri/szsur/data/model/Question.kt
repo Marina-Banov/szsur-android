@@ -1,14 +1,13 @@
 package hr.uniri.szsur.data.model
 
 import android.os.Parcelable
-import com.google.firebase.firestore.DocumentId
+import com.squareup.moshi.Json
 import kotlinx.android.parcel.Parcelize
 
 
 @Parcelize
 data class Question (
-    @DocumentId
-    val documentId: String = "",
+    @Json(name="id") val documentId: String = "",
     val order: String = "",
     val type: String = "",
     val question: String = "",
