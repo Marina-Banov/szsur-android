@@ -24,6 +24,10 @@ class HomeViewModel : ViewModel() {
         get() = _displayEvents
 
     init {
+        getEvents()
+    }
+
+    private fun getEvents() {
         coroutineScope.launch {
             if (EventsRepository.events.value?.size == 0) {
                 EventsRepository.events.value = EventsRepository.get() as ArrayList<Event>
@@ -43,5 +47,10 @@ class HomeViewModel : ViewModel() {
         _events.value?.let {
             _displayEvents.value = search(it, query)
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
     }
 }

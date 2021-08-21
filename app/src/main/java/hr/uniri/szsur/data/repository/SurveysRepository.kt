@@ -9,11 +9,6 @@ import kotlinx.coroutines.withContext
 
 
 object SurveysRepository {
-    enum class SurveyFilter(val value: String) {
-        ALL(""),
-        PUBLISHED("true"),
-        UNPUBLISHED("false"),
-    }
 
     private const val TAG = "SurveysRepository"
 
@@ -23,13 +18,9 @@ object SurveysRepository {
         surveys.value = ArrayList()
     }
 
-    suspend fun get(filter: SurveyFilter) = withContext(Dispatchers.IO) {
+    suspend fun get() = withContext(Dispatchers.IO) {
         try {
-            if (filter == SurveyFilter.ALL) {
-                Api.retrofitService.getSurveys()
-            } else {
-                Api.retrofitService.getSurveys(filter.value)
-            }
+            Api.retrofitService.getSurveys()
         } catch (e: Exception) {
             Log.e(TAG, e.toString())
             ArrayList()
@@ -41,16 +32,13 @@ object SurveysRepository {
             Api.retrofitService.getSurveyQuestions(id)
         } catch (e: Exception) {
             Log.e(TAG, e.toString())
+            listOf()
         }
     }
 
-    suspend fun getResults(id: String, active: Boolean) = withContext(Dispatchers.IO) {
+    suspend fun getActiveSurveyResults(id: String) = withContext(Dispatchers.IO) {
         try {
-            if (active) {
-                Api.retrofitService.getActiveSurveyResults(id)
-            } else {
-                listOf()
-            }
+            Api.retrofitService.getActiveSurveyResults(id)
         } catch (e: Exception) {
             Log.e(TAG, e.toString())
             listOf()

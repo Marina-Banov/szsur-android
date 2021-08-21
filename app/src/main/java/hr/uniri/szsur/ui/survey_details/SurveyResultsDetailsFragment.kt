@@ -51,12 +51,12 @@ class SurveyResultsDetailsFragment : Fragment() {
         })
 
 
-        dialog = Dialog(this.requireContext())
+        dialog = Dialog(requireContext())
         galery = binding.gallery
 
         viewModel.resultsImages.value?.forEach { ref ->
             Log.i("Survey", ref.toString())
-            val imageView = ImageView(this.context)
+            val imageView = ImageView(context)
             imageView.setPadding(20, 2, 20, 2)
             imageView.setScaleType(ScaleType.FIT_XY)
             GlideApp.with(this).load(ref).into(imageView)

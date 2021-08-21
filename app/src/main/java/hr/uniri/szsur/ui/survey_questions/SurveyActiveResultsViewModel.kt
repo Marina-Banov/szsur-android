@@ -18,7 +18,7 @@ class SurveyActiveResultsViewModel(s: Survey, app: Application) : AndroidViewMod
 
     private val viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
-    private var index: Int
+    private var index = SurveysRepository.surveys.value!!.indexOf(s)
 
     private val _survey = MutableLiveData<Survey>()
     val survey: LiveData<Survey>
@@ -31,7 +31,6 @@ class SurveyActiveResultsViewModel(s: Survey, app: Application) : AndroidViewMod
     init {
         _survey.value = s
         _results.value = mapOf()
-        index = SurveysRepository.surveys.value!!.indexOf(s)
 
         val survey = SurveysRepository.surveys.value!![index]
         if (survey.results != null && survey.results!!.isNotEmpty()) {
@@ -41,7 +40,7 @@ class SurveyActiveResultsViewModel(s: Survey, app: Application) : AndroidViewMod
 
     fun getSurveyResults() {
         coroutineScope.launch {
-            val res = SurveysRepository.getResults(_survey.value!!.documentId, true)
+            val res = SurveysRepository.getActiveSurveyResults(_survey.value!!.documentId)
             val percentages = calculatePercentages(res)
             SurveysRepository.surveys.value!![index].results = percentages
             _results.value = percentages
@@ -63,5 +62,10 @@ class SurveyActiveResultsViewModel(s: Survey, app: Application) : AndroidViewMod
         }
 
         return map
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
     }
 }

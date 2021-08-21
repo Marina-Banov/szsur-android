@@ -30,7 +30,7 @@ class SearchFilter(ctx: Context, attributeSet: AttributeSet? = null):
         get() = _searchQuery
 
     init {
-        this.orientation = VERTICAL
+        orientation = VERTICAL
 
         val inflater = ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         binding = DataBindingUtil.inflate(inflater, R.layout.layout_search_filter, this, true)
@@ -44,6 +44,9 @@ class SearchFilter(ctx: Context, attributeSet: AttributeSet? = null):
         _selectedTags.value = ArrayList()
 
         EnumsRepository.tags.observe(ctx, Observer {
+
+            binding.filterText.visibility = if (it.size == 0) GONE else VISIBLE
+
             for (tag in it) {
                 val chip = inflater.inflate(R.layout.layout_chip, binding.filter, false) as Chip
                 chip.text = tag

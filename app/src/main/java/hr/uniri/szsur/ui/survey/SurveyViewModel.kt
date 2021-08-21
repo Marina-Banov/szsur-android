@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import hr.uniri.szsur.data.model.Survey
-import hr.uniri.szsur.data.repository.SurveysRepository.SurveyFilter
 import hr.uniri.szsur.data.repository.SurveysRepository
 import hr.uniri.szsur.util.filterByTags
 import hr.uniri.szsur.util.search
@@ -31,7 +30,7 @@ class SurveyViewModel: ViewModel() {
     private fun getSurveys() {
         coroutineScope.launch {
             if (SurveysRepository.surveys.value?.size == 0) {
-                SurveysRepository.surveys.value = SurveysRepository.get(SurveyFilter.ALL) as ArrayList<Survey>
+                SurveysRepository.surveys.value = SurveysRepository.get() as ArrayList<Survey>
             }
             _surveys.value = SurveysRepository.surveys.value
             _displaySurveys.value = SurveysRepository.surveys.value
@@ -48,5 +47,10 @@ class SurveyViewModel: ViewModel() {
         _surveys.value?.let {
             _displaySurveys.value = search(it, query)
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
     }
 }

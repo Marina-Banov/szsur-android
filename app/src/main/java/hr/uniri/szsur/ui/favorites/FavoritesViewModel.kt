@@ -9,16 +9,9 @@ import hr.uniri.szsur.data.repository.SurveysRepository
 import hr.uniri.szsur.data.repository.UserRepository
 import hr.uniri.szsur.util.filterByTags
 import hr.uniri.szsur.util.search
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 import java.util.ArrayList
 
 class FavoritesViewModel: ViewModel() {
-
-    private val viewModelJob = Job()
-    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
     private val _items = MutableLiveData<ArrayList<Filterable>>()
     val items: LiveData<ArrayList<Filterable>>
@@ -35,11 +28,9 @@ class FavoritesViewModel: ViewModel() {
     init {
         // TODO quite inefficient
         _items.value = ArrayList<Filterable>()
-        coroutineScope.launch {
-            EventsRepository.events.value?.let { _items.value!!.addAll(it) }
-            SurveysRepository.surveys.value?.let { _items.value!!.addAll(it) }
-            filterFavorites()
-        }
+        EventsRepository.events.value?.let { _items.value!!.addAll(it) }
+        SurveysRepository.surveys.value?.let { _items.value!!.addAll(it) }
+        filterFavorites()
     }
 
     fun filterFavorites() {

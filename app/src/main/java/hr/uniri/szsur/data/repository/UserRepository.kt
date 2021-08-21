@@ -6,6 +6,7 @@ import hr.uniri.szsur.data.model.*
 import hr.uniri.szsur.data.network.Api
 import kotlinx.coroutines.*
 
+
 object UserRepository {
 
     private const val TAG = "UserRepository"

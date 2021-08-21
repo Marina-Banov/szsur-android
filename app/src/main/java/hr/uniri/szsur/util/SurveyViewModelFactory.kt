@@ -7,6 +7,7 @@ import hr.uniri.szsur.data.model.Survey
 import hr.uniri.szsur.ui.survey_details.SurveyDetailsViewModel
 import hr.uniri.szsur.ui.survey_questions.SurveyActiveQuestionViewModel
 import hr.uniri.szsur.ui.survey_questions.SurveyActiveResultsViewModel
+import hr.uniri.szsur.ui.survey_questions.SurveyQuestionsViewModel
 
 
 @Suppress("UNCHECKED_CAST")
@@ -24,6 +25,9 @@ class SurveyViewModelFactory(
             }
             modelClass.isAssignableFrom(SurveyActiveResultsViewModel::class.java) -> {
                 SurveyActiveResultsViewModel(survey, application) as T
+            }
+            modelClass.isAssignableFrom(SurveyQuestionsViewModel::class.java) -> {
+                SurveyQuestionsViewModel(survey, application) as T
             }
             else -> {
                 throw IllegalArgumentException("Unknown ViewModel class")

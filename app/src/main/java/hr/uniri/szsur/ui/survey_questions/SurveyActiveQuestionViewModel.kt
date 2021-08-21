@@ -34,4 +34,9 @@ class SurveyActiveQuestionViewModel(s: Survey, app: Application) : AndroidViewMo
             _isRequestSuccessful.value = SurveysRepository.addResults(_survey.value!!.documentId, answers)
         }
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
+    }
 }

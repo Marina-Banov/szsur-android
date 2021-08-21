@@ -17,23 +17,32 @@ class MainViewModel : ViewModel() {
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
     init {
-        // TODO good reason to put splash screen
-
         if (UserRepository.token == "") {
+            // TODO good reason to put splash screen
             Firebase.auth.currentUser!!.getIdToken(true).addOnCompleteListener { task ->
-                if (task.isSuccessful && task.result.token != null) {
-                    UserRepository.token = task.result.token!!
+                if (!task.isSuccessful || task.result.token == null) {
+                    // TODO what if task wasn't successful?
+                    return@addOnCompleteListener
                 }
-                // TODO what if task wasn't successful?
 
-                coroutineScope.launch {
-                    UserRepository.user.value = UserRepository.get()
+                UserRepository.token = task.result.token!!
+                getUser()
+                getTags()
+            }
+        }
+    }
 
-                    if (EnumsRepository.tags.value?.size == 0) {
-                        EnumsRepository.tags.value =
-                            EnumsRepository.get(EnumsRepository.TAGS) as ArrayList<String>
-                    }
-                }
+    private fun getUser() {
+        coroutineScope.launch {
+            UserRepository.user.value = UserRepository.get()
+        }
+    }
+
+    private fun getTags() {
+        coroutineScope.launch {
+            if (EnumsRepository.tags.value?.size == 0) {
+                EnumsRepository.tags.value =
+                    EnumsRepository.get(EnumsRepository.TAGS) as ArrayList<String>
             }
         }
     }
