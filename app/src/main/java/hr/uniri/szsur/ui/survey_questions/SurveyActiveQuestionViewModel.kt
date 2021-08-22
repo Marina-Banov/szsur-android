@@ -35,16 +35,17 @@ class SurveyActiveQuestionViewModel(s: Survey, app: Application) : AndroidViewMo
 
     fun addSurveyResults() {
         coroutineScope.launch {
+            val response = SurveysRepository.addResults(
+                SurveyAnswer(_survey.value!!.documentId, true, answers)
+            )
             _isRequestSuccessful.value =
-                when (SurveysRepository.addResults(
-                    SurveyAnswer(_survey.value!!.documentId, true, answers)
-                )) {
+                when (response) {
                     is NetworkError -> {
                         Log.i("addResults", "NO CONNECTION")
                         false
                     }
                     is GenericError -> {
-                        Log.i("addResults", "ERROR")
+                        Log.i("addResults", "ERROR ${response.code}")
                         false
                     }
                     is Success -> true

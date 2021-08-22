@@ -18,15 +18,16 @@ fun handleClick(favoriteId: String, isEvent: Boolean) {
 
     val coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
     coroutineScope.launch {
-        when (UserRepository.updateFavorites(
+        val response = UserRepository.updateFavorites(
             UpdateFavorite(liked, isEvent, favoriteId)
-        )) {
+        )
+        when (response) {
             is NetworkError -> {
                 Log.i("updateFavorites", "NO CONNECTION")
                 // TODO toast
             }
             is GenericError -> {
-                Log.i("updateFavorites", "ERROR")
+                Log.i("updateFavorites", "ERROR ${response.code}")
                 // TODO toast
             }
             is Success -> UserRepository.updateFavorites(liked, favoriteId)

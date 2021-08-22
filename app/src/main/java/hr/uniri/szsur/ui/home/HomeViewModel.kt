@@ -33,14 +33,15 @@ class HomeViewModel : ViewModel() {
     private fun getEvents() {
         coroutineScope.launch {
             if (EventsRepository.events.value?.size == 0) {
+                val response = EventsRepository.get()
                 EventsRepository.events.value =
-                    when (val response = EventsRepository.get()) {
+                    when (response) {
                         is NetworkError -> {
                             Log.i("getEvents", "NO CONNECTION")
                             ArrayList()
                         }
                         is GenericError -> {
-                            Log.i("getEvents", "ERROR")
+                            Log.i("getEvents", "ERROR ${response.code}")
                             ArrayList()
                         }
                         is Success -> response.value as ArrayList<Event>

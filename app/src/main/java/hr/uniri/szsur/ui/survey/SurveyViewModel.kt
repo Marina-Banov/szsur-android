@@ -32,14 +32,15 @@ class SurveyViewModel: ViewModel() {
     private fun getSurveys() {
         coroutineScope.launch {
             if (SurveysRepository.surveys.value?.size == 0) {
+                val response = SurveysRepository.get()
                 SurveysRepository.surveys.value =
-                    when (val response = SurveysRepository.get()) {
+                    when (response) {
                         is NetworkError -> {
                             Log.i("getSurveys", "NO CONNECTION")
                             ArrayList()
                         }
                         is GenericError -> {
-                            Log.i("getSurveys", "ERROR")
+                            Log.i("getSurveys", "ERROR ${response.code}")
                             ArrayList()
                         }
                         is Success -> response.value as ArrayList<Survey>

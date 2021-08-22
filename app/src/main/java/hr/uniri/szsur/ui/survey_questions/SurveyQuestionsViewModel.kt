@@ -41,14 +41,15 @@ class SurveyQuestionsViewModel(s: Survey, app: Application) : AndroidViewModel(a
     private fun getQuestions() {
         coroutineScope.launch {
             if (_survey.value!!.questions?.size == 0) {
+                val response = SurveysRepository.getQuestions(_survey.value!!.documentId)
                 SurveysRepository.surveys.value!![index].questions =
-                    when (val response = SurveysRepository.getQuestions(_survey.value!!.documentId)) {
+                    when (response) {
                         is NetworkError -> {
                             Log.i("getQuestions", "NO CONNECTION")
                             ArrayList()
                         }
                         is GenericError -> {
-                            Log.i("getQuestions", "ERROR")
+                            Log.i("getQuestions", "ERROR ${response.code}")
                             ArrayList()
                         }
                         is Success -> (response.value as ArrayList<Question>).sortedBy { it.order }
@@ -60,16 +61,17 @@ class SurveyQuestionsViewModel(s: Survey, app: Application) : AndroidViewModel(a
 
     fun addSurveyResults() {
         coroutineScope.launch {
+            val response = SurveysRepository.addResults(
+                SurveyAnswer(_survey.value!!.documentId, false, answers)
+            )
            _isRequestSuccessful.value =
-               when (SurveysRepository.addResults(
-                   SurveyAnswer(_survey.value!!.documentId, false, answers)
-               )) {
+               when (response) {
                    is NetworkError -> {
                        Log.i("addResults", "NO CONNECTION")
                        false
                    }
                    is GenericError -> {
-                       Log.i("addResults", "ERROR")
+                       Log.i("addResults", "ERROR ${response.code}")
                        false
                    }
                    is Success -> true

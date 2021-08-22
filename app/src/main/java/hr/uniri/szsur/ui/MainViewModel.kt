@@ -38,17 +38,19 @@ class MainViewModel : ViewModel() {
 
     private fun getUser() {
         coroutineScope.launch {
-            UserRepository.user.value = when (val response = UserRepository.get()) {
-                is NetworkError -> {
-                    Log.i("getUser", "NO CONNECTION")
-                    User()
+            val response = UserRepository.get()
+            UserRepository.user.value =
+                when (response) {
+                    is NetworkError -> {
+                        Log.i("getUser", "NO CONNECTION")
+                        User()
+                    }
+                    is GenericError -> {
+                        Log.i("getUser", "ERROR ${response.code}")
+                        User()
+                    }
+                    is Success -> response.value.getUserFromJson()
                 }
-                is GenericError -> {
-                    Log.i("getUser", "ERROR")
-                    User()
-                }
-                is Success -> response.value.getUserFromJson()
-            }
         }
     }
 
@@ -57,10 +59,11 @@ class MainViewModel : ViewModel() {
             return
 
         coroutineScope.launch {
+            val response = EnumsRepository.get(EnumsRepository.TAGS)
             EnumsRepository.tags.value =
-                when (val response = EnumsRepository.get(EnumsRepository.TAGS)) {
+                when (response) {
                     is GenericError -> {
-                        Log.i("getTags", "ERROR")
+                        Log.i("getTags", "ERROR ${response.code}")
                         ArrayList()
                     }
                     is Success -> response.value.values as ArrayList<String>

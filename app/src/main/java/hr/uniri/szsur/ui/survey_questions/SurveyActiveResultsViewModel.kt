@@ -42,17 +42,18 @@ class SurveyActiveResultsViewModel(s: Survey, app: Application) : AndroidViewMod
 
     fun getSurveyResults() {
         coroutineScope.launch {
+            val response = SurveysRepository.getActiveSurveyResults(_survey.value!!.documentId)
             SurveysRepository.surveys.value!![index].results =
-                when (val res = SurveysRepository.getActiveSurveyResults(_survey.value!!.documentId)) {
+                when (response) {
                     is NetworkError -> {
                         Log.i("getResults", "NO CONNECTION")
                         mapOf()
                     }
                     is GenericError -> {
-                        Log.i("getResults", "ERROR")
+                        Log.i("getResults", "ERROR ${response.code}")
                         mapOf()
                     }
-                    is Success -> calculatePercentages(res.value)
+                    is Success -> calculatePercentages(response.value)
                 }
             _results.value = SurveysRepository.surveys.value!![index].results!!
         }
