@@ -13,7 +13,6 @@ import android.widget.LinearLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.observe
 import com.google.android.material.chip.Chip
 import hr.uniri.szsur.R
 import hr.uniri.szsur.databinding.FragmentSurveyResultsDetailsBinding
@@ -58,7 +57,7 @@ class SurveyResultsDetailsFragment : Fragment() {
             Log.i("Survey", ref.toString())
             val imageView = ImageView(context)
             imageView.setPadding(20, 2, 20, 2)
-            imageView.setScaleType(ScaleType.FIT_XY)
+            imageView.scaleType = ScaleType.FIT_XY
             GlideApp.with(this).load(ref).into(imageView)
             galery.addView(imageView)
             imageView.setOnClickListener {
@@ -85,7 +84,9 @@ class SurveyResultsDetailsFragment : Fragment() {
         })
 
 
-        binding.surveyResultsDetailsGoBackBtn.setOnClickListener { requireActivity().onBackPressed() }
+        binding.surveyResultsDetailsGoBackBtn.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
 
         binding.favoritesButton.setOnClickListener {
             handleClick(viewModel.survey.value!!.documentId, false)

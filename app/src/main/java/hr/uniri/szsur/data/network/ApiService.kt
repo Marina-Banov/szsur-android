@@ -48,14 +48,14 @@ interface ApiService {
     @GET("surveys/{id}/results")
     suspend fun getActiveSurveyResults(@Path("id") id: String): List<ActiveSurveyResult>
 
-    @POST("surveys/{id}/results")
-    suspend fun addSurveyResults(@Path("id") id: String, @Body body: Any): ResponseBody
-
     @GET("users/{id}")
     suspend fun getUser(@Path("id") id: String): UserJson
 
     @PUT("users/{id}/favorites")
     suspend fun updateFavorites(@Path("id") id: String, @Body body: UpdateFavorite): ResponseBody
+
+    @PUT("users/{id}/surveys")
+    suspend fun addSurveyResults(@Path("id") id: String, @Body body: Any): ResponseBody
 }
 
 object Api {

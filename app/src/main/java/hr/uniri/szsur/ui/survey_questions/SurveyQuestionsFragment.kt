@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import hr.uniri.szsur.R
 import hr.uniri.szsur.data.model.Question
 import hr.uniri.szsur.data.model.QuestionType
+import hr.uniri.szsur.data.repository.UserRepository
 import hr.uniri.szsur.databinding.*
 import hr.uniri.szsur.util.SurveyViewModelFactory
 
@@ -53,6 +54,8 @@ class SurveyQuestionsFragment : Fragment() {
 
         viewModel.isRequestSuccessful.observe(viewLifecycleOwner, {
             if (it == true) {
+                val solvedSurveys = UserRepository.user.value!!.solvedSurveys as ArrayList<String>
+                solvedSurveys.add(viewModel.survey.value!!.documentId)
                 val dialog = initSuccessDialog()
                 dialog.show()
             } else if (it == false) {

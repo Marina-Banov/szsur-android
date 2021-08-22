@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import hr.uniri.szsur.R
 import hr.uniri.szsur.data.repository.UserRepository
@@ -19,7 +18,6 @@ import hr.uniri.szsur.util.SurveyViewModelFactory
 class SurveyActiveQuestionFragment : Fragment() {
 
     private lateinit var binding: FragmentSurveyActiveQuestionBinding
-    private lateinit var answer: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,29 +39,21 @@ class SurveyActiveQuestionFragment : Fragment() {
         })
 
         val radioGroup = binding.activeSurveyRadioGroup
-        var checked = false
         for (item in surveyModel.activeQuestionChoices) {
             val radioButton = RadioButton(radioGroup.context)
             radioButton.text = item
             radioGroup.addView(radioButton)
-            if (!checked) {
-                radioButton.isChecked = true
-                checked = true
-                answer = radioButton.text.toString()
-            }
         }
 
         radioGroup.setOnCheckedChangeListener { group, checkedId ->
             val radio: RadioButton = group.findViewById(checkedId)
-            answer = radio.text.toString()
-        }
-
-        binding.sendAnswersButton.setOnClickListener {
-            viewModel.addSurveyResults(hashMapOf("q" to answer))
+            viewModel.answers = hashMapOf("q" to radio.text.toString())
         }
 
         viewModel.isRequestSuccessful.observe(viewLifecycleOwner, {
             if (it == true) {
+                val solvedSurveys = UserRepository.user.value!!.solvedSurveys as ArrayList<String>
+                solvedSurveys.add(viewModel.survey.value!!.documentId)
                 findNavController().navigate(
                     SurveyActiveQuestionFragmentDirections.
                     actionSurveyActiveQuestionFragmentToSurveyActiveResultsFragment(surveyModel)

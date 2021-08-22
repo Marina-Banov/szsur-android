@@ -70,7 +70,10 @@
 
         <action
             android:id="@+id/action_surveyDetailsFragment_to_surveyActiveResultsFragment"
-            app:destination="@id/surveyActiveResultsFragment" />
+            app:destination="@id/surveyActiveResultsFragment"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:exitAnim="@anim/wait"
+            app:popExitAnim="@anim/slide_out_bottom" />
     </fragment>
 
     <fragment
@@ -107,7 +110,12 @@
 
         <action
             android:id="@+id/action_surveyActiveQuestionFragment_to_surveyActiveResultsFragment"
-            app:destination="@id/surveyActiveResultsFragment" />
+            app:destination="@id/surveyActiveResultsFragment"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:exitAnim="@anim/wait"
+            app:popExitAnim="@anim/slide_out_bottom"
+            app:popUpTo="@+id/surveyActiveQuestionFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment

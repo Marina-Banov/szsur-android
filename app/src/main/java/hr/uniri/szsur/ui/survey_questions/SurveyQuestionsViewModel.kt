@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import hr.uniri.szsur.data.model.Survey
+import hr.uniri.szsur.data.model.SurveyAnswer
 import hr.uniri.szsur.data.repository.SurveysRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -46,7 +47,9 @@ class SurveyQuestionsViewModel(s: Survey, app: Application) : AndroidViewModel(a
     fun addSurveyResults() {
         coroutineScope.launch {
            _isRequestSuccessful.value =
-               SurveysRepository.addResults(_survey.value!!.documentId, answers)
+               SurveysRepository.addResults(
+                   SurveyAnswer(_survey.value!!.documentId, false, answers)
+               )
         }
     }
 

@@ -66,7 +66,9 @@ class EventDetailsFragment : Fragment() {
             handleClick(viewModel.event.value!!.documentId, true)
         }
 
-        binding.goBackBtn.setOnClickListener { requireActivity().onBackPressed() }
+        binding.goBackBtn.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
 
         return binding.root
     }

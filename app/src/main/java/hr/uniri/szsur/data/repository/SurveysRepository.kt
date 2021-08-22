@@ -3,6 +3,7 @@ package hr.uniri.szsur.data.repository
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import hr.uniri.szsur.data.model.Survey
+import hr.uniri.szsur.data.model.SurveyAnswer
 import hr.uniri.szsur.data.network.Api
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -45,9 +46,9 @@ object SurveysRepository {
         }
     }
 
-    suspend fun addResults(id: String, body: Any) = withContext(Dispatchers.IO) {
+    suspend fun addResults(body: SurveyAnswer) = withContext(Dispatchers.IO) {
         try {
-            Api.retrofitService.addSurveyResults(id, body)
+            Api.retrofitService.addSurveyResults(UserRepository.uid, body)
             true
         } catch (e: Exception) {
             Log.e(TAG, e.toString())
