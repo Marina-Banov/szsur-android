@@ -1,9 +1,11 @@
 package hr.uniri.szsur.ui.survey
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import hr.uniri.szsur.data.model.Survey
+import hr.uniri.szsur.data.network.ResultWrapper.*
 import hr.uniri.szsur.data.repository.SurveysRepository
 import hr.uniri.szsur.util.filterByTags
 import hr.uniri.szsur.util.search
@@ -30,7 +32,18 @@ class SurveyViewModel: ViewModel() {
     private fun getSurveys() {
         coroutineScope.launch {
             if (SurveysRepository.surveys.value?.size == 0) {
-                SurveysRepository.surveys.value = SurveysRepository.get() as ArrayList<Survey>
+                SurveysRepository.surveys.value =
+                    when (val response = SurveysRepository.get()) {
+                        is NetworkError -> {
+                            Log.i("getSurveys", "NO CONNECTION")
+                            ArrayList()
+                        }
+                        is GenericError -> {
+                            Log.i("getSurveys", "ERROR")
+                            ArrayList()
+                        }
+                        is Success -> response.value as ArrayList<Survey>
+                    }
             }
             _surveys.value = SurveysRepository.surveys.value
             _displaySurveys.value = SurveysRepository.surveys.value

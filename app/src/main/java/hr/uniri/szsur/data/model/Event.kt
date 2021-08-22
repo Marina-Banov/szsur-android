@@ -45,4 +45,19 @@ data class EventJson (
     val location: String = "",
     val subscribers: List<String> = listOf(),
     val tags: List<String> = listOf(),
-)
+) {
+    fun getEventFromJson(): Event {
+        return Event(
+            id,
+            description,
+            image,
+            location,
+            null,
+            online,
+            organisation,
+            startTime.toDate(),
+            tags,
+            title,
+        )
+    }
+}

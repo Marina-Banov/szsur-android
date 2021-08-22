@@ -3,7 +3,6 @@ package hr.uniri.szsur.data.network
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import hr.uniri.szsur.data.model.*
-import hr.uniri.szsur.data.repository.UserRepository
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
@@ -60,34 +59,4 @@ interface ApiService {
 
 object Api {
     val retrofitService: ApiService by lazy { retrofit.create(ApiService::class.java) }
-
-    fun getEventFromJson(eventJson: EventJson): Event {
-        return Event(
-            eventJson.id,
-            eventJson.description,
-            eventJson.image,
-            eventJson.location,
-            null,
-            eventJson.online,
-            eventJson.organisation,
-            eventJson.startTime.toDate(),
-            eventJson.tags,
-            eventJson.title,
-        )
-    }
-
-    fun getUserFromJson(userJson: UserJson): User {
-        val favorites = ArrayList<String>()
-        for (f in userJson.favorites) {
-            favorites.add(f.id)
-        }
-
-        return User(
-            UserRepository.uid,
-            userJson.isAdmin,
-            userJson.email,
-            favorites,
-            userJson.solvedSurveys,
-        )
-    }
 }

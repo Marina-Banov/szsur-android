@@ -1,16 +1,15 @@
 package hr.uniri.szsur.data.repository
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.android.libraries.places.api.model.Place
 import hr.uniri.szsur.data.model.Event
 import hr.uniri.szsur.data.network.Api
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import hr.uniri.szsur.data.network.NetworkUtils
+import hr.uniri.szsur.data.network.ResultWrapper
+import hr.uniri.szsur.data.network.ResultWrapper.*
+
 
 object EventsRepository {
-
-    private const val TAG = "EventsRepository"
 
     val events = MutableLiveData<ArrayList<Event>>()
 
@@ -18,29 +17,26 @@ object EventsRepository {
         events.value = ArrayList()
     }
 
-    suspend fun get() = withContext(Dispatchers.IO) {
-        try {
-            val events = Api.retrofitService.getEvents()
-            val result = ArrayList<Event>()
-
-            for (e in events) {
-                val _e = Api.getEventFromJson(e)
-                if (!e.online) {
-                    val place = PlacesRepository.get(e.location, listOf(
-                        Place.Field.ID,
-                        Place.Field.NAME,
-                        Place.Field.ADDRESS,
-                        Place.Field.LAT_LNG,
-                    ))
-                    _e.setOnsiteLocation(place)
+    suspend fun get(): ResultWrapper<List<Event>> {
+        return when(val result = NetworkUtils.safeApiCall { Api.retrofitService.getEvents() }) {
+            is Success -> {
+                val events = ArrayList<Event>()
+                for (_e in result.value) {
+                    val e = _e.getEventFromJson()
+                    if (!_e.online) {
+                        val place = PlacesRepository.get(_e.location, listOf(
+                            Place.Field.ID,
+                            Place.Field.NAME,
+                            Place.Field.ADDRESS,
+                            Place.Field.LAT_LNG,
+                        ))
+                        e.setOnsiteLocation(place)
+                    }
+                    events.add(e)
                 }
-                result.add(_e)
+                Success(events)
             }
-
-            result
-        } catch (e: Exception) {
-            Log.e(TAG, e.toString())
-            listOf()
+            else -> result as ResultWrapper<Nothing>
         }
     }
 }

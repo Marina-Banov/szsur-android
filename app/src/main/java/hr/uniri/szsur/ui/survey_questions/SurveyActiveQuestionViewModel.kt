@@ -1,11 +1,13 @@
 package hr.uniri.szsur.ui.survey_questions
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import hr.uniri.szsur.data.model.Survey
 import hr.uniri.szsur.data.model.SurveyAnswer
+import hr.uniri.szsur.data.network.ResultWrapper.*
 import hr.uniri.szsur.data.repository.SurveysRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -34,9 +36,19 @@ class SurveyActiveQuestionViewModel(s: Survey, app: Application) : AndroidViewMo
     fun addSurveyResults() {
         coroutineScope.launch {
             _isRequestSuccessful.value =
-                SurveysRepository.addResults(
+                when (SurveysRepository.addResults(
                     SurveyAnswer(_survey.value!!.documentId, true, answers)
-                )
+                )) {
+                    is NetworkError -> {
+                        Log.i("addResults", "NO CONNECTION")
+                        false
+                    }
+                    is GenericError -> {
+                        Log.i("addResults", "ERROR")
+                        false
+                    }
+                    is Success -> true
+                }
         }
     }
 

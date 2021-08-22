@@ -1,8 +1,11 @@
 package hr.uniri.szsur.ui
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import hr.uniri.szsur.data.model.User
+import hr.uniri.szsur.data.network.ResultWrapper.*
 import hr.uniri.szsur.data.repository.EnumsRepository
 import hr.uniri.szsur.data.repository.UserRepository
 import kotlinx.coroutines.CoroutineScope
@@ -10,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlin.collections.ArrayList
+
 
 class MainViewModel : ViewModel() {
 
@@ -34,16 +38,34 @@ class MainViewModel : ViewModel() {
 
     private fun getUser() {
         coroutineScope.launch {
-            UserRepository.user.value = UserRepository.get()
+            UserRepository.user.value = when (val response = UserRepository.get()) {
+                is NetworkError -> {
+                    Log.i("getUser", "NO CONNECTION")
+                    User()
+                }
+                is GenericError -> {
+                    Log.i("getUser", "ERROR")
+                    User()
+                }
+                is Success -> response.value.getUserFromJson()
+            }
         }
     }
 
     private fun getTags() {
+        if (EnumsRepository.tags.value?.size != 0)
+            return
+
         coroutineScope.launch {
-            if (EnumsRepository.tags.value?.size == 0) {
-                EnumsRepository.tags.value =
-                    EnumsRepository.get(EnumsRepository.TAGS) as ArrayList<String>
-            }
+            EnumsRepository.tags.value =
+                when (val response = EnumsRepository.get(EnumsRepository.TAGS)) {
+                    is GenericError -> {
+                        Log.i("getTags", "ERROR")
+                        ArrayList()
+                    }
+                    is Success -> response.value.values as ArrayList<String>
+                    else -> ArrayList()
+                }
         }
     }
 

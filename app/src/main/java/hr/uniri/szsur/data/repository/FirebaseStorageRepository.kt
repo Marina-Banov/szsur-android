@@ -3,6 +3,7 @@ package hr.uniri.szsur.data.repository
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 
+
 object FirebaseStorageRepository {
 
     private const val STORAGE_URL = "gs://szsur-7e723.appspot.com/"

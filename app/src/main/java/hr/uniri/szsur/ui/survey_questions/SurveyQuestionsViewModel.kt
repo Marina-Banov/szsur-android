@@ -1,16 +1,20 @@
 package hr.uniri.szsur.ui.survey_questions
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import hr.uniri.szsur.data.model.Question
 import hr.uniri.szsur.data.model.Survey
 import hr.uniri.szsur.data.model.SurveyAnswer
+import hr.uniri.szsur.data.network.ResultWrapper.*
 import hr.uniri.szsur.data.repository.SurveysRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.util.ArrayList
 
 
 class SurveyQuestionsViewModel(s: Survey, app: Application) : AndroidViewModel(app) {
@@ -37,8 +41,18 @@ class SurveyQuestionsViewModel(s: Survey, app: Application) : AndroidViewModel(a
     private fun getQuestions() {
         coroutineScope.launch {
             if (_survey.value!!.questions?.size == 0) {
-                val questions = SurveysRepository.getQuestions(_survey.value!!.documentId)
-                SurveysRepository.surveys.value!![index].questions = questions.sortedBy { it.order }
+                SurveysRepository.surveys.value!![index].questions =
+                    when (val response = SurveysRepository.getQuestions(_survey.value!!.documentId)) {
+                        is NetworkError -> {
+                            Log.i("getQuestions", "NO CONNECTION")
+                            ArrayList()
+                        }
+                        is GenericError -> {
+                            Log.i("getQuestions", "ERROR")
+                            ArrayList()
+                        }
+                        is Success -> (response.value as ArrayList<Question>).sortedBy { it.order }
+                    }
                 _survey.value = SurveysRepository.surveys.value!![index]
             }
         }
@@ -47,9 +61,19 @@ class SurveyQuestionsViewModel(s: Survey, app: Application) : AndroidViewModel(a
     fun addSurveyResults() {
         coroutineScope.launch {
            _isRequestSuccessful.value =
-               SurveysRepository.addResults(
+               when (SurveysRepository.addResults(
                    SurveyAnswer(_survey.value!!.documentId, false, answers)
-               )
+               )) {
+                   is NetworkError -> {
+                       Log.i("addResults", "NO CONNECTION")
+                       false
+                   }
+                   is GenericError -> {
+                       Log.i("addResults", "ERROR")
+                       false
+                   }
+                   is Success -> true
+               }
         }
     }
 

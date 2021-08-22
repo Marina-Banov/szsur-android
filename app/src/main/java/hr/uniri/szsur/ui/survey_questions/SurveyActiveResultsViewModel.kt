@@ -1,11 +1,13 @@
 package hr.uniri.szsur.ui.survey_questions
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import hr.uniri.szsur.data.model.ActiveSurveyResult
 import hr.uniri.szsur.data.model.Survey
+import hr.uniri.szsur.data.network.ResultWrapper.*
 import hr.uniri.szsur.data.repository.SurveysRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -40,10 +42,19 @@ class SurveyActiveResultsViewModel(s: Survey, app: Application) : AndroidViewMod
 
     fun getSurveyResults() {
         coroutineScope.launch {
-            val res = SurveysRepository.getActiveSurveyResults(_survey.value!!.documentId)
-            val percentages = calculatePercentages(res)
-            SurveysRepository.surveys.value!![index].results = percentages
-            _results.value = percentages
+            SurveysRepository.surveys.value!![index].results =
+                when (val res = SurveysRepository.getActiveSurveyResults(_survey.value!!.documentId)) {
+                    is NetworkError -> {
+                        Log.i("getResults", "NO CONNECTION")
+                        mapOf()
+                    }
+                    is GenericError -> {
+                        Log.i("getResults", "ERROR")
+                        mapOf()
+                    }
+                    is Success -> calculatePercentages(res.value)
+                }
+            _results.value = SurveysRepository.surveys.value!![index].results!!
         }
     }
 
