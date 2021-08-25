@@ -3,7 +3,9 @@ package hr.uniri.szsur.data.model
 import android.os.Parcelable
 import com.google.android.libraries.places.api.model.Place
 import com.squareup.moshi.JsonClass
+import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 import kotlinx.android.parcel.Parcelize
 
 
@@ -39,8 +41,8 @@ data class EventJson (
     val description: String = "",
     val organisation: String = "",
     val image: String = "",
-    val startTime: FirebaseDate = FirebaseDate(),
-    val endTime: FirebaseDate = FirebaseDate(),
+    val startTime: String = "",
+    val endTime: String = "",
     val online: Boolean = false,
     val location: String = "",
     val subscribers: List<String> = listOf(),
@@ -55,7 +57,8 @@ data class EventJson (
             null,
             online,
             organisation,
-            startTime.toDate(),
+            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH)
+                .parse(startTime) ?: Date(),
             tags,
             title,
         )
