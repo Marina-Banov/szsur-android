@@ -62,6 +62,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
+                    android:textColor="?surveyButtonTextColor"
                     app:layout_constraintVertical_bias="0.0" />
 
                 <Button
@@ -74,6 +75,7 @@
                     android:layout_marginBottom="5dp"
                     android:layout_weight="1"
                     android:text="@string/send_answers"
+                    android:textColor="?surveyButtonTextColor"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
