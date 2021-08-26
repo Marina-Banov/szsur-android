@@ -90,6 +90,7 @@
             android:layout_marginBottom="16dp"
             android:layout_weight="1"
             android:text="@string/povratak"
+            android:textColor="?surveyButtonTextColor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -102,6 +103,8 @@
             android:layout_marginBottom="16dp"
             android:layout_weight="1"
             android:text="@string/send_answers"
+
+            android:textColor="?surveyButtonTextColor"
             android:onClick="@{() -> viewModel.addSurveyResults()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

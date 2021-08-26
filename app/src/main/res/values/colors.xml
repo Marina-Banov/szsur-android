@@ -1,17 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="purple_sztfr_very_dark">#0b001c</color>
     <color name="purple_dark">#FF1F2055</color>
+    <color name="purple_sztfr_dark">#4800b5</color>
     <color name="purple_medium_dark">#323369</color>
     <color name="purple_szsur">#FF3E408B</color>
+    <color name="purple_sztfr">#6127b8</color>
     <color name="purple_szsur_alpha">#333E408B</color>
     <color name="purple_medium_light">#FF6E6BBC</color>
     <color name="purple_light">#FFBBB9ED</color>
+    <color name="purble_sztfr_light">#8e6dbf</color>
     <color name="purple_very_light">#EDE7F6</color>
     <color name="blue_light">#FFE8EEF4</color>
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#FF6C6C6C</color>
     <color name="gray_dark">#FF202020</color>
     <color name="gray_light">#FFBFBFBF</color>
+    <color name="gray_very_light">#e8e8e8</color>
     <color name="black">#FF000000</color>
     <color name="black_light">#FF121212</color>
+
+    <color name="red_very_very_dark">#140200</color>
+    <color name="red_very_dark">#590600</color>
+    <color name="red_dark">#750505</color>
+    <color name="red_medium_dark">#9F2431</color>
+    <color name="red">#cc0000</color>
+    <color name="red_light">#d3695c</color>
+    <color name="red_very_light">#fff1f0</color>
+
+    <color name="pink_very_dark">#140005</color>
+    <color name="pink_dark">#630018</color>
+    <color name="pink">#f26d8d</color>
+    <color name="pink_light">#ffd1dc</color>
+    <color name="pink_very_light">#fff0f3</color>
+
+    <color name="green_very_dark">#021700</color>
+    <color name="green_olive_very_dark">#1f240c</color>
+    <color name="green_dark">#006100</color>
+    <color name="green_olive">#566422</color>
+    <color name="green">#55be47</color>
+    <color name="green_light">#c4f5bf</color>
+    <color name="green_olive_light">#becb84</color>
+    <color name="green_very_light">#effaed</color>
+    <color name="green_olive_very_light">#dbdece</color>
+
+    <color name="yellow_very_dark">#1c1c00</color>
+    <color name="yellow_dark">#adad0e</color>
+    <color name="yellow">#ffff00</color>
+    <color name="yellow_light">#fcfc58</color>
+    <color name="yellow_very_light">#ffffee</color>
+
+    <color name="orange_very_dark">#1f0f00</color>
+    <color name="orange_dark">#a34f00</color>
+    <color name="orange">#ff7200</color>
+    <color name="orange_light">#ffd4ac</color>
+    <color name="orange_very_light">#fff4eb</color>
+
+
+    <color name="blue_efri_fmtu_very_dark">#000812</color>
+    <color name="blue_efri_fmtu_dark">#003370</color>
+    <color name="blue_efri_fmtu">#0049a0</color>
+    <color name="blue_efri_fmtu_light">#3d6aa1</color>
+    <color name="blue_efri_fmtu_very_light">#dfe3e8</color>
+
+    <color name="blue_fzsri_medri_very_dark">#00101a</color>
+    <color name="blue_fzsri_medri_dark">#004c78</color>
+    <color name="blue_fzsri_medri">#00a2ff</color>
+    <color name="blue_fzsri_medri_light">#75cdff</color>
+    <color name="blue_fzsri_medri_very_light">#f0f9ff</color>
+
+    <color name="blue_oiri_very_dark">#07111a</color>
+    <color name="blue_oiri_dark">#173753</color>
+    <color name="blue_oiri">#276091</color>
+    <color name="blue_oiri_light">#5d83a3</color>
+    <color name="blue_oiri_very_light">#cfdae3</color>
+
+    <color name="blue_pfri_very_dark">#05090d</color>
+    <color name="blue_pfri_dark">#16293b</color>
+    <color name="blue_pfri">#23425e</color>
+    <color name="blue_pfri_light">#597287</color>
+    <color name="blue_pfri_very_light">#dfe6ed</color>
+
+    <color name="blue_pravri_very_dark">#000012</color>
+    <color name="blue_pravri_dark">#00006b</color>
+    <color name="blue_pravri">#0000d3</color>
+    <color name="blue_pravri_light">#3434bf</color>
+    <color name="blue_pravri_very_light">#dadae6</color>
+
+
+
 </resources>

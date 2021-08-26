@@ -12,4 +12,5 @@
     <attr name="borderColor" format="reference|color" />
     <attr name="percentageBarColor" format="reference|color" />
     <attr name="percentageBarBackground" format="reference|color" />
+    <attr name="surveyButtonTextColor" format="reference|color"/>
 </resources>
