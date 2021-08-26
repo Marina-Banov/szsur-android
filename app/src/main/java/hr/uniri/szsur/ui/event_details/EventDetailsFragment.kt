@@ -15,26 +15,21 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.material.chip.Chip
-import com.google.firebase.firestore.FirebaseFirestore
 import hr.uniri.szsur.R
 import hr.uniri.szsur.data.repository.UserRepository
 import hr.uniri.szsur.databinding.FragmentEventDetailsBinding
-import hr.uniri.szsur.util.CreateNotification
 import hr.uniri.szsur.util.handleClick
-import hr.uniri.szsur.util.SharedPreferenceUtils
 
 
 class EventDetailsFragment : Fragment() {
 
     private lateinit var binding: FragmentEventDetailsBinding
     private lateinit var viewModel: EventDetailsViewModel
-    private var userRepository = UserRepository.getInstance(FirebaseFirestore.getInstance())
     private var googleMap: GoogleMap? = null
 
     companion object {
         const val MAPS_QUERY = "https://www.google.com/maps/search/?api=1&query="
         const val MAPS_QUERY_PLACE_ID = "&query_place_id="
-        private const val RECEIVE_NOTIFICATIONS = "RECEIVE_NOTIFICATIONS"
     }
 
     override fun onCreateView(inflater: LayoutInflater,
@@ -50,8 +45,8 @@ class EventDetailsFragment : Fragment() {
                 .get(EventDetailsViewModel::class.java)
         binding.viewModel = viewModel
 
-        viewModel.updateFavorites(userRepository.user.value!!.favorites)
-        userRepository.user.observe(viewLifecycleOwner, {
+        viewModel.updateFavorites(UserRepository.user.value!!.favorites)
+        UserRepository.user.observe(viewLifecycleOwner, {
             viewModel.updateFavorites(it.favorites)
         })
 
@@ -68,18 +63,14 @@ class EventDetailsFragment : Fragment() {
         }
 
         binding.favoritesButton.setOnClickListener {
-            handleClick(viewModel.event.value!!.documentId, this::sendNotification)
+            handleClick(viewModel.event.value!!.documentId, true)
         }
 
-        binding.goBackBtn.setOnClickListener { requireActivity().onBackPressed() }
+        binding.goBackBtn.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
 
         return binding.root
-    }
-
-    private fun sendNotification() {
-        if (SharedPreferenceUtils.getBoolean(RECEIVE_NOTIFICATIONS, true) == true) {
-            CreateNotification.createNotificationChannel(activity)
-        }
     }
 
     private fun initMapView(savedInstanceState: Bundle?, place: Place) {

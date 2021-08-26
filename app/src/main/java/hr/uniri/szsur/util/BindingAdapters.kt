@@ -8,10 +8,10 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import hr.uniri.szsur.R
-import hr.uniri.szsur.data.FirestoreRepository
 import hr.uniri.szsur.data.model.Event
 import hr.uniri.szsur.data.model.Filterable
-import hr.uniri.szsur.data.model.SurveyModel
+import hr.uniri.szsur.data.model.Survey
+import hr.uniri.szsur.data.repository.FirebaseStorageRepository
 import hr.uniri.szsur.ui.favorites.FavoritesAdapter
 import hr.uniri.szsur.ui.home.HomeAdapter
 import hr.uniri.szsur.ui.survey_list.SurveyListAdapter
@@ -19,7 +19,7 @@ import hr.uniri.szsur.ui.survey_list.SurveyListAdapter
 
 @BindingAdapter("imageUrl")
 fun loadImage(view: ImageView, url: String) {
-    val storageReference = FirestoreRepository().getImageReference(url)
+    val storageReference = FirebaseStorageRepository.getImageReference(url)
     GlideApp.with(view.context).load(storageReference).into(view)
 }
 
@@ -32,7 +32,7 @@ fun bindRecyclerView(recyclerView: RecyclerView, data: List<Event>?) {
 
 @JvmName("surveyListData")
 @BindingAdapter("listData")
-fun bindRecyclerView(recyclerView: RecyclerView, data: List<SurveyModel>?) {
+fun bindRecyclerView(recyclerView: RecyclerView, data: List<Survey>?) {
     val adapter = recyclerView.adapter as SurveyListAdapter
     adapter.submitList(data)
 }
@@ -46,7 +46,7 @@ fun bindRecyclerView(recyclerView: RecyclerView, data: List<Filterable>?) {
 
 
 @BindingAdapter("surveyStatusIcon")
-fun setStatusIcon(view: ImageView, item: SurveyModel?) {
+fun setStatusIcon(view: ImageView, item: Survey?) {
     view.setImageResource(when (item!!.published) {
         true -> R.drawable.ic_check
         false -> R.drawable.ic_help

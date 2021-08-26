@@ -8,23 +8,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.firestore.FirebaseFirestore
 import hr.uniri.szsur.R
 import hr.uniri.szsur.data.repository.UserRepository
 import hr.uniri.szsur.databinding.FragmentHomeBinding
 import hr.uniri.szsur.ui.MainFragmentDirections
-import hr.uniri.szsur.util.CreateNotification
-import hr.uniri.szsur.util.SharedPreferenceUtils
 
 
 class HomeFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeBinding
-    private var userRepository = UserRepository.getInstance(FirebaseFirestore.getInstance())
-
-    companion object {
-        private const val RECEIVE_NOTIFICATIONS = "RECEIVE_NOTIFICATIONS"
-    }
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -43,26 +35,17 @@ class HomeFragment : Fragment() {
             viewModel.updateEvents(it)
         })
 
-        binding.homeRecyclerView.adapter = HomeAdapter (
-            {
-                findNavController().navigate(
-                    MainFragmentDirections.actionMainFragmentToEventDetailsFragment(it)
-                )
-            },
-            this::sendNotification
-        )
+        binding.homeRecyclerView.adapter = HomeAdapter {
+            findNavController().navigate(
+                MainFragmentDirections.actionMainFragmentToEventDetailsFragment(it)
+            )
+        }
 
-        userRepository.user.observe(viewLifecycleOwner, {
+        UserRepository.user.observe(viewLifecycleOwner, {
             binding.homeRecyclerView.adapter!!.notifyDataSetChanged()
         })
 
         return binding.root
-    }
-
-    private fun sendNotification() {
-        if (SharedPreferenceUtils.getBoolean(RECEIVE_NOTIFICATIONS, true) == true) {
-            CreateNotification.createNotificationChannel(activity)
-        }
     }
 }
 

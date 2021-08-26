@@ -3,28 +3,15 @@ package hr.uniri.szsur.ui.favorites
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.firebase.firestore.FirebaseFirestore
 import hr.uniri.szsur.data.model.Filterable
 import hr.uniri.szsur.data.repository.EventsRepository
 import hr.uniri.szsur.data.repository.SurveysRepository
-import hr.uniri.szsur.data.repository.SurveysRepository.SurveyFilter
 import hr.uniri.szsur.data.repository.UserRepository
 import hr.uniri.szsur.util.filterByTags
 import hr.uniri.szsur.util.search
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 import java.util.ArrayList
 
 class FavoritesViewModel: ViewModel() {
-
-    private val firestore = FirebaseFirestore.getInstance()
-    private val eventsRepository = EventsRepository.getInstance(firestore)
-    private val surveysRepository = SurveysRepository()
-    private val userRepository = UserRepository.getInstance(firestore)
-    private val viewModelJob = Job()
-    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
     private val _items = MutableLiveData<ArrayList<Filterable>>()
     val items: LiveData<ArrayList<Filterable>>
@@ -40,11 +27,10 @@ class FavoritesViewModel: ViewModel() {
 
     init {
         // TODO quite inefficient
-        coroutineScope.launch {
-            _items.value = eventsRepository.get() as ArrayList<Filterable>
-            _items.value!!.addAll(surveysRepository.get(SurveyFilter.ALL) as ArrayList<Filterable>)
-            filterFavorites()
-        }
+        _items.value = ArrayList<Filterable>()
+        EventsRepository.events.value?.let { _items.value!!.addAll(it) }
+        SurveysRepository.surveys.value?.let { _items.value!!.addAll(it) }
+        filterFavorites()
     }
 
     fun filterFavorites() {
@@ -52,7 +38,7 @@ class FavoritesViewModel: ViewModel() {
             return
         }
         _favoriteItems.value = ArrayList<Filterable>()
-        for (f in userRepository.user.value!!.favorites) {
+        for (f in UserRepository.user.value!!.favorites) {
             _items.value!!.find { it.documentId == f }?.let {
                 _favoriteItems.value!!.add(it)
             }

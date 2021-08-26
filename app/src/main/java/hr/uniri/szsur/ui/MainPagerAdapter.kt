@@ -7,6 +7,8 @@ import hr.uniri.szsur.ui.favorites.FavoritesFragment
 import hr.uniri.szsur.ui.home.HomeFragment
 import hr.uniri.szsur.ui.info.InfoFragment
 import hr.uniri.szsur.ui.survey.SurveyFragment
+import java.lang.IllegalArgumentException
+
 
 class MainPagerAdapter(fragmentManager: FragmentManager)
     : FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
@@ -15,10 +17,11 @@ class MainPagerAdapter(fragmentManager: FragmentManager)
 
     override fun getItem(position: Int): Fragment {
         return when (position) {
+            MainFragment.HOME -> HomeFragment()
             MainFragment.FAVORITES -> FavoritesFragment()
             MainFragment.SURVEY -> SurveyFragment()
             MainFragment.INFO -> InfoFragment()
-            else -> HomeFragment()
+            else -> throw IllegalArgumentException()
         }
     }
 }

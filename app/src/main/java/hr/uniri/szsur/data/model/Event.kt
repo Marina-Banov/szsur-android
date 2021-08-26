@@ -2,21 +2,65 @@ package hr.uniri.szsur.data.model
 
 import android.os.Parcelable
 import com.google.android.libraries.places.api.model.Place
-import com.google.firebase.firestore.DocumentId
+import com.squareup.moshi.JsonClass
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import kotlinx.android.parcel.Parcelize
-import java.util.*
+
 
 @Parcelize
 data class Event(
-    @DocumentId
-    override var documentId: String = "",
-    var image: String = "",
-    override var title: String = "",
-    var startTime: Date = Date(),
-    var online: Boolean = false,
+    override val documentId: String = "",
+    val description: String = "",
+    val image: String = "",
     var location: String = "",
-    var googlePlace: Place? = null,
-    var organisation: String = "",
-    override var tags: List<String> = listOf(),
-    var description: String = ""
-) : Parcelable, Filterable
+    private var _googlePlace: Place? = null,
+    val online: Boolean = false,
+    val organisation: String = "",
+    val startTime: Date = Date(),
+    override val tags: List<String> = listOf(),
+    override val title: String = "",
+) : Parcelable, Filterable {
+    var googlePlace: Place?
+        get() = _googlePlace
+        set(place) {
+            setOnsiteLocation(place)
+        }
+
+    fun setOnsiteLocation(place: Place?) {
+        this._googlePlace = place
+        this.location = ""
+    }
+}
+
+@JsonClass(generateAdapter = true)
+data class EventJson (
+    val id: String = "",
+    val title: String = "",
+    val description: String = "",
+    val organisation: String = "",
+    val image: String = "",
+    val startTime: String = "",
+    val endTime: String = "",
+    val online: Boolean = false,
+    val location: String = "",
+    val subscribers: List<String> = listOf(),
+    val tags: List<String> = listOf(),
+) {
+    fun getEventFromJson(): Event {
+        return Event(
+            id,
+            description,
+            image,
+            location,
+            null,
+            online,
+            organisation,
+            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH)
+                .parse(startTime) ?: Date(),
+            tags,
+            title,
+        )
+    }
+}

@@ -1,72 +1,49 @@
 package hr.uniri.szsur.ui.survey_questions
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import com.google.firebase.firestore.FirebaseFirestore
+import androidx.lifecycle.ViewModelProvider
 import hr.uniri.szsur.R
-import hr.uniri.szsur.data.model.ActiveSurveyResult
 import hr.uniri.szsur.databinding.ActiveAnswerPercentageBinding
 import hr.uniri.szsur.databinding.FragmentSurveyActiveResultsBinding
-import kotlin.math.roundToInt
+import hr.uniri.szsur.util.SurveyViewModelFactory
+
 
 class SurveyActiveResultsFragment : Fragment() {
 
     private lateinit var binding: FragmentSurveyActiveResultsBinding
-    private var firestore = FirebaseFirestore.getInstance()
 
-    @SuppressLint("LongLogTag")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
-
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.fragment_survey_active_results,
-            container,
-            false
-        )
+        val application = requireActivity().application
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_survey_active_results, container, false)
         binding.lifecycleOwner = this
 
-        val surveyModel = SurveyActiveResultsFragmentArgs.fromBundle(requireArguments()).surveyModel
-        binding.survey = surveyModel
+        val surveyModel = SurveyActiveQuestionFragmentArgs.fromBundle(requireArguments()).surveyModel
+        val viewModelFactory = SurveyViewModelFactory(surveyModel, application)
+        val viewModel = ViewModelProvider(this, viewModelFactory).get(SurveyActiveResultsViewModel::class.java)
+        binding.viewModel = viewModel
 
-        val answersList = binding.answersList
-        val answers = surveyModel.activeQuestionChoices
-
-        binding.returnButton.setOnClickListener{
+        binding.returnButton.setOnClickListener {
             requireActivity().onBackPressed()
         }
 
-        firestore.collection("surveys").document(surveyModel.documentId)
-            .collection("results")
-            .get()
-            .addOnSuccessListener {
-                val answerCount = Array(answers.size) { 0 }
-                var sum = 0
-                for(document in it){
-                    val result = document.toObject(ActiveSurveyResult::class.java)
-                    val index = answers.indexOf(result.q)
-                    answerCount[index] += 1
-                    sum += 1
-                }
-                for (i in answers.indices){
-                    val percentage = (answerCount[i].toDouble() / sum.toDouble()) * 100.0
-                    val view = generateActiveAnswerPercentageBar(answers[i], percentage.roundToInt())
-                    answersList.addView(view)
-                }
+        if (viewModel.results.value!!.isEmpty()) {
+            viewModel.getSurveyResults()
+        }
 
+        viewModel.results.observe(viewLifecycleOwner, {
+            for (e in it.entries) {
+                val view = generateActiveAnswerPercentageBar(e.key, e.value)
+                binding.answersList.addView(view)
             }
-            .addOnFailureListener{
-                Log.d("SurveyActiveResultsFragment", it.toString())
-            }
+        })
 
         return binding.root
     }

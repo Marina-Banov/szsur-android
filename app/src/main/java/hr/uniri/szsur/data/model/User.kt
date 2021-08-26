@@ -1,17 +1,39 @@
 package hr.uniri.szsur.data.model
 
 import android.os.Parcelable
+import com.squareup.moshi.JsonClass
+import hr.uniri.szsur.data.repository.UserRepository
 import kotlinx.android.parcel.Parcelize
-import com.google.firebase.firestore.DocumentId
-import kotlinx.android.parcel.RawValue
+
 
 @Parcelize
 data class User (
-    @DocumentId
-    var uid: String = "",
-    var isAdmin: Boolean = false,
-    var email: String = "",
-    var favorites: ArrayList<String> = ArrayList(),
-    var solved_surveys: ArrayList<String> = ArrayList(),
-
+    val uid: String = "",
+    val isAdmin: Boolean = false,
+    val email: String = "",
+    var favorites: List<String> = ArrayList(),
+    val solvedSurveys: List<String> = ArrayList(),
 ) : Parcelable
+
+@JsonClass(generateAdapter = true)
+data class UserJson (
+    val isAdmin: Boolean = false,
+    val email: String = "",
+    val favorites: List<FavoriteEntry> = ArrayList(),
+    val solvedSurveys: List<String> = ArrayList(),
+) {
+    fun getUserFromJson(): User {
+        val favorites = ArrayList<String>()
+        for (f in this.favorites) {
+            favorites.add(f.id)
+        }
+
+        return User(
+            UserRepository.uid,
+            isAdmin,
+            email,
+            favorites,
+            solvedSurveys,
+        )
+    }
+}

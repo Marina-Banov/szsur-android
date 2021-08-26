@@ -1,10 +1,11 @@
 package hr.uniri.szsur.ui.survey
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import hr.uniri.szsur.data.model.SurveyModel
-import hr.uniri.szsur.data.repository.SurveysRepository.SurveyFilter
+import hr.uniri.szsur.data.model.Survey
+import hr.uniri.szsur.data.network.ResultWrapper.*
 import hr.uniri.szsur.data.repository.SurveysRepository
 import hr.uniri.szsur.util.filterByTags
 import hr.uniri.szsur.util.search
@@ -15,13 +16,13 @@ import kotlinx.coroutines.launch
 import java.util.ArrayList
 
 class SurveyViewModel: ViewModel() {
-    private val surveysRepository = SurveysRepository()
+
     private val viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
-    private val _surveys = MutableLiveData<ArrayList<SurveyModel>>()
-    private val _displaySurveys = MutableLiveData<ArrayList<SurveyModel>>()
-    val displaySurveys: LiveData<ArrayList<SurveyModel>>
+    private val _surveys = MutableLiveData<ArrayList<Survey>>()
+    private val _displaySurveys = MutableLiveData<ArrayList<Survey>>()
+    val displaySurveys: LiveData<ArrayList<Survey>>
         get() = _displaySurveys
 
     init {
@@ -30,8 +31,23 @@ class SurveyViewModel: ViewModel() {
 
     private fun getSurveys() {
         coroutineScope.launch {
-            _surveys.value = surveysRepository.get(SurveyFilter.ALL)
-            _displaySurveys.value = _surveys.value
+            if (SurveysRepository.surveys.value?.size == 0) {
+                val response = SurveysRepository.get()
+                SurveysRepository.surveys.value =
+                    when (response) {
+                        is NetworkError -> {
+                            Log.i("getSurveys", "NO CONNECTION")
+                            ArrayList()
+                        }
+                        is GenericError -> {
+                            Log.i("getSurveys", "ERROR ${response.code}")
+                            ArrayList()
+                        }
+                        is Success -> response.value as ArrayList<Survey>
+                    }
+            }
+            _surveys.value = SurveysRepository.surveys.value
+            _displaySurveys.value = SurveysRepository.surveys.value
         }
     }
 
@@ -45,5 +61,10 @@ class SurveyViewModel: ViewModel() {
         _surveys.value?.let {
             _displaySurveys.value = search(it, query)
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
     }
 }

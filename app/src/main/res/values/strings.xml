@@ -62,9 +62,6 @@
     <string name="about_feedback">Imaš li neko pitanje za nas?</string>
     <string name="about_feedback_btn">Javi nam se!</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="hello_favorites_fragment">Hello favorites fragment</string>
     <string name="povratak">POVRATAK</string>
     <string name="send_answers">POŠALJI ODGOVORE</string>
 
