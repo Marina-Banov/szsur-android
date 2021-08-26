@@ -369,5 +369,63 @@
         <item name="android:statusBarColor" tools:targetApi="l">@color/black</item>
     </style>
 
+    <style name="Theme.SZTFR" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/purple_sztfr</item>
+        <item name="colorPrimaryVariant">@color/purple_sztfr</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/white</item>
+        <item name="colorSecondaryVariant">@color/purple_sztfr</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="cardBackgroundColor">@color/white</item>
+        <item name="questionCardBackgroundColor">@color/purple_sztfr</item>
+        <item name="accentTextColor">@color/black</item>
+        <item name="chipTextColorChecked">@color/white</item>
+        <item name="lightTextColor">@color/gray</item>
+        <item name="mbn_defaultIconColor">@color/black</item>
+        <item name="mbn_selectedIconColor">@color/purple_sztfr</item>
+        <item name="mbn_rippleColor">@color/purple_sztfr</item>
+        <item name="mbn_backgroundBottomColor">@color/white</item>
+        <item name="mbn_shadowColor">@color/purple_sztfr</item>
+        <item name="backButtonColor">@color/white</item>
+        <item name="screensBackgroundColor">@color/purple_very_light</item>
+        <item name="detailsBackgroundColor">@color/purple_very_light</item>
+        <item name="actionButtonBackground">@color/white</item>
+        <item name="cardButtonBackground">@color/purple_very_light</item>
+        <item name="surveyButtonTextColor">@color/white</item>
+        <item name="background">@color/white</item>
+        <item name="borderColor">@color/purble_sztfr_light</item>
+        <item name="percentageBarColor">@color/black</item>
+        <item name="percentageBarBackground">@color/purble_sztfr_light</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/black</item>
+    </style>
 
+    <style name="Theme.SZOIRI" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/blue_oiri</item>
+        <item name="colorPrimaryVariant">@color/blue_oiri</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/white</item>
+        <item name="colorSecondaryVariant">@color/blue_oiri</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="cardBackgroundColor">@color/white</item>
+        <item name="questionCardBackgroundColor">@color/blue_oiri</item>
+        <item name="accentTextColor">@color/black</item>
+        <item name="chipTextColorChecked">@color/white</item>
+        <item name="lightTextColor">@color/gray</item>
+        <item name="mbn_defaultIconColor">@color/black</item>
+        <item name="mbn_selectedIconColor">@color/blue_oiri</item>
+        <item name="mbn_rippleColor">@color/blue_oiri</item>
+        <item name="mbn_backgroundBottomColor">@color/white</item>
+        <item name="mbn_shadowColor">@color/blue_oiri</item>
+        <item name="backButtonColor">@color/white</item>
+        <item name="screensBackgroundColor">@color/blue_oiri_very_light</item>
+        <item name="detailsBackgroundColor">@color/blue_oiri_very_light</item>
+        <item name="actionButtonBackground">@color/white</item>
+        <item name="cardButtonBackground">@color/blue_oiri_very_light</item>
+        <item name="surveyButtonTextColor">@color/white</item>
+        <item name="background">@color/white</item>
+        <item name="borderColor">@color/blue_oiri_light</item>
+        <item name="percentageBarColor">@color/black</item>
+        <item name="percentageBarBackground">@color/blue_oiri_light</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/black</item>
+    </style>
 </resources>

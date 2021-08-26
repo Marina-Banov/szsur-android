@@ -361,4 +361,64 @@
         <item name="percentageBarBackground">@color/blue_pravri_dark</item>
         <item name="android:statusBarColor" tools:targetApi="l">@color/black</item>
     </style>
+
+    <style name="Theme.SZTFR" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/purple_sztfr</item>
+        <item name="colorPrimaryVariant">@color/purple_sztfr</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/purple_sztfr_very_dark</item>
+        <item name="colorSecondaryVariant">@color/gray</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="cardBackgroundColor">@color/purple_sztfr_very_dark</item>
+        <item name="questionCardBackgroundColor">@color/purple_sztfr</item>
+        <item name="accentTextColor">@color/white</item>
+        <item name="chipTextColorChecked">@color/black_light</item>
+        <item name="lightTextColor">@color/gray_light</item>
+        <item name="mbn_defaultIconColor">@color/purple_sztfr</item>
+        <item name="mbn_selectedIconColor">@color/white</item>
+        <item name="mbn_rippleColor">@color/black_light</item>
+        <item name="mbn_backgroundBottomColor">@color/purple_sztfr_very_dark</item>
+        <item name="mbn_shadowColor">@color/purple_sztfr_very_dark</item>
+        <item name="backButtonColor">@color/purple_sztfr_very_dark</item>
+        <item name="screensBackgroundColor">@color/black_light</item>
+        <item name="detailsBackgroundColor">@color/black_light</item>
+        <item name="actionButtonBackground">@color/purple_sztfr_very_dark</item>
+        <item name="cardButtonBackground">#FF353535</item>
+        <item name="background">@color/black</item>
+        <item name="borderColor">@color/purple_sztfr_very_dark</item>
+        <item name="percentageBarColor">@color/white</item>
+        <item name="surveyButtonTextColor">@color/white</item>
+        <item name="percentageBarBackground">@color/purple_sztfr_dark</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/black</item>
+    </style>
+
+    <style name="Theme.SZOIRI" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/blue_oiri</item>
+        <item name="colorPrimaryVariant">@color/blue_oiri</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/blue_oiri_very_dark</item>
+        <item name="colorSecondaryVariant">@color/gray</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="cardBackgroundColor">@color/blue_oiri_very_dark</item>
+        <item name="questionCardBackgroundColor">@color/blue_oiri</item>
+        <item name="accentTextColor">@color/white</item>
+        <item name="chipTextColorChecked">@color/black_light</item>
+        <item name="lightTextColor">@color/gray_light</item>
+        <item name="mbn_defaultIconColor">@color/blue_oiri</item>
+        <item name="mbn_selectedIconColor">@color/white</item>
+        <item name="mbn_rippleColor">@color/black_light</item>
+        <item name="mbn_backgroundBottomColor">@color/blue_oiri_very_dark</item>
+        <item name="mbn_shadowColor">@color/blue_oiri_very_dark</item>
+        <item name="backButtonColor">@color/blue_oiri_very_dark</item>
+        <item name="screensBackgroundColor">@color/black_light</item>
+        <item name="detailsBackgroundColor">@color/black_light</item>
+        <item name="actionButtonBackground">@color/blue_oiri_very_dark</item>
+        <item name="cardButtonBackground">#FF353535</item>
+        <item name="background">@color/black</item>
+        <item name="borderColor">@color/blue_oiri_very_dark</item>
+        <item name="percentageBarColor">@color/white</item>
+        <item name="surveyButtonTextColor">@color/white</item>
+        <item name="percentageBarBackground">@color/blue_oiri_dark</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/black</item>
+    </style>
 </resources>

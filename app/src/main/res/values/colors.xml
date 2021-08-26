@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="purple_sztfr_very_dark">#0b001c</color>
     <color name="purple_dark">#FF1F2055</color>
+    <color name="purple_sztfr_dark">#4800b5</color>
     <color name="purple_medium_dark">#323369</color>
     <color name="purple_szsur">#FF3E408B</color>
+    <color name="purple_sztfr">#6127b8</color>
     <color name="purple_szsur_alpha">#333E408B</color>
     <color name="purple_medium_light">#FF6E6BBC</color>
     <color name="purple_light">#FFBBB9ED</color>
+    <color name="purble_sztfr_light">#8e6dbf</color>
     <color name="purple_very_light">#EDE7F6</color>
     <color name="blue_light">#FFE8EEF4</color>
     <color name="white">#FFFFFFFF</color>
@@ -65,8 +69,11 @@
     <color name="blue_fzsri_medri_light">#75cdff</color>
     <color name="blue_fzsri_medri_very_light">#f0f9ff</color>
 
-
-    <color name="blue_oiri">#173753</color>
+    <color name="blue_oiri_very_dark">#07111a</color>
+    <color name="blue_oiri_dark">#173753</color>
+    <color name="blue_oiri">#276091</color>
+    <color name="blue_oiri_light">#5d83a3</color>
+    <color name="blue_oiri_very_light">#cfdae3</color>
 
     <color name="blue_pfri_very_dark">#05090d</color>
     <color name="blue_pfri_dark">#16293b</color>
