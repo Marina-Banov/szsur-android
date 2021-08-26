@@ -8,7 +8,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.firestore.FirebaseFirestore
 import hr.uniri.szsur.R
 import hr.uniri.szsur.data.repository.UserRepository
 import hr.uniri.szsur.databinding.FragmentSurveyListBinding
@@ -18,7 +17,6 @@ import hr.uniri.szsur.util.filterByStatus
 
 class SurveyListFragment : Fragment() {
     private lateinit var binding: FragmentSurveyListBinding
-    private var userRepository = UserRepository.getInstance(FirebaseFirestore.getInstance())
     private var isPublished: Boolean = false
 
     companion object {
@@ -63,7 +61,7 @@ class SurveyListFragment : Fragment() {
             }
         }
 
-        userRepository.user.observe(viewLifecycleOwner, {
+        UserRepository.user.observe(viewLifecycleOwner, {
             binding.surveyRecyclerView.adapter!!.notifyDataSetChanged()
         })
 

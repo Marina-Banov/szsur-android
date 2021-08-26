@@ -1,5 +1,9 @@
 package hr.uniri.szsur.data.model
 
-interface Enums { val values: ArrayList<*> }
+import com.squareup.moshi.JsonClass
 
-class Tags: Enums { override val values: ArrayList<String> = ArrayList() }
+
+interface Enums { val values: List<*> }
+
+@JsonClass(generateAdapter = true)
+data class Tags(override val values: List<String> = ArrayList()): Enums

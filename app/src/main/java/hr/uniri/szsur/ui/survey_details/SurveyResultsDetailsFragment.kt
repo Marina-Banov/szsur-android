@@ -13,20 +13,18 @@ import android.widget.LinearLayout
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.observe
 import com.google.android.material.chip.Chip
-import com.google.firebase.firestore.FirebaseFirestore
 import hr.uniri.szsur.R
 import hr.uniri.szsur.databinding.FragmentSurveyResultsDetailsBinding
 import hr.uniri.szsur.util.GlideApp
 import hr.uniri.szsur.data.repository.UserRepository
+import hr.uniri.szsur.util.SurveyViewModelFactory
 import hr.uniri.szsur.util.handleClick
 
 
 class SurveyResultsDetailsFragment : Fragment() {
 
     private lateinit var binding: FragmentSurveyResultsDetailsBinding
-    private var userRepository = UserRepository.getInstance(FirebaseFirestore.getInstance())
     private lateinit var galery : LinearLayout
     private lateinit var dialog: Dialog
 
@@ -42,31 +40,31 @@ class SurveyResultsDetailsFragment : Fragment() {
 
 
         val surveyModel = SurveyResultsDetailsFragmentArgs.fromBundle(requireArguments()).surveyModel
-        val viewModelFactory = SurveyDetailsViewModelFactory(surveyModel, application)
+        val viewModelFactory = SurveyViewModelFactory(surveyModel, application)
         val viewModel = ViewModelProvider(this, viewModelFactory).get(SurveyDetailsViewModel::class.java)
         binding.viewModel = viewModel
 
-        viewModel.updateFavorites(userRepository.user.value!!.favorites)
-        userRepository.user.observe(viewLifecycleOwner, {
+        viewModel.updateFavorites(UserRepository.user.value!!.favorites)
+        UserRepository.user.observe(viewLifecycleOwner, {
             viewModel.updateFavorites(it.favorites)
         })
 
 
-        dialog = Dialog(this.requireContext())
+        dialog = Dialog(requireContext())
         galery = binding.gallery
 
         viewModel.resultsImages.value?.forEach { ref ->
             Log.i("Survey", ref.toString())
-            val imageView = ImageView(this.context)
+            val imageView = ImageView(context)
             imageView.setPadding(20, 2, 20, 2)
-            imageView.setScaleType(ScaleType.FIT_XY)
+            imageView.scaleType = ScaleType.FIT_XY
             GlideApp.with(this).load(ref).into(imageView)
             galery.addView(imageView)
             imageView.setOnClickListener {
                 dialog.setContentView(R.layout.image_popup)
-                var popup_image = dialog.findViewById<ImageView>(R.id.popup_image)
+                val popupImage = dialog.findViewById<ImageView>(R.id.popup_image)
                 dialog.show()
-                GlideApp.with(popup_image).load(ref).into(popup_image)
+                GlideApp.with(popupImage).load(ref).into(popupImage)
             }
 
             imageView.requestLayout()
@@ -76,8 +74,8 @@ class SurveyResultsDetailsFragment : Fragment() {
 
         }
 
-        viewModel.surveyModel.observe(viewLifecycleOwner, {
-            for (tag in (it!!).tags) {
+        viewModel.survey.observe(viewLifecycleOwner, {
+            for (tag in (it).tags) {
                 val chip = layoutInflater.inflate(R.layout.layout_chip, binding.surveyTagGroup, false) as Chip
                 chip.text = tag
                 chip.isClickable = false
@@ -86,10 +84,12 @@ class SurveyResultsDetailsFragment : Fragment() {
         })
 
 
-        binding.surveyResultsDetailsGoBackBtn.setOnClickListener { requireActivity().onBackPressed() }
+        binding.surveyResultsDetailsGoBackBtn.setOnClickListener {
+            requireActivity().onBackPressed()
+        }
 
         binding.favoritesButton.setOnClickListener {
-            handleClick(viewModel.surveyModel.value!!.documentId, null)
+            handleClick(viewModel.survey.value!!.documentId, false)
         }
 
         return binding.root

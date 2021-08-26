@@ -40,7 +40,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="230dp"
                         android:scaleType="centerCrop"
-                        app:imageUrl="@{viewModel.surveyModel.image}"
+                        app:imageUrl="@{viewModel.survey.image}"
                         tools:src="@drawable/dummy"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -80,7 +80,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/spacing_small"
-                    android:text="@{viewModel.surveyModel.title}"
+                    android:text="@{viewModel.survey.title}"
                     tools:text="@string/survey_dummy_title"
                     style="@style/TextAppearance.SZSUR.DetailsTitle" />
 
@@ -94,7 +94,7 @@
                     android:id="@+id/survey_details_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{viewModel.surveyModel.description}"
+                    android:text="@{viewModel.survey.description}"
                     tools:text="@string/dummy_description"
                     style="@style/TextAppearance.SZSUR.DetailsDescription" />
             </LinearLayout>

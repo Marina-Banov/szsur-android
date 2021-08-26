@@ -5,14 +5,18 @@
 
     <data>
         <variable
-            name="survey"
-            type="hr.uniri.szsur.data.model.SurveyModel" />
+            name="viewModel"
+            type="hr.uniri.szsur.ui.survey_questions.SurveyActiveResultsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/detailsBackgroundColor">>
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="?attr/detailsBackgroundColor">
 
         <TextView
             android:id="@+id/textView2"
@@ -38,7 +42,7 @@
             android:gravity="center_horizontal"
             android:padding="16dp"
             android:paddingBottom="32dp"
-            android:text="@{survey.title}"
+            android:text="@{viewModel.survey.title}"
             android:textAppearance="@style/TextAppearance.SZSUR.SurveyQuestionsTitle"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -77,7 +81,7 @@
                     android:id="@+id/question_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{survey.activeQuestion}"
+                    android:text="@{viewModel.survey.activeQuestion}"
                     android:textAppearance="@style/TextAppearance.SZSUR.QuestionTitle"
                     tools:text="Pitanje?"
                     android:paddingBottom="20dp"

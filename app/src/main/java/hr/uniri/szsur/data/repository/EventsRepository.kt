@@ -1,49 +1,42 @@
 package hr.uniri.szsur.data.repository
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.android.libraries.places.api.model.Place
-import com.google.firebase.firestore.FirebaseFirestore
 import hr.uniri.szsur.data.model.Event
-import hr.uniri.szsur.util.SingletonHolder
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
+import hr.uniri.szsur.data.network.Api
+import hr.uniri.szsur.data.network.NetworkUtils
+import hr.uniri.szsur.data.network.ResultWrapper
+import hr.uniri.szsur.data.network.ResultWrapper.*
 
-class EventsRepository private constructor(db: FirebaseFirestore) {
 
-    private val TAG = "EventsRepository"
-    private val COLLECTION_NAME = "events"
+object EventsRepository {
 
-    companion object : SingletonHolder<EventsRepository, FirebaseFirestore>(::EventsRepository)
-
-    private val eventsCollection = db.collection(COLLECTION_NAME)
     val events = MutableLiveData<ArrayList<Event>>()
 
     init {
         events.value = ArrayList()
     }
 
-    suspend fun get() = withContext(Dispatchers.IO) {
-        try {
-            val querySnapshot = eventsCollection.get().await()
-            val result = ArrayList<Event>()
-            for (event in querySnapshot) {
-                val e = event.toObject(Event::class.java)
-                if (!e.online) {
-                    e.googlePlace = PlacesRepository.get(e.location, listOf(
-                        Place.Field.ID,
-                        Place.Field.NAME,
-                        Place.Field.ADDRESS,
-                        Place.Field.LAT_LNG,
-                    ))
+    suspend fun get(): ResultWrapper<List<Event>> {
+        return when(val result = NetworkUtils.safeApiCall { Api.retrofitService.getEvents() }) {
+            is Success -> {
+                val events = ArrayList<Event>()
+                for (_e in result.value) {
+                    val e = _e.getEventFromJson()
+                    if (!_e.online) {
+                        val place = PlacesRepository.get(_e.location, listOf(
+                            Place.Field.ID,
+                            Place.Field.NAME,
+                            Place.Field.ADDRESS,
+                            Place.Field.LAT_LNG,
+                        ))
+                        e.setOnsiteLocation(place)
+                    }
+                    events.add(e)
                 }
-                result.add(e)
+                Success(events)
             }
-            result
-        } catch (e: Exception) {
-            Log.e(TAG, e.toString())
-            ArrayList()
+            else -> result as ResultWrapper<Nothing>
         }
     }
 }

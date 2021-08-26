@@ -2,7 +2,6 @@ package hr.uniri.szsur.ui.survey_questions
 
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,141 +9,145 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.FragmentManager
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
+import androidx.lifecycle.ViewModelProvider
 import hr.uniri.szsur.R
 import hr.uniri.szsur.data.model.Question
-import hr.uniri.szsur.data.model.Questions
-import hr.uniri.szsur.data.model.SurveyModel
+import hr.uniri.szsur.data.model.QuestionType
+import hr.uniri.szsur.data.repository.UserRepository
 import hr.uniri.szsur.databinding.*
+import hr.uniri.szsur.util.SurveyViewModelFactory
 
 
 class SurveyQuestionsFragment : Fragment() {
 
     private lateinit var binding: FragmentSurveyQuestionsBinding
-    private var answers = hashMapOf<String, Any>()
-    private lateinit var questions: Questions
-    private var firestore = FirebaseFirestore.getInstance()
-
-
+    private lateinit var viewModel: SurveyQuestionsViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-        // Inflate the layout for this fragment
-        requireActivity().application
+        val application = requireActivity().application
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_survey_questions, container, false)
         binding.lifecycleOwner = this
 
-        questions =SurveyQuestionsFragmentArgs.fromBundle(requireArguments()).questions
-        val surveyModel = SurveyQuestionsFragmentArgs.fromBundle(requireArguments()).surveyModel
+        val survey = SurveyQuestionsFragmentArgs.fromBundle(requireArguments()).surveyModel
+        val viewModelFactory = SurveyViewModelFactory(survey, application)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(SurveyQuestionsViewModel::class.java)
+        binding.viewModel = viewModel
 
-        val surveyTitle = binding.surveyTitle
-        surveyTitle.text = surveyModel.title
-        val questionList = binding.questionsList
-
-        for(i in questions){
-            when(i.type){
-                "single-choice" -> {
-                    val view = generateRadioGroupCard(i)
-                    questionList.addView(view)
-                }
-                "multiple-choice" -> {
-                    val view = generateCheckboxCard(i)
-                    questionList.addView(view)
-                }
-                else -> {
-                    val view = generateInputTextCard(i)
-                    questionList.addView(view)
-                }
+        viewModel.survey.observe(viewLifecycleOwner, {
+            if (it.questions != null) {
+                generateQuestionCards()
             }
-
-        }
+        })
 
         binding.sendAnswersButton.setOnClickListener {
-            if (validateAnswers()) saveAnswersAndRedirect(surveyModel)
-            else Toast.makeText(this.context, "Svako pitanje označeno sa * mora biti ispunjeno!", Toast.LENGTH_LONG).show()
-
+            if (viewModel.validateAnswers()) {
+                viewModel.addSurveyResults()
+            } else {
+                Toast.makeText(
+                    context,
+                    "Svako pitanje označeno sa * mora biti ispunjeno!",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
+
+        viewModel.isRequestSuccessful.observe(viewLifecycleOwner, {
+            if (it == true) {
+                val solvedSurveys = UserRepository.user.value!!.solvedSurveys as ArrayList<String>
+                solvedSurveys.add(viewModel.survey.value!!.documentId)
+                val dialog = initSuccessDialog()
+                dialog.show()
+            } else if (it == false) {
+                Toast.makeText(
+                    context,
+                    "Neuspješan unos odgovora, probajte ponovo",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        })
 
         binding.returnButton.setOnClickListener {
             requireActivity().onBackPressed()
         }
 
-
         return binding.root
     }
 
-    private fun validateAnswers() : Boolean{
-        for(i in 0 until questions.size){
-            if (!questions[i].required) continue
-            if(answers[i.toString()] is String && answers[i.toString()] == "") return false
-            if(answers[i.toString()] is MutableList<*> && (answers[i.toString()] as MutableList<*>).isEmpty()) return false
+    private fun initSuccessDialog(): Dialog {
+        val dialog = Dialog(requireContext())
+
+        val binding: SurveyAnsweredDialogBinding = DataBindingUtil.inflate(
+            LayoutInflater.from(context),
+            R.layout.survey_answered_dialog,
+            null,
+            false
+        )
+
+        dialog.setContentView(binding.root)
+        binding.surveyTitle.text = viewModel.survey.value!!.title
+        binding.goBackButton.setOnClickListener {
+            dialog.dismiss()
+            requireActivity().onBackPressed()
         }
-        return true
+
+        dialog.setCancelable(false)
+        dialog.setCanceledOnTouchOutside(false)
+
+        return dialog
     }
 
-    private fun saveAnswersAndRedirect(surveyModel: SurveyModel){
-        firestore.collection("surveys").document(surveyModel.documentId)
-            .collection("results").add(answers)
-            .addOnSuccessListener {
-                firestore.collection("users").document(Firebase.auth.currentUser!!.uid)
-                        .update("solved_surveys", FieldValue.arrayUnion(surveyModel.documentId))
-                val dialog = Dialog(this.requireContext())
-                dialog.setContentView(R.layout.survey_answered_dialog)
-                val surveyDialogTitle = dialog.findViewById<TextView>(R.id.survey_title)
-                surveyDialogTitle.text = surveyModel.title
-                val goBackButton = dialog.findViewById<Button>(R.id.go_back_button)
-                goBackButton.setOnClickListener {
-                    val fmManager: FragmentManager = requireActivity().supportFragmentManager
-                    fmManager.popBackStack()
-                    dialog.dismiss()
-
+    private fun generateQuestionCards() {
+        for (i in viewModel.survey.value!!.questions!!) {
+            val view = when (i.type) {
+                QuestionType.SINGLE_CHOICE.value -> {
+                    generateRadioGroupCard(i)
                 }
-                dialog.setCancelable(false)
-                dialog.setCanceledOnTouchOutside(false)
-                dialog.show()
+                QuestionType.MULTIPLE_CHOICE.value -> {
+                    generateCheckboxCard(i)
+                }
+                QuestionType.INPUT_TEXT.value -> {
+                    generateInputTextCard(i)
+                }
+                else -> continue
             }
-            .addOnFailureListener {
-                Log.d("SurveyQuestionsFragment", it.toString())
-                Toast.makeText(this.context, "Neuspješan unos odgovora, probajte ponovo", Toast.LENGTH_LONG).show()
-            }
+            binding.questionsList.addView(view)
+        }
     }
 
     private fun generateInputTextCard(q: Question): View {
         val binding = LayoutCardInputTextBinding.inflate(LayoutInflater.from(context))
         binding.question = q
-        answers[q.order] = ""
+        viewModel.answers[q.order] = ""
         val inputText = binding.inputText
         inputText.doOnTextChanged { text, _, _, _ ->
             if (text != null) {
-                answers[q.order] = text.toString()
+                viewModel.answers[q.order] = text.toString()
             }
         }
 
         return binding.root
     }
+
     private fun generateCheckboxCard(q: Question): View {
         val binding = LayoutCardCheckboxBinding.inflate(LayoutInflater.from(context))
         binding.question = q
-        answers[q.order] = mutableListOf<String>()
+        viewModel.answers[q.order] = mutableListOf<String>()
         val checkboxContainer = binding.checkboxContainer
-        for (item in q.choices){
+        for (item in q.choices) {
             val checkBox = CheckBox(checkboxContainer.context)
             checkBox.text = item
             checkboxContainer.addView(checkBox)
 
             checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
-                if(isChecked){
-                    val list = answers[q.order] as MutableList<String>
+                if (isChecked) {
+                    val list = viewModel.answers[q.order] as MutableList<String>
                     list.add(buttonView.text.toString())
-                    answers[q.order] = list
-                }else{
-                    val list = answers[q.order] as MutableList<String>
+                    viewModel.answers[q.order] = list
+                } else {
+                    val list = viewModel.answers[q.order] as MutableList<String>
                     if (list.contains(buttonView.text.toString())) list.remove(buttonView.text.toString())
-                    answers[q.order] = list
+                    viewModel.answers[q.order] = list
                 }
             }
         }
@@ -155,29 +158,21 @@ class SurveyQuestionsFragment : Fragment() {
         val binding = LayoutCardRadiobuttonBinding.inflate(LayoutInflater.from(context))
 
         binding.question = q
+        viewModel.answers[q.order] = ""
         val radioGroup = binding.radioGroup
-        var checked = false
-        for (item in q.choices){
 
+        for (item in q.choices) {
             val radioButton = RadioButton(radioGroup.context)
             radioButton.text = item
             radioGroup.addView(radioButton)
-            if(!checked){
-                radioButton.isChecked = true
-                checked = true
-                answers[q.order] = radioButton.text
-            }
         }
 
         radioGroup.setOnCheckedChangeListener { group, checkedId ->
             val radio: RadioButton = group.findViewById(checkedId)
-            answers[q.order] = radio.text
-
+            viewModel.answers[q.order] = radio.text
         }
 
         return binding.root
     }
-
-
 
 }

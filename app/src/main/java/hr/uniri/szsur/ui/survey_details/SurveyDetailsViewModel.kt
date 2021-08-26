@@ -5,15 +5,15 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.storage.StorageReference
-import hr.uniri.szsur.data.model.SurveyModel
-import hr.uniri.szsur.data.FirestoreRepository
+import hr.uniri.szsur.data.model.Survey
+import hr.uniri.szsur.data.repository.FirebaseStorageRepository
 
-class SurveyDetailsViewModel(s: SurveyModel, app: Application) : AndroidViewModel(app) {
-    private var firestoreRepository = FirestoreRepository()
 
-    private val _surveyModel = MutableLiveData<SurveyModel>()
-    val surveyModel: LiveData<SurveyModel>
-        get() = _surveyModel
+class SurveyDetailsViewModel(s: Survey, app: Application) : AndroidViewModel(app) {
+
+    private val _survey = MutableLiveData<Survey>()
+    val survey: LiveData<Survey>
+        get() = _survey
 
     private val _resultImages = MutableLiveData<List<StorageReference>>()
     val resultsImages : LiveData<List<StorageReference>>
@@ -24,12 +24,11 @@ class SurveyDetailsViewModel(s: SurveyModel, app: Application) : AndroidViewMode
         get() = _isFavorite
 
     init {
-        _surveyModel.value = s
-        _resultImages.value = firestoreRepository.getImageReferences(s.resultImages)
+        _survey.value = s
+        _resultImages.value = FirebaseStorageRepository.getImageReferences(s.resultImages)
     }
 
-    fun updateFavorites(favorites: ArrayList<String>) {
-        _isFavorite.value = favorites.contains(_surveyModel.value!!.documentId)
+    fun updateFavorites(favorites: List<String>) {
+        _isFavorite.value = favorites.contains(_survey.value!!.documentId)
     }
-
 }

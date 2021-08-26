@@ -8,23 +8,15 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.firestore.FirebaseFirestore
 import hr.uniri.szsur.R
 import hr.uniri.szsur.data.repository.UserRepository
 import hr.uniri.szsur.databinding.FragmentFavoritesBinding
 import hr.uniri.szsur.ui.MainFragmentDirections
-import hr.uniri.szsur.util.CreateNotification
-import hr.uniri.szsur.util.SharedPreferenceUtils
 
 
 class FavoritesFragment : Fragment() {
 
     private lateinit var binding: FragmentFavoritesBinding
-    private var userRepository = UserRepository.getInstance(FirebaseFirestore.getInstance())
-
-    companion object {
-        private const val RECEIVE_NOTIFICATIONS = "RECEIVE_NOTIFICATIONS"
-    }
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -43,7 +35,7 @@ class FavoritesFragment : Fragment() {
             viewModel.updateFavorites(it)
         })
 
-        userRepository.user.observe(viewLifecycleOwner, {
+        UserRepository.user.observe(viewLifecycleOwner, {
             viewModel.filterFavorites()
             binding.favoritesRecyclerView.adapter!!.notifyDataSetChanged()
         })
@@ -62,14 +54,8 @@ class FavoritesFragment : Fragment() {
                     MainFragmentDirections.actionMainFragmentToSurveyDetailsFragment(it)
                 )
             }
-        }, this::sendNotification)
+        })
 
         return binding.root
-    }
-
-    private fun sendNotification() {
-        if (SharedPreferenceUtils.getBoolean(RECEIVE_NOTIFICATIONS, true) == true) {
-            CreateNotification.createNotificationChannel(activity)
-        }
     }
 }

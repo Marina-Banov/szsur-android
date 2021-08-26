@@ -1,40 +1,36 @@
 package hr.uniri.szsur.util
 
-import com.google.firebase.firestore.FirebaseFirestore
+import android.util.Log
+import hr.uniri.szsur.data.model.UpdateFavorite
+import hr.uniri.szsur.data.network.ResultWrapper.*
 import hr.uniri.szsur.data.repository.UserRepository
 import kotlinx.coroutines.*
 
-fun handleClick(id: String, sendNotification: (() -> Unit)?) {
-    val userRepository = UserRepository.getInstance(FirebaseFirestore.getInstance())
 
-    if (userRepository.user.value!!.uid != "") {
-        val favorites = userRepository.user.value!!.favorites
-        val shouldSendNotification = !favorites.contains(id)
-        favorites.apply {
-            if (contains(id)) { remove(id) } else { add(id) }
-        }
+fun handleClick(favoriteId: String, isEvent: Boolean) {
+    if (!UserRepository.isUserRegistered()) {
+        // TODO anonymous user
+        return
+    }
 
-        val coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
-        coroutineScope.launch {
-            userRepository.updateFavorites(favorites)
-            if (sendNotification != null && shouldSendNotification) {
-                sendNotification()
+    val liked =
+        !(UserRepository.user.value!!.favorites as ArrayList<String>).contains(favoriteId)
+
+    val coroutineScope = CoroutineScope(Job() + Dispatchers.Main)
+    coroutineScope.launch {
+        val response = UserRepository.updateFavorites(
+            UpdateFavorite(liked, isEvent, favoriteId)
+        )
+        when (response) {
+            is NetworkError -> {
+                Log.i("updateFavorites", "NO CONNECTION")
+                // TODO toast
             }
+            is GenericError -> {
+                Log.i("updateFavorites", "ERROR ${response.code}")
+                // TODO toast
+            }
+            is Success -> UserRepository.updateFavorites(liked, favoriteId)
         }
-    } else {
-        // TODO
     }
-}
-
-fun isInFavourites(id: String): Boolean {
-    val userRepository = UserRepository.getInstance(FirebaseFirestore.getInstance())
-
-    if (userRepository.user.value!!.uid != "") {
-        val favorites = userRepository.user.value!!.favorites
-        favorites.apply {
-            if (contains(id)) { return false } else { return true }
-        }
-        // TODO
-    }
-    return false
 }

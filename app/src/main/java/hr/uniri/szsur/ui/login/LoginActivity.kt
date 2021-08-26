@@ -3,6 +3,7 @@ package hr.uniri.szsur.ui.login
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LiveData
@@ -19,6 +20,8 @@ import hr.uniri.szsur.BuildConfig.APPLICATION_ID
 import hr.uniri.szsur.BuildConfig.VERSION_NAME
 import hr.uniri.szsur.ui.MainActivity
 import hr.uniri.szsur.R
+import hr.uniri.szsur.data.repository.UserRepository
+import hr.uniri.szsur.util.AppActivityResult
 import hr.uniri.szsur.util.SharedPreferenceUtils
 
 
@@ -26,6 +29,8 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
+    private val googleSignInLauncher: AppActivityResult<Intent, ActivityResult> =
+        AppActivityResult.registerActivityForResult(this)
 
     private val onAuthComplete = OnCompleteListener<AuthResult> { task ->
         _loading.value = false
@@ -38,7 +43,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val GOOGLE_SIGN_IN_REQ_CODE = 123
         private const val USER_EMAIL_KEY = "USER_EMAIL"
         // private const val EMAIL_AUTH_LINK_KEY = "EMAIL_AUTH_LINK"
         private const val NIGHT_MODE = "NIGHT_MODE"
@@ -63,10 +67,12 @@ class LoginActivity : AppCompatActivity() {
             .requestEmail()
             .build()
         googleSignInClient = GoogleSignIn.getClient(this, gso)
+        googleSignInLauncher.setOnActivityResult { result -> signInWithGoogle(result) }
     }
 
     override fun onStart() {
         super.onStart()
+
         if (auth.currentUser != null) {
             navigateToMainActivity()
         } else {
@@ -126,22 +132,24 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun firebaseAuthGoogle() {
-        startActivityForResult(googleSignInClient.signInIntent, GOOGLE_SIGN_IN_REQ_CODE)
+        googleSignInLauncher.launch(googleSignInClient.signInIntent)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+    private fun signInWithGoogle(result: ActivityResult) {
+        if (result.resultCode != RESULT_OK) {
+            showLoginFailed()
+            return
+        }
 
-        if (requestCode == GOOGLE_SIGN_IN_REQ_CODE) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            try {
-                val account = task.getResult(ApiException::class.java)!!
-                val credential = GoogleAuthProvider.getCredential(account.idToken!!, null)
-                _loading.value = true
-                auth.signInWithCredential(credential).addOnCompleteListener(this, onAuthComplete)
-            } catch (e: ApiException) {
-                showLoginFailed()
-            }
+        val data = result.data
+        val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+        try {
+            val account = task.getResult(ApiException::class.java)!!
+            val credential = GoogleAuthProvider.getCredential(account.idToken!!, null)
+            _loading.value = true
+            auth.signInWithCredential(credential).addOnCompleteListener(this, onAuthComplete)
+        } catch (e: ApiException) {
+            showLoginFailed()
         }
     }
 
@@ -151,6 +159,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun navigateToMainActivity() {
+        UserRepository.uid = Firebase.auth.currentUser!!.uid
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
