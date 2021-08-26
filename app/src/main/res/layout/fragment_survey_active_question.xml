@@ -12,10 +12,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp">
+        android:background="?attr/detailsBackgroundColor">
 
         <TextView
             android:id="@+id/surveyTitle"
@@ -89,6 +86,7 @@
             android:layout_marginBottom="16dp"
             android:layout_weight="1"
             android:text="@string/povratak"
+            android:textColor="?surveyButtonTextColor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -101,6 +99,7 @@
             android:layout_marginBottom="16dp"
             android:layout_weight="1"
             android:text="@string/send_answers"
+            android:textColor="?surveyButtonTextColor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
