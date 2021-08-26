@@ -21,6 +21,7 @@
                     android:gravity="center"
                     android:text="Uspješno ste predali odgovore za anketu:"
                     android:textSize="10pt"
+
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.492"
@@ -48,6 +49,7 @@
                     android:layout_width="114dp"
                     android:layout_height="59dp"
                     android:text="POVRATAK"
+                    android:textColor="?surveyButtonTextColor"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.501"
