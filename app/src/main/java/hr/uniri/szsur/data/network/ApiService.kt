@@ -35,6 +35,9 @@ interface ApiService {
     @GET("enums/tags")
     suspend fun getTags(): Tags
 
+    @GET("enums/organisations")
+    suspend fun getOrganisations(): Organisations
+
     @GET("events")
     suspend fun getEvents(): List<EventJson>
 
