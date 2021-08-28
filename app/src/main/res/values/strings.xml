@@ -79,4 +79,5 @@
 
     <string name="theme">day</string>
     <string name="notifications">Y</string>
+    <string name="choose_organisation">Odaberi zbor</string>
 </resources>
