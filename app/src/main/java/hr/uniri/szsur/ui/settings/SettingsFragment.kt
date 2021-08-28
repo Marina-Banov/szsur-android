@@ -1,21 +1,27 @@
 package hr.uniri.szsur.ui.settings
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import hr.uniri.szsur.R
 import hr.uniri.szsur.databinding.FragmentSettingsBinding
+
 import hr.uniri.szsur.util.SharedPreferenceUtils
 
 
 class SettingsFragment : Fragment() {
 
     private lateinit var binding: FragmentSettingsBinding
+    lateinit var viewModel: SettingsViewModel
     companion object {
         private const val NIGHT_MODE = "NIGHT_MODE"
         private const val RECEIVE_NOTIFICATIONS = "RECEIVE_NOTIFICATIONS"
@@ -30,6 +36,20 @@ class SettingsFragment : Fragment() {
         binding.logout.setOnClickListener {
             (activity as SettingsActivity).signOut()
         }
+
+        viewModel = ViewModelProvider(this).get(SettingsViewModel::class.java)
+
+        viewModel.organisations.observe(viewLifecycleOwner, {
+            Toast.makeText(context, viewModel.organisations.value.toString(), Toast.LENGTH_LONG).show()
+            val arrayAdapter = viewModel.organisations.value?.let { it1 ->
+                ArrayAdapter(
+                    this.requireContext(),
+                    android.R.layout.simple_spinner_dropdown_item,
+                    it1.toArray())
+            }
+            binding.organisationSpinner.adapter = arrayAdapter
+        })
+
         
         binding.swDarkMode.isChecked = getDarkMode() == Configuration.UI_MODE_NIGHT_YES
         binding.swEventNotification.isChecked = SharedPreferenceUtils.getBoolean(
