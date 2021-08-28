@@ -7,3 +7,6 @@ interface Enums { val values: List<*> }
 
 @JsonClass(generateAdapter = true)
 data class Tags(override val values: List<String> = ArrayList()): Enums
+
+@JsonClass(generateAdapter = true)
+data class Organisations(override val values: List<String> = ArrayList()): Enums
