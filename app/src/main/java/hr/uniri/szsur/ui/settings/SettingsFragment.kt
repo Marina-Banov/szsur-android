@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Adapter
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
@@ -40,7 +42,6 @@ class SettingsFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(SettingsViewModel::class.java)
 
         viewModel.organisations.observe(viewLifecycleOwner, {
-            Toast.makeText(context, viewModel.organisations.value.toString(), Toast.LENGTH_LONG).show()
             val arrayAdapter = viewModel.organisations.value?.let { it1 ->
                 ArrayAdapter(
                     this.requireContext(),
@@ -48,7 +49,26 @@ class SettingsFragment : Fragment() {
                     it1.toArray())
             }
             binding.organisationSpinner.adapter = arrayAdapter
+
         })
+
+        binding.organisationSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                viewModel.updateUsersOrganisation(binding.organisationSpinner.selectedItem as String)
+
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+        }
+
+
 
         
         binding.swDarkMode.isChecked = getDarkMode() == Configuration.UI_MODE_NIGHT_YES

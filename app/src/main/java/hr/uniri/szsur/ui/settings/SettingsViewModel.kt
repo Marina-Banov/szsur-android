@@ -5,9 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import hr.uniri.szsur.data.model.Survey
+import hr.uniri.szsur.data.model.UpdateOrganisation
 import hr.uniri.szsur.data.network.ResultWrapper
 import hr.uniri.szsur.data.repository.EnumsRepository
 import hr.uniri.szsur.data.repository.SurveysRepository
+import hr.uniri.szsur.data.repository.UserRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -43,6 +45,19 @@ class SettingsViewModel: ViewModel() {
                     else -> ArrayList()
                 }
             _organisations.value = EnumsRepository.organisations.value
+        }
+    }
+
+    fun updateUsersOrganisation(organisation: String){
+        coroutineScope.launch {
+            var body = UpdateOrganisation(organisation)
+            val response = UserRepository.updateOrganisation(body)
+
+            if (response is ResultWrapper.GenericError){
+                Log.i("updateUsersOrganisation", "ERROR ${response.code}")
+            }else{
+                Log.i("updateUsersOrganisation", "Organisation updated succesfully")
+            }
         }
     }
 
