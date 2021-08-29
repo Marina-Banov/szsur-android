@@ -23,6 +23,9 @@ data class UpdateFavorite(val liked: Boolean,
                           val isEvent: Boolean,
                           val favoriteId: String) : Parcelable
 
+@Parcelize
+data class UpdateOrganisation(val organisation: String) : Parcelable
+
 
 enum class QuestionType(val value: String) {
     SINGLE_CHOICE("single-choice"),
