@@ -22,7 +22,7 @@ object UserRepository {
         return user.value!!.uid != ""
     }
 
-    suspend fun get(): ResultWrapper<UserJson> {
+    suspend fun get(): ResultWrapper<User> {
         return NetworkUtils.safeApiCall { Api.retrofitService.getUser(uid) }
     }
 

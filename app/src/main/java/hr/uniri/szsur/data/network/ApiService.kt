@@ -14,6 +14,8 @@ import retrofit2.http.*
 private const val BASE_URL = "https://us-central1-szsur-7e723.cloudfunctions.net/"
 
 private val moshi = Moshi.Builder()
+    .add(UserAdapter())
+    .add(EventAdapter())
     .add(KotlinJsonAdapterFactory())
     .build()
 
@@ -36,7 +38,8 @@ interface ApiService {
     suspend fun getTags(): Tags
 
     @GET("events")
-    suspend fun getEvents(): List<EventJson>
+    @EventJsonAdapter
+    suspend fun getEvents(): List<Event>
 
     @GET("surveys")
     suspend fun getSurveys(): List<Survey>
@@ -48,7 +51,8 @@ interface ApiService {
     suspend fun getActiveSurveyResults(@Path("id") id: String): List<ActiveSurveyResult>
 
     @GET("users/{id}")
-    suspend fun getUser(@Path("id") id: String): UserJson
+    @UserJsonAdapter
+    suspend fun getUser(@Path("id") id: String): User
 
     @PUT("users/{id}/favorites")
     suspend fun updateFavorites(@Path("id") id: String, @Body body: UpdateFavorite): ResponseBody

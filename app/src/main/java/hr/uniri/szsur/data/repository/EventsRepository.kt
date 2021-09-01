@@ -20,9 +20,7 @@ object EventsRepository {
     suspend fun get(): ResultWrapper<List<Event>> {
         return when(val result = NetworkUtils.safeApiCall { Api.retrofitService.getEvents() }) {
             is Success -> {
-                val events = ArrayList<Event>()
                 for (_e in result.value) {
-                    val e = _e.getEventFromJson()
                     if (!_e.online) {
                         val place = PlacesRepository.get(_e.location, listOf(
                             Place.Field.ID,
@@ -30,11 +28,10 @@ object EventsRepository {
                             Place.Field.ADDRESS,
                             Place.Field.LAT_LNG,
                         ))
-                        e.setOnsiteLocation(place)
+                        _e.setOnsiteLocation(place)
                     }
-                    events.add(e)
                 }
-                Success(events)
+                Success(result.value)
             }
             else -> result as ResultWrapper<Nothing>
         }

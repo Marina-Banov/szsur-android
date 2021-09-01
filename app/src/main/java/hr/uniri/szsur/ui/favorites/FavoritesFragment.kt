@@ -9,6 +9,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import hr.uniri.szsur.R
+import hr.uniri.szsur.data.repository.EventsRepository
+import hr.uniri.szsur.data.repository.SurveysRepository
 import hr.uniri.szsur.data.repository.UserRepository
 import hr.uniri.szsur.databinding.FragmentFavoritesBinding
 import hr.uniri.szsur.ui.MainFragmentDirections
@@ -35,9 +37,14 @@ class FavoritesFragment : Fragment() {
             viewModel.updateFavorites(it)
         })
 
+        EventsRepository.events.observe(viewLifecycleOwner, {
+            viewModel.filterFavorites()
+        })
+        SurveysRepository.surveys.observe(viewLifecycleOwner, {
+            viewModel.filterFavorites()
+        })
         UserRepository.user.observe(viewLifecycleOwner, {
             viewModel.filterFavorites()
-            binding.favoritesRecyclerView.adapter!!.notifyDataSetChanged()
         })
 
         binding.favoritesRecyclerView.adapter = FavoritesAdapter({
