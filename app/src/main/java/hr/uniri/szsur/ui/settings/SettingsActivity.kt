@@ -5,9 +5,10 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import hr.uniri.szsur.R
+import hr.uniri.szsur.ui.BaseThemeActivity
 import hr.uniri.szsur.ui.login.LoginActivity
 
-class SettingsActivity : AppCompatActivity() {
+class SettingsActivity : BaseThemeActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
