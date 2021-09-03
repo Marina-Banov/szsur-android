@@ -4,10 +4,14 @@ import android.app.*
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.libraries.places.api.Places
 import androidx.core.app.NotificationCompat
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import hr.uniri.szsur.R
 import hr.uniri.szsur.data.repository.PlacesRepository
 
@@ -30,7 +34,21 @@ class MainActivity : BaseThemeActivity() {
         setContentView(R.layout.activity_main)
 
 
+       // getNotificationToken()
         //createNotificationChannel()
+    }
+
+    private fun getNotificationToken() {
+        Firebase.messaging.token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.e("getNotificationToken", "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            val token = task.result
+            val msg = getString(R.string.msg_token_fmt, token)
+            Log.d("getNotificationToken", msg)
+        })
     }
 
     private fun createNotificationChannel() {

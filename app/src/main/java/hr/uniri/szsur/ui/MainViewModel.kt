@@ -8,6 +8,7 @@ import hr.uniri.szsur.data.model.User
 import hr.uniri.szsur.data.network.ResultWrapper.*
 import hr.uniri.szsur.data.repository.EnumsRepository
 import hr.uniri.szsur.data.repository.UserRepository
+import hr.uniri.szsur.util.SharedPreferenceUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -51,6 +52,28 @@ class MainViewModel : ViewModel() {
                     }
                     is Success -> response.value
                 }
+
+            val fcmToken = SharedPreferenceUtils.getString("fcmToken", "")
+            if (response is Success && response.value.fcmToken != fcmToken) {
+                updateFcmToken(fcmToken)
+            }
+        }
+    }
+
+    private suspend fun updateFcmToken(fcmToken: String?) {
+        val body = hashMapOf<String, String?>()
+        body["fcmToken"] = fcmToken
+        val response = UserRepository.updateUser(body)
+        UserRepository.user.value!!.fcmToken = when (response) {
+            is NetworkError -> {
+                Log.i("updateFcmToken", "NO CONNECTION")
+                ""
+            }
+            is GenericError -> {
+                Log.i("updateFcmToken", "ERROR ${response.code}")
+                ""
+            }
+            is Success -> fcmToken.toString()
         }
     }
 
