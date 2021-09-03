@@ -1,8 +1,12 @@
 package hr.uniri.szsur.ui.settings
 
 import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
+import android.content.Context
+import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,12 +22,18 @@ import hr.uniri.szsur.R
 import hr.uniri.szsur.databinding.FragmentSettingsBinding
 
 import hr.uniri.szsur.util.SharedPreferenceUtils
+import hr.uniri.szsur.util.SharedPreferenceUtils.getString
+import kotlinx.android.synthetic.main.fragment_settings.*
 
 
 class SettingsFragment : Fragment() {
 
     private lateinit var binding: FragmentSettingsBinding
     lateinit var viewModel: SettingsViewModel
+    var organisations: ArrayList<String> = ArrayList()
+    private lateinit var arrayAdapter: ArrayAdapter<String>
+
+
     companion object {
         private const val NIGHT_MODE = "NIGHT_MODE"
         private const val RECEIVE_NOTIFICATIONS = "RECEIVE_NOTIFICATIONS"
@@ -39,18 +49,30 @@ class SettingsFragment : Fragment() {
             (activity as SettingsActivity).signOut()
         }
 
+        var storedOrganisations = SharedPreferenceUtils.getString("organisations", "")
+        if (storedOrganisations != "" && storedOrganisations != null){
+            organisations = storedOrganisations.split(",") as ArrayList<String>
+        }
+
         viewModel = ViewModelProvider(this).get(SettingsViewModel::class.java)
 
-        viewModel.organisations.observe(viewLifecycleOwner, {
-            val arrayAdapter = viewModel.organisations.value?.let { it1 ->
-                ArrayAdapter(
-                    this.requireContext(),
-                    android.R.layout.simple_spinner_dropdown_item,
-                    it1.toArray())
-            }
-            binding.organisationSpinner.adapter = arrayAdapter
+        arrayAdapter = ArrayAdapter(
+            this.requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            organisations)
 
+        viewModel.organisations.observe(viewLifecycleOwner, {
+            organisations.clear()
+            organisations.addAll(it)
+            arrayAdapter.notifyDataSetChanged()
         })
+
+        binding.organisationSpinner.adapter = arrayAdapter
+        var storedSelectedOrganisation = SharedPreferenceUtils.getString("selectedOrganisation", "")
+        if (storedSelectedOrganisation != "" && storedSelectedOrganisation != null){
+            var position = organisations.indexOf(storedSelectedOrganisation)
+            binding.organisationSpinner.setSelection(position)
+        }
 
         binding.organisationSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(
@@ -59,7 +81,12 @@ class SettingsFragment : Fragment() {
                 position: Int,
                 id: Long
             ) {
-                viewModel.updateUsersOrganisation(binding.organisationSpinner.selectedItem as String)
+
+                val selectedItem = binding.organisationSpinner.selectedItem.toString()
+                viewModel.updateUsersOrganisation(binding.organisationSpinner.selectedItem.toString())
+                Log.i("spinner", selectedItem)
+                SharedPreferenceUtils.putString("selectedOrganisation", selectedItem)
+                Toast.makeText(context, "Resetiraj aplikaciju za promjenu teme", Toast.LENGTH_LONG).show()
 
             }
 
@@ -67,7 +94,6 @@ class SettingsFragment : Fragment() {
                 TODO("Not yet implemented")
             }
         }
-
 
 
         
@@ -112,5 +138,8 @@ class SettingsFragment : Fragment() {
     private fun getDarkMode(): Int {
         return resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
     }
+
+
+
 
 }

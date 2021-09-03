@@ -6,14 +6,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import hr.uniri.szsur.data.model.Survey
 import hr.uniri.szsur.data.model.UpdateOrganisation
+import hr.uniri.szsur.data.model.User
 import hr.uniri.szsur.data.network.ResultWrapper
 import hr.uniri.szsur.data.repository.EnumsRepository
 import hr.uniri.szsur.data.repository.SurveysRepository
 import hr.uniri.szsur.data.repository.UserRepository
+import hr.uniri.szsur.util.SharedPreferenceUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.lang.StringBuilder
 import kotlin.math.E
 
 class SettingsViewModel: ViewModel() {
@@ -27,9 +30,10 @@ class SettingsViewModel: ViewModel() {
 
     init {
        getOrganisations()
+       getUserOrganisation()
     }
 
-    private fun getOrganisations() {
+    fun getOrganisations() {
         if (EnumsRepository.organisations.value?.size != 0)
             return
 
@@ -45,6 +49,9 @@ class SettingsViewModel: ViewModel() {
                     else -> ArrayList()
                 }
             _organisations.value = EnumsRepository.organisations.value
+            var organisationString = _organisations.value.toString()
+            organisationString = organisationString.drop(1).dropLast(1).replace(" ", "")
+            SharedPreferenceUtils.putString("organisations", organisationString)
         }
     }
 
@@ -58,6 +65,25 @@ class SettingsViewModel: ViewModel() {
             }else{
                 Log.i("updateUsersOrganisation", "Organisation updated succesfully")
             }
+        }
+    }
+
+    private fun getUserOrganisation() {
+        coroutineScope.launch {
+            val response = UserRepository.get()
+            UserRepository.user.value =
+                when (response) {
+                    is ResultWrapper.NetworkError -> {
+                        Log.i("getUser", "NO CONNECTION")
+                        User()
+                    }
+                    is ResultWrapper.GenericError -> {
+                        Log.i("getUser", "ERROR ${response.code}")
+                        User()
+                    }
+                    is ResultWrapper.Success -> response.value
+                }
+            SharedPreferenceUtils.putString("selectedOrganisation", UserRepository.user.value!!.organisation)
         }
     }
 
