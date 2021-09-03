@@ -49,7 +49,7 @@ class MainViewModel : ViewModel() {
                         Log.i("getUser", "ERROR ${response.code}")
                         User()
                     }
-                    is Success -> response.value.getUserFromJson()
+                    is Success -> response.value
                 }
         }
     }

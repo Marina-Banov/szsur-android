@@ -2,7 +2,10 @@ package hr.uniri.szsur.data.model
 
 import android.os.Parcelable
 import com.google.android.libraries.places.api.model.Place
+import com.squareup.moshi.FromJson
 import com.squareup.moshi.JsonClass
+import com.squareup.moshi.JsonQualifier
+import com.squareup.moshi.ToJson
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -47,20 +50,35 @@ data class EventJson (
     val location: String = "",
     val subscribers: List<String> = listOf(),
     val tags: List<String> = listOf(),
-) {
-    fun getEventFromJson(): Event {
-        return Event(
-            id,
-            description,
-            image,
-            location,
-            null,
-            online,
-            organisation,
-            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH)
-                .parse(startTime) ?: Date(),
-            tags,
-            title,
-        )
+)
+
+@Retention(AnnotationRetention.RUNTIME)
+@JsonQualifier
+annotation class EventJsonAdapter
+
+class EventAdapter {
+    @EventJsonAdapter
+    @FromJson
+    fun fromJson(json: List<EventJson>): List<Event> {
+        return json.map {
+            Event(
+                it.id,
+                it.description,
+                it.image,
+                it.location,
+                null,
+                it.online,
+                it.organisation,
+                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.ENGLISH)
+                    .parse(it.startTime) ?: Date(),
+                it.tags,
+                it.title,
+            )
+        }
+    }
+
+    @ToJson
+    fun toJson(@EventJsonAdapter events: List<Event>): List<EventJson> {
+        throw UnsupportedOperationException()
     }
 }

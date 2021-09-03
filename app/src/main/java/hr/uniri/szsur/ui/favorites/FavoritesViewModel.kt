@@ -11,11 +11,8 @@ import hr.uniri.szsur.util.filterByTags
 import hr.uniri.szsur.util.search
 import java.util.ArrayList
 
-class FavoritesViewModel: ViewModel() {
 
-    private val _items = MutableLiveData<ArrayList<Filterable>>()
-    val items: LiveData<ArrayList<Filterable>>
-        get() = _items
+class FavoritesViewModel: ViewModel() {
 
     private val _favoriteItems = MutableLiveData<ArrayList<Filterable>>()
     val favoriteItems: LiveData<ArrayList<Filterable>>
@@ -26,20 +23,16 @@ class FavoritesViewModel: ViewModel() {
         get() = _displayItems
 
     init {
-        // TODO quite inefficient
-        _items.value = ArrayList<Filterable>()
-        EventsRepository.events.value?.let { _items.value!!.addAll(it) }
-        SurveysRepository.surveys.value?.let { _items.value!!.addAll(it) }
         filterFavorites()
     }
 
     fun filterFavorites() {
-        if (_items.value == null) {
-            return
-        }
         _favoriteItems.value = ArrayList<Filterable>()
         for (f in UserRepository.user.value!!.favorites) {
-            _items.value!!.find { it.documentId == f }?.let {
+            EventsRepository.events.value!!.find { it.documentId == f }?.let {
+                _favoriteItems.value!!.add(it)
+            }
+            SurveysRepository.surveys.value!!.find { it.documentId == f }?.let {
                 _favoriteItems.value!!.add(it)
             }
         }
