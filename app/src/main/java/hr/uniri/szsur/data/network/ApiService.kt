@@ -63,7 +63,7 @@ interface ApiService {
     @PUT("users/{id}/surveys")
     suspend fun addSurveyResults(@Path("id") id: String, @Body body: Any): ResponseBody
 
-    @PUT("users/{id}/organisation")
+    @PUT("users/{id}")
     suspend fun updateOrganisation(@Path("id") id: String, @Body body: Any): ResponseBody
 }
 
