@@ -80,4 +80,6 @@
     <string name="theme">day</string>
     <string name="notifications">Y</string>
     <string name="choose_organisation">Odaberi zbor</string>
+    <string name="continue_text">NASTAVITE</string>
+    <string name="choose_organisation_text">Odaberite studentski zbor</string>
 </resources>
