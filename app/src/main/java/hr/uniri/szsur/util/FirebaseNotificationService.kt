@@ -25,7 +25,6 @@ import kotlinx.coroutines.launch
 
 class FirebaseNotificationService : FirebaseMessagingService() {
 
-
     companion object {
         private const val TAG = "FirebaseNotifService"
     }
@@ -108,7 +107,7 @@ class FirebaseNotificationService : FirebaseMessagingService() {
      */
     private fun sendRegistrationToServer(token: String?) {
         Log.d(TAG, "sendRegistrationTokenToServer($token)")
-        SharedPreferenceUtils.putString("fcmToken", token ?: "")
+        SharedPreferenceUtils.putString(SharedPreferenceUtils.Fields.FCM_TOKEN, token ?: "")
         if (Firebase.auth.currentUser != null) {
             val body = hashMapOf<String, String?>()
             body["fcmToken"] = token
@@ -118,56 +117,56 @@ class FirebaseNotificationService : FirebaseMessagingService() {
         }
     }
 
-/**
-* Create and show a simple notification containing the received FCM message.
-*
-* @param messageBody FCM message body received.
-*/
-private fun sendNotification(messageBody: String) {
-val intent = Intent(this, MainActivity::class.java)
-intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-val pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-    PendingIntent.FLAG_ONE_SHOT)
+    /**
+    * Create and show a simple notification containing the received FCM message.
+    *
+    * @param messageBody FCM message body received.
+    */
+    private fun sendNotification(messageBody: String) {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        val pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+            PendingIntent.FLAG_ONE_SHOT)
 
-val channelId = getString(R.string.default_notification_channel_id)
-val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-val notificationBuilder = NotificationCompat.Builder(this, channelId)
-    .setSmallIcon(R.drawable.ic_launcher_foreground)
-    .setContentTitle(getString(R.string.fcm_message))
-    .setContentText(messageBody)
-    .setAutoCancel(true)
-    .setSound(defaultSoundUri)
-    .setContentIntent(pendingIntent)
+        val channelId = getString(R.string.default_notification_channel_id)
+        val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        val notificationBuilder = NotificationCompat.Builder(this, channelId)
+            .setSmallIcon(R.drawable.ic_launcher_foreground)
+            .setContentTitle(getString(R.string.fcm_message))
+            .setContentText(messageBody)
+            .setAutoCancel(true)
+            .setSound(defaultSoundUri)
+            .setContentIntent(pendingIntent)
 
-val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-// Since android Oreo notification channel is needed.
-if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-    val channel = NotificationChannel(channelId,
-        "Channel human readable title",
-        NotificationManager.IMPORTANCE_DEFAULT)
-    notificationManager.createNotificationChannel(channel)
-}
+        // Since android Oreo notification channel is needed.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(channelId,
+                "Channel human readable title",
+                NotificationManager.IMPORTANCE_DEFAULT)
+            notificationManager.createNotificationChannel(channel)
+        }
 
-notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
-}
+        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build())
+    }
 
-override fun onDestroy() {
-super.onDestroy()
-job.cancel()
-}
+    override fun onDestroy() {
+        super.onDestroy()
+        job.cancel()
+    }
 }
 
 class MyWorker(appContext: Context, workerParams: WorkerParameters)
 : Worker(appContext, workerParams) {
 
-companion object {
-private val TAG = "MyWorker"
-}
+    companion object {
+        private const val TAG = "MyWorker"
+    }
 
-override fun doWork(): Result {
-Log.d(TAG, "Performing long running task in scheduled job")
-// TODO(developer): add long running task here.
-return Result.success()
-}
+    override fun doWork(): Result {
+        Log.d(TAG, "Performing long running task in scheduled job")
+        // TODO(developer): add long running task here.
+        return Result.success()
+    }
 }

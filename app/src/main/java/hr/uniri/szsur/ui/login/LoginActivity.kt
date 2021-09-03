@@ -25,6 +25,7 @@ import hr.uniri.szsur.ui.BaseThemeActivity
 import hr.uniri.szsur.ui.organisations.ChooseOrganisationActivity
 import hr.uniri.szsur.util.AppActivityResult
 import hr.uniri.szsur.util.SharedPreferenceUtils
+import hr.uniri.szsur.util.SharedPreferenceUtils.Fields
 
 
 class LoginActivity : AppCompatActivity() {
@@ -37,18 +38,12 @@ class LoginActivity : AppCompatActivity() {
     private val onAuthComplete = OnCompleteListener<AuthResult> { task ->
         _loading.value = false
         if (task.isSuccessful) {
-            SharedPreferenceUtils.remove(USER_EMAIL_KEY)
-           // navigateToMainActivity()
+            SharedPreferenceUtils.remove(Fields.USER_EMAIL_KEY)
+            // navigateToMainActivity()
               navigateToChooseOrganisationActivity()
         } else {
             showLoginFailed()
         }
-    }
-
-    companion object {
-        private const val USER_EMAIL_KEY = "USER_EMAIL"
-        // private const val EMAIL_AUTH_LINK_KEY = "EMAIL_AUTH_LINK"
-        private const val NIGHT_MODE = "NIGHT_MODE"
     }
 
     private val _loading = MutableLiveData(false)
@@ -60,7 +55,7 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
         auth = Firebase.auth
 
-        val nightMode = SharedPreferenceUtils.getInt(NIGHT_MODE, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        val nightMode = SharedPreferenceUtils.getInt(Fields.NIGHT_MODE, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
         if (nightMode != null) {
             AppCompatDelegate.setDefaultNightMode(nightMode)
         }
@@ -81,7 +76,7 @@ class LoginActivity : AppCompatActivity() {
             //navigateToChooseOrganisationActivity()
         } else {
             val emailLink = intent.data.toString()
-            val email = SharedPreferenceUtils.getString(USER_EMAIL_KEY, "")
+            val email = SharedPreferenceUtils.getString(Fields.USER_EMAIL_KEY, "")
             if (email != null && auth.isSignInWithEmailLink(emailLink)) {
                 // TODO is it possible to reauthenticate user with these credentials?
                 //  FirebaseAuthActionCodeException...
@@ -127,7 +122,7 @@ class LoginActivity : AppCompatActivity() {
 
         auth.sendSignInLinkToEmail(email, actionCodeSettings).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                SharedPreferenceUtils.putString(USER_EMAIL_KEY, email)
+                SharedPreferenceUtils.putString(Fields.USER_EMAIL_KEY, email)
                 Toast.makeText(applicationContext, R.string.email_sent, Toast.LENGTH_LONG).show()
             } else {
                 showLoginFailed()

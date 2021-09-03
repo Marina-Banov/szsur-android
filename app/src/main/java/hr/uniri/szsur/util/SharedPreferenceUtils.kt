@@ -4,40 +4,49 @@ import android.content.Context
 import android.content.SharedPreferences
 import hr.uniri.szsur.App
 
+
 object SharedPreferenceUtils {
   private const val PREFS_NAME = "SZSUR_SHARED_PREFS"
+
+  enum class Fields {
+    RECEIVE_NOTIFICATIONS_EVENTS,
+    RECEIVE_NOTIFICATIONS_SURVEYS,
+    NIGHT_MODE,
+    FCM_TOKEN,
+    USER_EMAIL_KEY
+  }
 
   private val sharedPrefs: SharedPreferences?
     get() = App.appContext?.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
-  fun putString(keyName: String, value: String) {
+  fun putString(keyName: Fields, value: String) {
     val editor: SharedPreferences.Editor = sharedPrefs?.edit() ?: return
-    editor.putString(keyName, value)
+    editor.putString(keyName.name, value)
     editor.apply()
   }
 
-  fun putInt(keyName: String, value: Int) {
+  fun putInt(keyName: Fields, value: Int) {
     val editor: SharedPreferences.Editor = sharedPrefs?.edit() ?: return
-    editor.putInt(keyName, value)
+    editor.putInt(keyName.name, value)
     editor.apply()
   }
 
-  fun putBoolean(keyName: String, value: Boolean) {
+  fun putBoolean(keyName: Fields, value: Boolean) {
     val editor: SharedPreferences.Editor = sharedPrefs?.edit() ?: return
-    editor.putBoolean(keyName, value)
+    editor.putBoolean(keyName.name, value)
     editor.apply()
   }
 
-  fun getString(keyName: String, defaultValue: String): String? {
-    return sharedPrefs?.getString(keyName, defaultValue)
+  fun getString(keyName: Fields, defaultValue: String): String? {
+    return sharedPrefs?.getString(keyName.name, defaultValue)
   }
 
-  fun getInt(keyName: String, defaultValue: Int): Int? {
-    return sharedPrefs?.getInt(keyName, defaultValue)
+  fun getInt(keyName: Fields, defaultValue: Int): Int? {
+    return sharedPrefs?.getInt(keyName.name, defaultValue)
   }
 
-  fun getBoolean(keyName: String, defaultValue: Boolean): Boolean? {
-    return sharedPrefs?.getBoolean(keyName, defaultValue)
+  fun getBoolean(keyName: Fields, defaultValue: Boolean): Boolean? {
+    return sharedPrefs?.getBoolean(keyName.name, defaultValue)
   }
 
   fun clear() {
@@ -46,9 +55,9 @@ object SharedPreferenceUtils {
     editor.apply()
   }
 
-  fun remove(keyName: String) {
+  fun remove(keyName: Fields) {
     val editor: SharedPreferences.Editor = sharedPrefs?.edit() ?: return
-    editor.remove(keyName)
+    editor.remove(keyName.name)
     editor.apply()
   }
 }

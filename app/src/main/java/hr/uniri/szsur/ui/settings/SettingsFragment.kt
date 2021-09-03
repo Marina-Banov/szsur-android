@@ -20,9 +20,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import hr.uniri.szsur.R
 import hr.uniri.szsur.databinding.FragmentSettingsBinding
-
 import hr.uniri.szsur.util.SharedPreferenceUtils
-import hr.uniri.szsur.util.SharedPreferenceUtils.getString
+import hr.uniri.szsur.util.SharedPreferenceUtils.Fields
 import kotlinx.android.synthetic.main.fragment_settings.*
 
 
@@ -96,22 +95,22 @@ class SettingsFragment : Fragment() {
         }
 
 
-        
+
         binding.swDarkMode.isChecked = getDarkMode() == Configuration.UI_MODE_NIGHT_YES
         binding.swEventNotification.isChecked = SharedPreferenceUtils.getBoolean(
-            RECEIVE_NOTIFICATIONS, true) == true
+            Fields.RECEIVE_NOTIFICATIONS_EVENTS, true) == true
         binding.swSurveyNotification.isChecked = SharedPreferenceUtils.getBoolean(
-            RECEIVE_NOTIFICATIONS_SURVEYS, true) == true
+            Fields.RECEIVE_NOTIFICATIONS_SURVEYS, true) == true
 
         binding.swDarkMode.setOnCheckedChangeListener { buttonView, isChecked ->
             if (buttonView.isShown) { //ako nema ovog nakon aktiviranja switcha kod se neprestano pokrece
                 when (getDarkMode()) {
                     Configuration.UI_MODE_NIGHT_YES -> {
-                        SharedPreferenceUtils.putInt(NIGHT_MODE, AppCompatDelegate.MODE_NIGHT_NO)
+                        SharedPreferenceUtils.putInt(Fields.NIGHT_MODE, AppCompatDelegate.MODE_NIGHT_NO)
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                     }
                     Configuration.UI_MODE_NIGHT_NO -> {
-                        SharedPreferenceUtils.putInt(NIGHT_MODE, AppCompatDelegate.MODE_NIGHT_YES)
+                        SharedPreferenceUtils.putInt(Fields.NIGHT_MODE, AppCompatDelegate.MODE_NIGHT_YES)
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                     }
                 }
@@ -120,15 +119,15 @@ class SettingsFragment : Fragment() {
 
         binding.swEventNotification.setOnCheckedChangeListener { buttonView, isChecked ->
             if (buttonView.isShown) { //ako nema ovog nakon aktiviranja switcha kod se neprestano pokrece
-                val receiveNotification = SharedPreferenceUtils.getBoolean(RECEIVE_NOTIFICATIONS, true) == true
-                SharedPreferenceUtils.putBoolean(RECEIVE_NOTIFICATIONS, !receiveNotification)
+                val receiveNotification = SharedPreferenceUtils.getBoolean(Fields.RECEIVE_NOTIFICATIONS_EVENTS, true) == true
+                SharedPreferenceUtils.putBoolean(Fields.RECEIVE_NOTIFICATIONS_EVENTS, !receiveNotification)
             }
         }
 
         binding.swSurveyNotification.setOnCheckedChangeListener { buttonView, isChecked ->
             if (buttonView.isShown) { //ako nema ovog nakon aktiviranja switcha kod se neprestano pokrece
-                val receiveNotification = SharedPreferenceUtils.getBoolean(RECEIVE_NOTIFICATIONS_SURVEYS, true) == true
-                SharedPreferenceUtils.putBoolean(RECEIVE_NOTIFICATIONS_SURVEYS, !receiveNotification)
+                val receiveNotification = SharedPreferenceUtils.getBoolean(Fields.RECEIVE_NOTIFICATIONS_SURVEYS, true) == true
+                SharedPreferenceUtils.putBoolean(Fields.RECEIVE_NOTIFICATIONS_SURVEYS, !receiveNotification)
             }
         }
 
@@ -138,8 +137,5 @@ class SettingsFragment : Fragment() {
     private fun getDarkMode(): Int {
         return resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
     }
-
-
-
 
 }

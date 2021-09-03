@@ -9,6 +9,7 @@ import hr.uniri.szsur.data.network.ResultWrapper.*
 import hr.uniri.szsur.data.repository.EnumsRepository
 import hr.uniri.szsur.data.repository.UserRepository
 import hr.uniri.szsur.util.SharedPreferenceUtils
+import hr.uniri.szsur.util.SharedPreferenceUtils.Fields
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -53,7 +54,7 @@ class MainViewModel : ViewModel() {
                     is Success -> response.value
                 }
 
-            val fcmToken = SharedPreferenceUtils.getString("fcmToken", "")
+            val fcmToken = SharedPreferenceUtils.getString(Fields.FCM_TOKEN, "")
             if (response is Success && response.value.fcmToken != fcmToken) {
                 updateFcmToken(fcmToken)
             }
