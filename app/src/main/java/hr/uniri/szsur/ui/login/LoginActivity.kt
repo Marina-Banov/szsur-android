@@ -21,6 +21,8 @@ import hr.uniri.szsur.BuildConfig.VERSION_NAME
 import hr.uniri.szsur.ui.MainActivity
 import hr.uniri.szsur.R
 import hr.uniri.szsur.data.repository.UserRepository
+import hr.uniri.szsur.ui.BaseThemeActivity
+import hr.uniri.szsur.ui.organisations.ChooseOrganisationActivity
 import hr.uniri.szsur.util.AppActivityResult
 import hr.uniri.szsur.util.SharedPreferenceUtils
 
@@ -36,7 +38,8 @@ class LoginActivity : AppCompatActivity() {
         _loading.value = false
         if (task.isSuccessful) {
             SharedPreferenceUtils.remove(USER_EMAIL_KEY)
-            navigateToMainActivity()
+           // navigateToMainActivity()
+              navigateToChooseOrganisationActivity()
         } else {
             showLoginFailed()
         }
@@ -75,6 +78,7 @@ class LoginActivity : AppCompatActivity() {
 
         if (auth.currentUser != null) {
             navigateToMainActivity()
+            //navigateToChooseOrganisationActivity()
         } else {
             val emailLink = intent.data.toString()
             val email = SharedPreferenceUtils.getString(USER_EMAIL_KEY, "")
@@ -156,6 +160,13 @@ class LoginActivity : AppCompatActivity() {
     fun firebaseAuthAnonymous() {
         _loading.value = true
         auth.signInAnonymously().addOnCompleteListener(this, onAuthComplete)
+    }
+
+    private fun navigateToChooseOrganisationActivity() {
+        UserRepository.uid = Firebase.auth.currentUser!!.uid
+        val intent = Intent(this, ChooseOrganisationActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     private fun navigateToMainActivity() {

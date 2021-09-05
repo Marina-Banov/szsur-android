@@ -15,6 +15,7 @@ data class User (
     val email: String = "",
     var favorites: List<String> = ArrayList(),
     val solvedSurveys: List<String> = ArrayList(),
+    val organisation: String = "",
 ) : Parcelable
 
 @JsonClass(generateAdapter = true)
@@ -22,7 +23,9 @@ data class UserJson (
     val email: String = "",
     val favorites: List<FavoriteEntry> = ArrayList(),
     val solvedSurveys: List<String> = ArrayList(),
+    val organisation: String = "",
 )
+        
 
 @Retention(AnnotationRetention.RUNTIME)
 @JsonQualifier
@@ -37,6 +40,8 @@ class UserAdapter {
             json.email,
             json.favorites.map{ it.id },
             json.solvedSurveys,
+            json.organisation,
+
         )
     }
 

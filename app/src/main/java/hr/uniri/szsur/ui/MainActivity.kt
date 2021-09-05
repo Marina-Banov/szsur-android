@@ -12,7 +12,7 @@ import hr.uniri.szsur.R
 import hr.uniri.szsur.data.repository.PlacesRepository
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseThemeActivity() {
 
     private lateinit var viewModel: MainViewModel
     companion object {

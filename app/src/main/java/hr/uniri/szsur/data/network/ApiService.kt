@@ -37,6 +37,9 @@ interface ApiService {
     @GET("enums/tags")
     suspend fun getTags(): Tags
 
+    @GET("enums/organisations")
+    suspend fun getOrganisations(): Organisations
+
     @GET("events")
     @EventJsonAdapter
     suspend fun getEvents(): List<Event>
@@ -59,6 +62,9 @@ interface ApiService {
 
     @PUT("users/{id}/surveys")
     suspend fun addSurveyResults(@Path("id") id: String, @Body body: Any): ResponseBody
+
+    @PUT("users/{id}")
+    suspend fun updateOrganisation(@Path("id") id: String, @Body body: Any): ResponseBody
 }
 
 object Api {

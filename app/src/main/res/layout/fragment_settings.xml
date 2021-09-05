@@ -20,6 +20,26 @@
         android:background="@drawable/settings_layout_border"/>
 
     <LinearLayout
+        android:id="@+id/organisation"
+        style="@style/Widget.SZSUR.SettingsItem">
+
+      <ImageView
+          android:id="@+id/ic_organisation"
+          app:srcCompat="@drawable/organisation"
+          style="@style/Widget.SZSUR.SettingsItemIcon"/>
+
+      <TextView
+          android:text="@string/choose_organisation"
+          style="@style/TextAppearance.SZSUR.UserSettings"/>
+
+      <Spinner
+          android:id="@+id/organisation_spinner"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:spinnerMode="dropdown"/>
+
+    </LinearLayout>
+    <LinearLayout
         android:id="@+id/dark_mode"
         style="@style/Widget.SZSUR.SettingsItem">
 

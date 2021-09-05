@@ -10,13 +10,13 @@ object FirebaseStorageRepository {
     private val storage = FirebaseStorage.getInstance()
 
     fun getImageReference(imageURL: String) : StorageReference {
-        return storage.getReferenceFromUrl(STORAGE_URL + imageURL)
+        return storage.getReferenceFromUrl(imageURL)
     }
 
     fun getImageReferences(imageURLs: List<String>) : List<StorageReference> {
         val refs: MutableList<StorageReference> = mutableListOf()
         for (img in imageURLs) {
-            refs.add(storage.getReferenceFromUrl(STORAGE_URL + img))
+            refs.add(storage.getReferenceFromUrl(img))
         }
         return refs
     }
