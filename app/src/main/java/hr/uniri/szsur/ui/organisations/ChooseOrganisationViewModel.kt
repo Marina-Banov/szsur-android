@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import hr.uniri.szsur.data.model.UpdateOrganisation
 import hr.uniri.szsur.data.model.User
 import hr.uniri.szsur.data.network.ResultWrapper
@@ -15,6 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
+
 class ChooseOrganisationViewModel : ViewModel() {
     private val viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
@@ -24,8 +27,18 @@ class ChooseOrganisationViewModel : ViewModel() {
         get() = _organisations
 
     init {
-        Log.i("getOrganisations", "gere")
-        getOrganisations()
+        if (UserRepository.token == "") {
+            // TODO good reason to put splash screen
+            Firebase.auth.currentUser!!.getIdToken(true).addOnCompleteListener { task ->
+                if (!task.isSuccessful || task.result.token == null) {
+                    // TODO what if task wasn't successful?
+                    return@addOnCompleteListener
+                }
+
+                UserRepository.token = task.result.token!!
+                getOrganisations()
+            }
+        }
     }
 
     private fun getOrganisations() {

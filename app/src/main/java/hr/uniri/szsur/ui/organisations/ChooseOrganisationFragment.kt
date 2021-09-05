@@ -1,9 +1,7 @@
 package hr.uniri.szsur.ui.organisations
 
-import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -36,12 +34,15 @@ class ChooseOrganisationFragment : Fragment() {
             organisations = storedOrganisations.split(",") as ArrayList<String>
         }
 
-        arrayAdapter = ArrayAdapter(
-            this.requireContext(),
-            android.R.layout.simple_spinner_dropdown_item,
-            organisations)
+        viewModel.organisations.observe(viewLifecycleOwner, {
+            arrayAdapter = ArrayAdapter(
+                this.requireContext(),
+                android.R.layout.simple_spinner_dropdown_item,
+                it)
 
-        binding.organisationSpinner.adapter = arrayAdapter
+            binding.organisationSpinner.adapter = arrayAdapter
+        })
+
         var storedSelectedOrganisation = SharedPreferenceUtils.getString("selectedOrganisation", "")
         if (storedSelectedOrganisation != "" && storedSelectedOrganisation != null){
             var position = organisations.indexOf(storedSelectedOrganisation)
@@ -73,14 +74,4 @@ class ChooseOrganisationFragment : Fragment() {
         }
         return binding.root
     }
-
-    @SuppressLint("LongLogTag")
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        Log.i("ChooseOrganisationFragment", "hereFG")
-
-    }
-
-
-
 }
