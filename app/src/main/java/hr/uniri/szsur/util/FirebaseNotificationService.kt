@@ -1,6 +1,5 @@
 package hr.uniri.szsur.util
 
-import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -53,14 +52,13 @@ class FirebaseNotificationService : FirebaseMessagingService() {
         }
     }
 
-    @SuppressLint("WrongConstant")
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createChannels() {
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val surveysChannel = NotificationChannel(
             "surveys",
             "Rezultati anketa",
-            NotificationManager.IMPORTANCE_MAX
+            NotificationManager.IMPORTANCE_HIGH
         ).apply {
             description = "Obavijesti o objavljenim rezultatima onih anketa koje ti se sviđaju"
             enableLights(true)
@@ -71,7 +69,7 @@ class FirebaseNotificationService : FirebaseMessagingService() {
         val eventsChannel = NotificationChannel(
             "events",
             "Nadolazeći događaji",
-            NotificationManager.IMPORTANCE_MAX
+            NotificationManager.IMPORTANCE_HIGH
         ).apply {
             description = "Obavijesti o nadolazećim događajima koji ti se sviđaju"
             enableLights(true)

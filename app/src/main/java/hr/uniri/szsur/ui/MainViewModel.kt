@@ -36,6 +36,9 @@ class MainViewModel : ViewModel() {
                 getUser()
                 getTags()
             }
+        } else {
+            getUser()
+            getTags()
         }
     }
 
