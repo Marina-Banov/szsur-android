@@ -1,16 +1,11 @@
 package hr.uniri.szsur.ui.settings
 
-import android.annotation.SuppressLint
-import android.content.ContentValues.TAG
-import android.content.Context
-import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -22,7 +17,6 @@ import hr.uniri.szsur.R
 import hr.uniri.szsur.databinding.FragmentSettingsBinding
 import hr.uniri.szsur.util.SharedPreferenceUtils
 import hr.uniri.szsur.util.SharedPreferenceUtils.Fields
-import kotlinx.android.synthetic.main.fragment_settings.*
 
 
 class SettingsFragment : Fragment() {
@@ -31,13 +25,6 @@ class SettingsFragment : Fragment() {
     lateinit var viewModel: SettingsViewModel
     var organisations: ArrayList<String> = ArrayList()
     private lateinit var arrayAdapter: ArrayAdapter<String>
-
-
-    companion object {
-        private const val NIGHT_MODE = "NIGHT_MODE"
-        private const val RECEIVE_NOTIFICATIONS = "RECEIVE_NOTIFICATIONS"
-        private const val RECEIVE_NOTIFICATIONS_SURVEYS = "RECEIVE_NOTIFICATIONS_SURVEYS"
-    }
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -48,7 +35,7 @@ class SettingsFragment : Fragment() {
             (activity as SettingsActivity).signOut()
         }
 
-        var storedOrganisations = SharedPreferenceUtils.getString("organisations", "")
+        val storedOrganisations = SharedPreferenceUtils.getString(Fields.ORGANIZATIONS, "")
         if (storedOrganisations != "" && storedOrganisations != null){
             organisations = storedOrganisations.split(",") as ArrayList<String>
         }
@@ -67,9 +54,9 @@ class SettingsFragment : Fragment() {
         })
 
         binding.organisationSpinner.adapter = arrayAdapter
-        var storedSelectedOrganisation = SharedPreferenceUtils.getString("selectedOrganisation", "")
+        val storedSelectedOrganisation = SharedPreferenceUtils.getString(Fields.SELECTED_ORGANIZATION, "")
         if (storedSelectedOrganisation != "" && storedSelectedOrganisation != null){
-            var position = organisations.indexOf(storedSelectedOrganisation)
+            val position = organisations.indexOf(storedSelectedOrganisation)
             binding.organisationSpinner.setSelection(position)
         }
 
@@ -84,7 +71,7 @@ class SettingsFragment : Fragment() {
                 val selectedItem = binding.organisationSpinner.selectedItem.toString()
                 viewModel.updateUsersOrganisation(binding.organisationSpinner.selectedItem.toString())
                 Log.i("spinner", selectedItem)
-                SharedPreferenceUtils.putString("selectedOrganisation", selectedItem)
+                SharedPreferenceUtils.putString(Fields.SELECTED_ORGANIZATION, selectedItem)
                 Toast.makeText(context, "Resetiraj aplikaciju za promjenu teme", Toast.LENGTH_LONG).show()
 
             }
@@ -94,15 +81,13 @@ class SettingsFragment : Fragment() {
             }
         }
 
-
-
         binding.swDarkMode.isChecked = getDarkMode() == Configuration.UI_MODE_NIGHT_YES
         binding.swEventNotification.isChecked = SharedPreferenceUtils.getBoolean(
             Fields.RECEIVE_NOTIFICATIONS_EVENTS, true) == true
         binding.swSurveyNotification.isChecked = SharedPreferenceUtils.getBoolean(
             Fields.RECEIVE_NOTIFICATIONS_SURVEYS, true) == true
 
-        binding.swDarkMode.setOnCheckedChangeListener { buttonView, isChecked ->
+        binding.swDarkMode.setOnCheckedChangeListener { buttonView, _ ->
             if (buttonView.isShown) { //ako nema ovog nakon aktiviranja switcha kod se neprestano pokrece
                 when (getDarkMode()) {
                     Configuration.UI_MODE_NIGHT_YES -> {
@@ -117,14 +102,14 @@ class SettingsFragment : Fragment() {
             }
         }
 
-        binding.swEventNotification.setOnCheckedChangeListener { buttonView, isChecked ->
+        binding.swEventNotification.setOnCheckedChangeListener { buttonView, _ ->
             if (buttonView.isShown) { //ako nema ovog nakon aktiviranja switcha kod se neprestano pokrece
                 val receiveNotification = SharedPreferenceUtils.getBoolean(Fields.RECEIVE_NOTIFICATIONS_EVENTS, true) == true
                 SharedPreferenceUtils.putBoolean(Fields.RECEIVE_NOTIFICATIONS_EVENTS, !receiveNotification)
             }
         }
 
-        binding.swSurveyNotification.setOnCheckedChangeListener { buttonView, isChecked ->
+        binding.swSurveyNotification.setOnCheckedChangeListener { buttonView, _ ->
             if (buttonView.isShown) { //ako nema ovog nakon aktiviranja switcha kod se neprestano pokrece
                 val receiveNotification = SharedPreferenceUtils.getBoolean(Fields.RECEIVE_NOTIFICATIONS_SURVEYS, true) == true
                 SharedPreferenceUtils.putBoolean(Fields.RECEIVE_NOTIFICATIONS_SURVEYS, !receiveNotification)

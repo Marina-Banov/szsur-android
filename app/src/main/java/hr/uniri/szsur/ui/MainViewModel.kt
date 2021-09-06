@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import hr.uniri.szsur.data.model.User
 import hr.uniri.szsur.data.network.ResultWrapper.*
 import hr.uniri.szsur.data.repository.EnumsRepository
@@ -75,6 +76,9 @@ class MainViewModel : ViewModel() {
                 ""
             }
             is Success -> fcmToken.toString()
+        }
+        for (f in UserRepository.user.value!!.favorites) {
+            Firebase.messaging.subscribeToTopic(f).addOnCompleteListener { }
         }
     }
 

@@ -13,7 +13,9 @@ object SharedPreferenceUtils {
     RECEIVE_NOTIFICATIONS_SURVEYS,
     NIGHT_MODE,
     FCM_TOKEN,
-    USER_EMAIL_KEY
+    USER_EMAIL_KEY,
+    ORGANIZATIONS,
+    SELECTED_ORGANIZATION,
   }
 
   private val sharedPrefs: SharedPreferences?

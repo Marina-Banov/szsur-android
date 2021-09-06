@@ -4,20 +4,18 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import hr.uniri.szsur.data.model.Survey
 import hr.uniri.szsur.data.model.UpdateOrganisation
 import hr.uniri.szsur.data.model.User
 import hr.uniri.szsur.data.network.ResultWrapper
 import hr.uniri.szsur.data.repository.EnumsRepository
-import hr.uniri.szsur.data.repository.SurveysRepository
 import hr.uniri.szsur.data.repository.UserRepository
 import hr.uniri.szsur.util.SharedPreferenceUtils
+import hr.uniri.szsur.util.SharedPreferenceUtils.Fields
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import java.lang.StringBuilder
-import kotlin.math.E
+
 
 class SettingsViewModel: ViewModel() {
 
@@ -51,14 +49,14 @@ class SettingsViewModel: ViewModel() {
             _organisations.value = EnumsRepository.organisations.value
             var organisationString = _organisations.value.toString()
             organisationString = organisationString.drop(1).dropLast(1).replace(" ", "")
-            SharedPreferenceUtils.putString("organisations", organisationString)
+            SharedPreferenceUtils.putString(Fields.ORGANIZATIONS, organisationString)
         }
     }
 
     fun updateUsersOrganisation(organisation: String){
         coroutineScope.launch {
-            var body = UpdateOrganisation(organisation)
-            val response = UserRepository.updateOrganisation(body)
+            val body = UpdateOrganisation(organisation)
+            val response = UserRepository.updateUser(body)
 
             if (response is ResultWrapper.GenericError){
                 Log.i("updateUsersOrganisation", "ERROR ${response.code}")
@@ -83,7 +81,7 @@ class SettingsViewModel: ViewModel() {
                     }
                     is ResultWrapper.Success -> response.value
                 }
-            SharedPreferenceUtils.putString("selectedOrganisation", UserRepository.user.value!!.organisation)
+            SharedPreferenceUtils.putString(Fields.SELECTED_ORGANIZATION, UserRepository.user.value!!.organisation)
         }
     }
 

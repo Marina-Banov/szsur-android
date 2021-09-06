@@ -21,7 +21,6 @@ import hr.uniri.szsur.BuildConfig.VERSION_NAME
 import hr.uniri.szsur.ui.MainActivity
 import hr.uniri.szsur.R
 import hr.uniri.szsur.data.repository.UserRepository
-import hr.uniri.szsur.ui.BaseThemeActivity
 import hr.uniri.szsur.ui.organisations.ChooseOrganisationActivity
 import hr.uniri.szsur.util.AppActivityResult
 import hr.uniri.szsur.util.SharedPreferenceUtils

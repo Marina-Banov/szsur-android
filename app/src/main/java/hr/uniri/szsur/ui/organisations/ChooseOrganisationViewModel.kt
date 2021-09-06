@@ -12,6 +12,7 @@ import hr.uniri.szsur.data.network.ResultWrapper
 import hr.uniri.szsur.data.repository.EnumsRepository
 import hr.uniri.szsur.data.repository.UserRepository
 import hr.uniri.szsur.util.SharedPreferenceUtils
+import hr.uniri.szsur.util.SharedPreferenceUtils.Fields
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -63,8 +64,8 @@ class ChooseOrganisationViewModel : ViewModel() {
 
     fun updateUsersOrganisation(organisation: String){
         coroutineScope.launch {
-            var body = UpdateOrganisation(organisation)
-            val response = UserRepository.updateOrganisation(body)
+            val body = UpdateOrganisation(organisation)
+            val response = UserRepository.updateUser(body)
 
             if (response is ResultWrapper.GenericError){
                 Log.i("updateUsersOrganisation", "ERROR ${response.code}")
@@ -89,7 +90,7 @@ class ChooseOrganisationViewModel : ViewModel() {
                     }
                     is ResultWrapper.Success -> response.value
                 }
-            SharedPreferenceUtils.putString("selectedOrganisation", UserRepository.user.value!!.organisation)
+            SharedPreferenceUtils.putString(Fields.SELECTED_ORGANIZATION, UserRepository.user.value!!.organisation)
         }
     }
 

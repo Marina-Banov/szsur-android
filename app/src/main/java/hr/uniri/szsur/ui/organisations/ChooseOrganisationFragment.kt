@@ -13,6 +13,7 @@ import androidx.databinding.DataBindingUtil
 import hr.uniri.szsur.R
 import hr.uniri.szsur.databinding.FragmentChooseOrganisationBinding
 import hr.uniri.szsur.util.SharedPreferenceUtils
+import hr.uniri.szsur.util.SharedPreferenceUtils.Fields
 
 
 class ChooseOrganisationFragment : Fragment() {
@@ -29,7 +30,7 @@ class ChooseOrganisationFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_choose_organisation, container, false)
         viewModel = ViewModelProvider(this).get(ChooseOrganisationViewModel::class.java)
 
-        var storedOrganisations = SharedPreferenceUtils.getString("organisations", "")
+        val storedOrganisations = SharedPreferenceUtils.getString(Fields.ORGANIZATIONS, "")
         if (storedOrganisations != "" && storedOrganisations != null){
             organisations = storedOrganisations.split(",") as ArrayList<String>
         }
@@ -43,9 +44,9 @@ class ChooseOrganisationFragment : Fragment() {
             binding.organisationSpinner.adapter = arrayAdapter
         })
 
-        var storedSelectedOrganisation = SharedPreferenceUtils.getString("selectedOrganisation", "")
+        val storedSelectedOrganisation = SharedPreferenceUtils.getString(Fields.SELECTED_ORGANIZATION, "")
         if (storedSelectedOrganisation != "" && storedSelectedOrganisation != null){
-            var position = organisations.indexOf(storedSelectedOrganisation)
+            val position = organisations.indexOf(storedSelectedOrganisation)
             binding.organisationSpinner.setSelection(position)
         }
 
@@ -60,7 +61,7 @@ class ChooseOrganisationFragment : Fragment() {
                 val selectedItem = binding.organisationSpinner.selectedItem.toString()
                 viewModel.updateUsersOrganisation(binding.organisationSpinner.selectedItem.toString())
                 Toast.makeText(context, binding.organisationSpinner.selectedItem.toString(), Toast.LENGTH_SHORT).show()
-                SharedPreferenceUtils.putString("selectedOrganisation", selectedItem)
+                SharedPreferenceUtils.putString(Fields.SELECTED_ORGANIZATION, selectedItem)
 
             }
 
