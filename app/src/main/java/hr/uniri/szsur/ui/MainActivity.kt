@@ -1,17 +1,8 @@
 package hr.uniri.szsur.ui
 
-import android.app.*
-import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.libraries.places.api.Places
-import androidx.core.app.NotificationCompat
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.messaging.ktx.messaging
 import hr.uniri.szsur.R
 import hr.uniri.szsur.data.repository.PlacesRepository
 
@@ -19,12 +10,6 @@ import hr.uniri.szsur.data.repository.PlacesRepository
 class MainActivity : BaseThemeActivity() {
 
     private lateinit var viewModel: MainViewModel
-    companion object {
-        private const val CHANNEL_ID = "hr.szsur"
-        private const val NOTIFICATION_ID = 1234
-    }
-
-    //private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,51 +17,6 @@ class MainActivity : BaseThemeActivity() {
         PlacesRepository.client = Places.createClient(this)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         setContentView(R.layout.activity_main)
-
-
-       // getNotificationToken()
-        //createNotificationChannel()
     }
 
-    private fun getNotificationToken() {
-        Firebase.messaging.token.addOnCompleteListener(OnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                Log.e("getNotificationToken", "Fetching FCM registration token failed", task.exception)
-                return@OnCompleteListener
-            }
-
-            val token = task.result
-            val msg = getString(R.string.msg_token_fmt, token)
-            Log.d("getNotificationToken", msg)
-        })
-    }
-
-    private fun createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = getString(R.string.channel_name)
-            val descriptionText = getString(R.string.channel_description)
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
-                description = descriptionText
-            }
-
-            val notificationManager: NotificationManager =
-                getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
-
-            val intentNottification = Intent(this, MainActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            }
-            val pendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, intentNottification, 0)
-
-            val builder = NotificationCompat.Builder(this, CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentTitle(getString(R.string.notification_title))
-                .setContentText(getString(R.string.notification_text))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true)
-            notificationManager.notify(NOTIFICATION_ID, builder.build())
-        }
-    }
 }

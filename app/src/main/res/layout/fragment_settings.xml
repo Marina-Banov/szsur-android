@@ -89,12 +89,9 @@
 
         <ImageView
             android:id="@+id/ic_organisation"
-            style="@style/Widget.SZSUR.SettingsItemIcon"
+            app:srcCompat="@drawable/ic_university"
             android:layout_width="23dp"
-            android:layout_height="53dp"
-            android:contentDescription="TODO"
-            android:minWidth="23dp"
-            app:srcCompat="@drawable/organisation" />
+            style="@style/Widget.SZSUR.SettingsItemIcon" />
 
         <TextView
             style="@style/TextAppearance.SZSUR.UserSettings"
@@ -132,8 +129,9 @@
             android:layout_marginEnd="13dp"
             android:layout_marginBottom="8dp"
             android:padding="8dp"
-            android:paddingRight="16dp"
+            android:paddingEnd="16dp"
             android:text=" PRIMJENI ODABIR"
+            android:textColor="?surveyButtonTextColor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.991"

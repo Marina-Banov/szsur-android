@@ -60,6 +60,9 @@ class MainViewModel : ViewModel() {
 
             val fcmToken = SharedPreferenceUtils.getString(Fields.FCM_TOKEN, "")
             if (response is Success && response.value.fcmToken != fcmToken) {
+                for (f in UserRepository.user.value!!.favorites) {
+                    Firebase.messaging.subscribeToTopic(f).addOnCompleteListener { }
+                }
                 updateFcmToken(fcmToken)
             }
         }
@@ -79,9 +82,6 @@ class MainViewModel : ViewModel() {
                 ""
             }
             is Success -> fcmToken.toString()
-        }
-        for (f in UserRepository.user.value!!.favorites) {
-            Firebase.messaging.subscribeToTopic(f).addOnCompleteListener { }
         }
     }
 

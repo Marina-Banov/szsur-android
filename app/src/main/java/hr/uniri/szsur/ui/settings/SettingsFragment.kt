@@ -68,7 +68,7 @@ class SettingsFragment : Fragment() {
             SharedPreferenceUtils.putString(Fields.SELECTED_ORGANIZATION, selectedItem)
             viewModel.updateUsersOrganisation(selectedItem)
             requireActivity().recreate()
-            requireActivity().onBackPressed()
+            (activity as SettingsActivity).returnToMain()
         }
 
         binding.swDarkMode.setOnCheckedChangeListener { buttonView, isChecked ->

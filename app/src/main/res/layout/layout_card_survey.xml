@@ -64,7 +64,6 @@
                 android:padding="8dp"
                 android:text="@{survey.organisation}"
                 android:textAlignment="center"
-                app:chipCornerRadius="0dp"
                 tools:text="SZSUR" />
 
             <ImageButton
