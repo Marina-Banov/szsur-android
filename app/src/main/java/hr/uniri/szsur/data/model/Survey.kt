@@ -17,6 +17,7 @@ data class Survey (
     val active: Boolean = false,
     val activeQuestion: String = "",
     val activeQuestionChoices: List<String> = listOf(),
+    override val organisation: String = "",
     var questions: List<Question>? = listOf(),
     var results: Map<String, Int>? = mapOf(),
     override val tags: List<String> = listOf(),

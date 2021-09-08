@@ -72,38 +72,52 @@
 
             <LinearLayout
                 android:id="@id/times"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="0dp"
                 android:layout_below="@id/home_img"
-                android:layout_alignParentEnd="true"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:layout_toStartOf="@+id/times"
                 android:layout_alignTop="@id/fragment_home_info"
-                android:layout_alignBottom="@id/fragment_home_info">
+                android:layout_alignBottom="@id/fragment_home_info"
+                android:layout_alignParentEnd="true"
+                android:layout_toStartOf="@+id/times"
+                android:gravity="center"
+                android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/show_details_button"
+                <com.google.android.material.chip.Chip
+                    style="@style/Widget.SZSUR.Chip.Choice"
+                    android:checkable="false"
+                    app:chipCornerRadius="0dp"
+                    android:text="@{event.organisation}"
+                    tools:text="SZSUR" />
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:padding="@dimen/spacing_small"
-                    android:layout_marginBottom="@dimen/spacing_small"
-                    app:srcCompat="@drawable/ic_more"
-                    app:backgroundTint="?attr/cardBackgroundColor" />
+                    android:orientation="horizontal">
 
-                <ImageButton
-                    android:id="@+id/favorites_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:padding="@dimen/spacing_small"
-                    android:layout_marginBottom="@dimen/spacing_small"
-                    android:layout_marginEnd="@dimen/spacing_small"
-                    tools:srcCompat="@drawable/ic_favorite"
-                    app:favoriteIcon="@{isFavorite}"
-                    app:tint="?attr/colorPrimary"
-                    app:backgroundTint="?attr/cardBackgroundColor" />
+                    <ImageView
+                        android:id="@+id/show_details_button"
+                        android:layout_width="50dp"
+                        android:layout_height="28dp"
+                        android:layout_gravity="bottom"
+                        android:layout_marginBottom="@dimen/spacing_small"
+
+                        app:backgroundTint="?attr/cardBackgroundColor"
+                        app:srcCompat="@drawable/ic_more" />
+
+                    <ImageButton
+                        android:id="@+id/favorites_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:layout_marginEnd="@dimen/spacing_small"
+                        android:layout_marginBottom="@dimen/spacing_small"
+                        android:padding="@dimen/spacing_small"
+                        app:backgroundTint="?attr/cardBackgroundColor"
+                        app:favoriteIcon="@{isFavorite}"
+                        app:tint="?attr/colorPrimary"
+                        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck,SpeakableTextPresentCheck"
+                        tools:srcCompat="@drawable/ic_favorite" />
+                </LinearLayout>
 
             </LinearLayout>
         </RelativeLayout>

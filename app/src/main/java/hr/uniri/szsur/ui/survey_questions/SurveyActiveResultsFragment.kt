@@ -43,6 +43,7 @@ class SurveyActiveResultsFragment : Fragment() {
                 val view = generateActiveAnswerPercentageBar(e.key, e.value)
                 binding.answersList.addView(view)
             }
+            binding.loadingPanel.visibility = View.GONE
         })
 
         return binding.root
