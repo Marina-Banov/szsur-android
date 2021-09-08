@@ -38,36 +38,60 @@
                 tools:text="@string/survey_dummy_title" />
 
             <ImageView
+                android:id="@+id/solve_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                app:surveyStatusIcon="@{survey}"
+                android:layout_marginStart="@dimen/spacing_small"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:layout_marginEnd="@dimen/spacing_small"
+                android:layout_marginBottom="@dimen/spacing_small"
                 android:padding="@dimen/spacing_small"
-                android:layout_margin="@dimen/spacing_small"
+                app:surveyStatusIcon="@{survey}"
                 tools:src="@drawable/ic_check" />
+
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.SZSUR.Chip.Choice"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="2dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginBottom="6dp"
+                android:layout_toStartOf="@+id/favorites_button"
+
+                android:layout_toEndOf="@id/solve_button"
+                android:checkable="false"
+                android:padding="8dp"
+                android:text="@{survey.organisation}"
+                android:textAlignment="center"
+                app:chipCornerRadius="0dp"
+                tools:text="SZSUR" />
 
             <ImageButton
                 android:id="@+id/favorites_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
+                android:layout_marginStart="@dimen/spacing_small"
+                android:layout_marginTop="@dimen/spacing_small"
+                android:layout_marginEnd="@dimen/spacing_small"
+                android:layout_marginBottom="@dimen/spacing_small"
                 android:layout_toStartOf="@id/survey_image"
                 android:padding="@dimen/spacing_small"
-                android:layout_margin="@dimen/spacing_small"
                 app:backgroundTint="?attr/cardBackgroundColor"
-                tools:srcCompat="@drawable/ic_favorite"
                 app:favoriteIcon="@{isFavorite}"
-                app:tint="?attr/colorPrimary" />
+                app:tint="?attr/colorPrimary"
+                tools:srcCompat="@drawable/ic_favorite" />
 
             <ImageView
                 android:id="@+id/survey_image"
                 android:layout_width="168dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
+                android:contentDescription="TODO"
                 android:scaleType="centerCrop"
                 app:imageUrl="@{survey.image}"
-                tools:src="@drawable/dummy"
-                android:contentDescription="TODO" />
+                tools:src="@drawable/dummy" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </layout>

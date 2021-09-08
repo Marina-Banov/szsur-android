@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import hr.uniri.szsur.data.model.UpdateOrganisation
-import hr.uniri.szsur.data.model.User
 import hr.uniri.szsur.data.network.ResultWrapper
 import hr.uniri.szsur.data.repository.EnumsRepository
 import hr.uniri.szsur.data.repository.UserRepository
@@ -38,8 +37,10 @@ class ChooseOrganisationViewModel : ViewModel() {
 
                 UserRepository.token = task.result.token!!
                 getOrganisations()
+
             }
         }
+
     }
 
     private fun getOrganisations() {
@@ -59,6 +60,9 @@ class ChooseOrganisationViewModel : ViewModel() {
                 }
             Log.i("getOrganisations", EnumsRepository.organisations.value.toString())
             _organisations.value = EnumsRepository.organisations.value
+            var organisationString = _organisations.value.toString()
+            organisationString = organisationString.drop(1).dropLast(1).replace(" ", "")
+            SharedPreferenceUtils.putString(Fields.ORGANIZATIONS, organisationString)
         }
     }
 
@@ -75,24 +79,6 @@ class ChooseOrganisationViewModel : ViewModel() {
         }
     }
 
-    private fun getUserOrganisation() {
-        coroutineScope.launch {
-            val response = UserRepository.get()
-            UserRepository.user.value =
-                when (response) {
-                    is ResultWrapper.NetworkError -> {
-                        Log.i("getUser", "NO CONNECTION")
-                        User()
-                    }
-                    is ResultWrapper.GenericError -> {
-                        Log.i("getUser", "ERROR ${response.code}")
-                        User()
-                    }
-                    is ResultWrapper.Success -> response.value
-                }
-            SharedPreferenceUtils.putString(Fields.SELECTED_ORGANIZATION, UserRepository.user.value!!.organisation)
-        }
-    }
 
     override fun onCleared() {
         super.onCleared()

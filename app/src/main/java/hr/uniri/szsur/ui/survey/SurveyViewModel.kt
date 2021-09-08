@@ -7,8 +7,10 @@ import androidx.lifecycle.ViewModel
 import hr.uniri.szsur.data.model.Survey
 import hr.uniri.szsur.data.network.ResultWrapper.*
 import hr.uniri.szsur.data.repository.SurveysRepository
+import hr.uniri.szsur.util.SharedPreferenceUtils
 import hr.uniri.szsur.util.filterByTags
 import hr.uniri.szsur.util.search
+import hr.uniri.szsur.util.sortByOrganisation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -27,6 +29,7 @@ class SurveyViewModel: ViewModel() {
 
     init {
         getSurveys()
+
     }
 
     private fun getSurveys() {
@@ -46,8 +49,13 @@ class SurveyViewModel: ViewModel() {
                         is Success -> response.value as ArrayList<Survey>
                     }
             }
-            _surveys.value = SurveysRepository.surveys.value
-            _displaySurveys.value = SurveysRepository.surveys.value
+
+            val surveys = sortByOrganisation(
+                SurveysRepository.surveys.value,
+                SharedPreferenceUtils.getString("selectedOrganisation", "SZSUR")
+            )
+            _surveys.value = surveys
+            _displaySurveys.value = surveys
         }
     }
 
@@ -61,6 +69,13 @@ class SurveyViewModel: ViewModel() {
         _surveys.value?.let {
             _displaySurveys.value = search(it, query)
         }
+    }
+
+    fun sortByOrganisation(organisation: String?) {
+        _surveys.value?.let {
+            _displaySurveys.value = sortByOrganisation(it, organisation)
+        }
+
     }
 
     override fun onCleared() {

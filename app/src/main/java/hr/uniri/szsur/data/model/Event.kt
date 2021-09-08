@@ -20,7 +20,7 @@ data class Event(
     var location: String = "",
     private var _googlePlace: Place? = null,
     val online: Boolean = false,
-    val organisation: String = "",
+    override val organisation: String = "",
     val startTime: Date = Date(),
     override val tags: List<String> = listOf(),
     override val title: String = "",

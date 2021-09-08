@@ -2,13 +2,10 @@ package hr.uniri.szsur.ui.settings
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -60,34 +57,21 @@ class SettingsFragment : Fragment() {
             binding.organisationSpinner.setSelection(position)
         }
 
-        binding.organisationSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-
-                val selectedItem = binding.organisationSpinner.selectedItem.toString()
-                viewModel.updateUsersOrganisation(binding.organisationSpinner.selectedItem.toString())
-                Log.i("spinner", selectedItem)
-                SharedPreferenceUtils.putString(Fields.SELECTED_ORGANIZATION, selectedItem)
-                Toast.makeText(context, "Resetiraj aplikaciju za promjenu teme", Toast.LENGTH_LONG).show()
-
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                TODO("Not yet implemented")
-            }
-        }
-
         binding.swDarkMode.isChecked = getDarkMode() == Configuration.UI_MODE_NIGHT_YES
         binding.swEventNotification.isChecked = SharedPreferenceUtils.getBoolean(
             Fields.RECEIVE_NOTIFICATIONS_EVENTS, true) == true
         binding.swSurveyNotification.isChecked = SharedPreferenceUtils.getBoolean(
             Fields.RECEIVE_NOTIFICATIONS_SURVEYS, true) == true
 
-        binding.swDarkMode.setOnCheckedChangeListener { buttonView, _ ->
+        binding.applyButton.setOnClickListener {
+            val selectedItem = binding.organisationSpinner.selectedItem.toString()
+            SharedPreferenceUtils.putString(Fields.SELECTED_ORGANIZATION, selectedItem)
+            viewModel.updateUsersOrganisation(selectedItem)
+            requireActivity().recreate()
+            requireActivity().onBackPressed()
+        }
+
+        binding.swDarkMode.setOnCheckedChangeListener { buttonView, isChecked ->
             if (buttonView.isShown) { //ako nema ovog nakon aktiviranja switcha kod se neprestano pokrece
                 when (getDarkMode()) {
                     Configuration.UI_MODE_NIGHT_YES -> {
