@@ -1,15 +1,13 @@
 package hr.uniri.szsur.ui.organisations
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import hr.uniri.szsur.R
 import hr.uniri.szsur.databinding.FragmentChooseOrganisationBinding
 import hr.uniri.szsur.util.SharedPreferenceUtils
@@ -29,47 +27,24 @@ class ChooseOrganisationFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_choose_organisation, container, false)
         viewModel = ViewModelProvider(this).get(ChooseOrganisationViewModel::class.java)
 
-        var storedOrganisations = SharedPreferenceUtils.getString("organisations", "")
-        if (storedOrganisations != "" && storedOrganisations != null){
-            organisations = storedOrganisations.split(",") as ArrayList<String>
-        }
 
         viewModel.organisations.observe(viewLifecycleOwner, {
             arrayAdapter = ArrayAdapter(
                 this.requireContext(),
-                android.R.layout.simple_spinner_dropdown_item,
+                R.layout.org_spinner_selected_item,
                 it)
-
+            arrayAdapter.setDropDownViewResource(R.layout.org_spinner_dropdown)
             binding.organisationSpinner.adapter = arrayAdapter
+            binding.loadingPanel.visibility = View.GONE
+            binding.organisationLinearLayout.visibility = View.VISIBLE
+            binding.continueButton.visibility = View.VISIBLE
         })
 
-        var storedSelectedOrganisation = SharedPreferenceUtils.getString("selectedOrganisation", "")
-        if (storedSelectedOrganisation != "" && storedSelectedOrganisation != null){
-            var position = organisations.indexOf(storedSelectedOrganisation)
-            binding.organisationSpinner.setSelection(position)
-        }
-
-        binding.organisationSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-
-                val selectedItem = binding.organisationSpinner.selectedItem.toString()
-                viewModel.updateUsersOrganisation(binding.organisationSpinner.selectedItem.toString())
-                Toast.makeText(context, binding.organisationSpinner.selectedItem.toString(), Toast.LENGTH_SHORT).show()
-                SharedPreferenceUtils.putString("selectedOrganisation", selectedItem)
-
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-
-            }
-        }
 
         binding.continueButton.setOnClickListener {
+            val selectedItem = binding.organisationSpinner.selectedItem.toString()
+            viewModel.updateUsersOrganisation(selectedItem)
+            SharedPreferenceUtils.putString("selectedOrganisation", selectedItem)
             (activity as ChooseOrganisationActivity).navigateToMainActivity()
         }
         return binding.root
