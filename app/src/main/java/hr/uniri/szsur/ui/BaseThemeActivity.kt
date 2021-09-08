@@ -1,21 +1,21 @@
 package hr.uniri.szsur.ui
 
-import android.app.Activity
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ArrayAdapter
-import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
+import androidx.appcompat.app.AppCompatActivity
 import hr.uniri.szsur.R
-import hr.uniri.szsur.ui.settings.SettingsViewModel
 import hr.uniri.szsur.util.SharedPreferenceUtils
 
 open class BaseThemeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        val resId = R.style::class.java.getId("Theme_" + SharedPreferenceUtils.getString("selectedOrganisation", "SZUR"))
+        var theme = SharedPreferenceUtils.getString("selectedOrganisation", "SZUR")
+        if(theme.equals("SZFZSRI") || theme.equals("SZMEDRI")){
+            theme = "SZFZSRI_SZMEDRI"
+        }else if (theme.equals("SZEFRI") || theme.equals("SZFMTU")){
+            theme = "SZEFRI_SZFMTU"
+        }
+        val resId = R.style::class.java.getId("Theme_" + theme)
         setTheme(resId)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base_theme)
