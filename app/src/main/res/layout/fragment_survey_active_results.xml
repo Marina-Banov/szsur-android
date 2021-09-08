@@ -84,7 +84,18 @@
                     android:paddingTop="20dp"/>
 
 
+                <RelativeLayout
+                    android:id="@+id/loadingPanel"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center">
 
+                    <ProgressBar
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:indeterminate="true"
+                        android:indeterminateDrawable="@drawable/progress_circle" />
+                </RelativeLayout>
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
