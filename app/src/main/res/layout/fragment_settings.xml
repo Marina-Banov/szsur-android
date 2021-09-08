@@ -20,26 +20,6 @@
         android:background="@drawable/settings_layout_border"/>
 
     <LinearLayout
-        android:id="@+id/organisation"
-        style="@style/Widget.SZSUR.SettingsItem">
-
-      <ImageView
-          android:id="@+id/ic_organisation"
-          app:srcCompat="@drawable/organisation"
-          style="@style/Widget.SZSUR.SettingsItemIcon"/>
-
-      <TextView
-          android:text="@string/choose_organisation"
-          style="@style/TextAppearance.SZSUR.UserSettings"/>
-
-      <Spinner
-          android:id="@+id/organisation_spinner"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:spinnerMode="dropdown"/>
-
-    </LinearLayout>
-    <LinearLayout
         android:id="@+id/dark_mode"
         style="@style/Widget.SZSUR.SettingsItem">
 
@@ -93,6 +73,75 @@
       <androidx.appcompat.widget.SwitchCompat
           android:id="@+id/sw_survey_notification"
           style="@style/Widget.SZSUR.SettingsSwitch"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/Widget.SZSUR.SettingsItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+      <LinearLayout
+          android:id="@+id/organisation"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/ic_organisation"
+            style="@style/Widget.SZSUR.SettingsItemIcon"
+            android:layout_width="23dp"
+            android:layout_height="53dp"
+            android:contentDescription="TODO"
+            android:minWidth="23dp"
+            app:srcCompat="@drawable/organisation" />
+
+        <TextView
+            style="@style/TextAppearance.SZSUR.UserSettings"
+            android:text="@string/choose_organisation" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_gravity="center"
+            android:layout_marginEnd="13dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+
+          <Spinner
+              android:id="@+id/organisation_spinner"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:minHeight="48dp"
+              android:spinnerMode="dropdown"
+              />
+        </RelativeLayout>
+
+      </LinearLayout>
+
+      <androidx.constraintlayout.widget.ConstraintLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/apply_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginEnd="13dp"
+            android:layout_marginBottom="8dp"
+            android:padding="8dp"
+            android:paddingRight="16dp"
+            android:text=" PRIMJENI ODABIR"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.991"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+      </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     </LinearLayout>
 
