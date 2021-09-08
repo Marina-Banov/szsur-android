@@ -12,7 +12,7 @@ data class Question (
     val type: String = "",
     val question: String = "",
     val required: Boolean = true,
-    val choices: List<String> = listOf()
+    val choices: List<String> = listOf(),
 ) : Parcelable {
     override fun toString(): String {
         var s = "$order. $question"
