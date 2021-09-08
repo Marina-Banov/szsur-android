@@ -2,7 +2,7 @@ package hr.uniri.szsur.util
 
 import hr.uniri.szsur.data.model.Filterable
 import hr.uniri.szsur.data.model.Survey
-import java.util.ArrayList
+import kotlin.collections.ArrayList
 
 fun <T: Filterable> filterByTags(originalList: ArrayList<T>,
                                  tags: ArrayList<String>?): ArrayList<T> {
@@ -37,6 +37,23 @@ fun <T: Filterable> search(originalList: ArrayList<T>,
     return result
 }
 
+fun <T: Filterable> sortByOrganisation(originalList: ArrayList<T>?, organisation: String?) : ArrayList<T>{
+    val firstPart = ArrayList<T>()
+    val secondPart = ArrayList<T>()
+    if (originalList != null) {
+        for (item in originalList) {
+            if (item.organisation.equals(organisation)){
+                firstPart.add(item)
+            }else{
+                secondPart.add(item)
+            }
+        }
+    }
+
+    firstPart.addAll(secondPart)
+    return firstPart
+}
+
 fun filterByStatus(originalList: ArrayList<Survey>, status: Boolean):
         ArrayList<Survey> {
     val result = ArrayList<Survey>()
@@ -47,3 +64,5 @@ fun filterByStatus(originalList: ArrayList<Survey>, status: Boolean):
     }
     return result
 }
+
+

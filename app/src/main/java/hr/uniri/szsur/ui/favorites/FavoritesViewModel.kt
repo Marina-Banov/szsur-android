@@ -7,8 +7,10 @@ import hr.uniri.szsur.data.model.Filterable
 import hr.uniri.szsur.data.repository.EventsRepository
 import hr.uniri.szsur.data.repository.SurveysRepository
 import hr.uniri.szsur.data.repository.UserRepository
+import hr.uniri.szsur.util.SharedPreferenceUtils
 import hr.uniri.szsur.util.filterByTags
 import hr.uniri.szsur.util.search
+import hr.uniri.szsur.util.sortByOrganisation
 import java.util.ArrayList
 
 
@@ -36,7 +38,12 @@ class FavoritesViewModel: ViewModel() {
                 _favoriteItems.value!!.add(it)
             }
         }
-        _displayItems.value = _favoriteItems.value
+        val favorites = sortByOrganisation(
+            _favoriteItems.value,
+            SharedPreferenceUtils.getString("selectedOrganisation", "SZSUR")
+        )
+        _favoriteItems.value = favorites
+        _displayItems.value = favorites
     }
 
     fun updateFavorites(tags: ArrayList<String>?) {
