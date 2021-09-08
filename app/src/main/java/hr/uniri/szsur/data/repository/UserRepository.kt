@@ -30,8 +30,8 @@ object UserRepository {
         return NetworkUtils.safeApiCall { Api.retrofitService.updateFavorites(uid, body) }
     }
 
-    suspend fun updateOrganisation(body: UpdateOrganisation): ResultWrapper<ResponseBody> {
-        return NetworkUtils.safeApiCall { Api.retrofitService.updateOrganisation(uid, body) }
+    suspend fun updateUser(body: Any): ResultWrapper<ResponseBody> {
+        return NetworkUtils.safeApiCall { Api.retrofitService.updateUser(uid, body) }
     }
 
     fun updateFavorites(liked: Boolean, favoriteId: String) {

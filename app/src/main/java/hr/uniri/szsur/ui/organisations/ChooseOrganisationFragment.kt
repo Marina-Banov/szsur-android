@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import hr.uniri.szsur.R
 import hr.uniri.szsur.databinding.FragmentChooseOrganisationBinding
 import hr.uniri.szsur.util.SharedPreferenceUtils
+import hr.uniri.szsur.util.SharedPreferenceUtils.Fields
 
 
 class ChooseOrganisationFragment : Fragment() {
@@ -26,7 +27,6 @@ class ChooseOrganisationFragment : Fragment() {
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_choose_organisation, container, false)
         viewModel = ViewModelProvider(this).get(ChooseOrganisationViewModel::class.java)
-
 
         viewModel.organisations.observe(viewLifecycleOwner, {
             arrayAdapter = ArrayAdapter(
@@ -44,7 +44,7 @@ class ChooseOrganisationFragment : Fragment() {
         binding.continueButton.setOnClickListener {
             val selectedItem = binding.organisationSpinner.selectedItem.toString()
             viewModel.updateUsersOrganisation(selectedItem)
-            SharedPreferenceUtils.putString("selectedOrganisation", selectedItem)
+            SharedPreferenceUtils.putString(Fields.SELECTED_ORGANIZATION, selectedItem)
             (activity as ChooseOrganisationActivity).navigateToMainActivity()
         }
         return binding.root

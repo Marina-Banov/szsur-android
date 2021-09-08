@@ -57,14 +57,14 @@ interface ApiService {
     @UserJsonAdapter
     suspend fun getUser(@Path("id") id: String): User
 
+    @PUT("users/{id}")
+    suspend fun updateUser(@Path("id") id: String, @Body body: Any): ResponseBody
+
     @PUT("users/{id}/favorites")
     suspend fun updateFavorites(@Path("id") id: String, @Body body: UpdateFavorite): ResponseBody
 
     @PUT("users/{id}/surveys")
     suspend fun addSurveyResults(@Path("id") id: String, @Body body: Any): ResponseBody
-
-    @PUT("users/{id}")
-    suspend fun updateOrganisation(@Path("id") id: String, @Body body: Any): ResponseBody
 }
 
 object Api {

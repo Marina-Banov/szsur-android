@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import hr.uniri.szsur.R
 import hr.uniri.szsur.databinding.FragmentSettingsBinding
 import hr.uniri.szsur.util.SharedPreferenceUtils
+import hr.uniri.szsur.util.SharedPreferenceUtils.Fields
 
 
 class SettingsFragment : Fragment() {
@@ -21,13 +22,6 @@ class SettingsFragment : Fragment() {
     lateinit var viewModel: SettingsViewModel
     var organisations: ArrayList<String> = ArrayList()
     private lateinit var arrayAdapter: ArrayAdapter<String>
-
-
-    companion object {
-        private const val NIGHT_MODE = "NIGHT_MODE"
-        private const val RECEIVE_NOTIFICATIONS = "RECEIVE_NOTIFICATIONS"
-        private const val RECEIVE_NOTIFICATIONS_SURVEYS = "RECEIVE_NOTIFICATIONS_SURVEYS"
-    }
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -38,7 +32,7 @@ class SettingsFragment : Fragment() {
             (activity as SettingsActivity).signOut()
         }
 
-        val storedOrganisations = SharedPreferenceUtils.getString("organisations", "")
+        val storedOrganisations = SharedPreferenceUtils.getString(Fields.ORGANIZATIONS, "")
         if (storedOrganisations != "" && storedOrganisations != null){
             organisations = storedOrganisations.split(",") as ArrayList<String>
         }
@@ -57,52 +51,52 @@ class SettingsFragment : Fragment() {
         })
 
         binding.organisationSpinner.adapter = arrayAdapter
-        val storedSelectedOrganisation = SharedPreferenceUtils.getString("selectedOrganisation", "")
+        val storedSelectedOrganisation = SharedPreferenceUtils.getString(Fields.SELECTED_ORGANIZATION, "")
         if (storedSelectedOrganisation != "" && storedSelectedOrganisation != null){
             val position = organisations.indexOf(storedSelectedOrganisation)
             binding.organisationSpinner.setSelection(position)
         }
-        
+
         binding.swDarkMode.isChecked = getDarkMode() == Configuration.UI_MODE_NIGHT_YES
         binding.swEventNotification.isChecked = SharedPreferenceUtils.getBoolean(
-            RECEIVE_NOTIFICATIONS, true) == true
+            Fields.RECEIVE_NOTIFICATIONS_EVENTS, true) == true
         binding.swSurveyNotification.isChecked = SharedPreferenceUtils.getBoolean(
-            RECEIVE_NOTIFICATIONS_SURVEYS, true) == true
+            Fields.RECEIVE_NOTIFICATIONS_SURVEYS, true) == true
 
         binding.applyButton.setOnClickListener {
             val selectedItem = binding.organisationSpinner.selectedItem.toString()
-            SharedPreferenceUtils.putString("selectedOrganisation", selectedItem)
+            SharedPreferenceUtils.putString(Fields.SELECTED_ORGANIZATION, selectedItem)
             viewModel.updateUsersOrganisation(selectedItem)
             requireActivity().recreate()
-            requireActivity().onBackPressed()
+            (activity as SettingsActivity).returnToMain()
         }
 
         binding.swDarkMode.setOnCheckedChangeListener { buttonView, isChecked ->
             if (buttonView.isShown) { //ako nema ovog nakon aktiviranja switcha kod se neprestano pokrece
                 when (getDarkMode()) {
                     Configuration.UI_MODE_NIGHT_YES -> {
-                        SharedPreferenceUtils.putInt(NIGHT_MODE, AppCompatDelegate.MODE_NIGHT_NO)
+                        SharedPreferenceUtils.putInt(Fields.NIGHT_MODE, AppCompatDelegate.MODE_NIGHT_NO)
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                     }
                     Configuration.UI_MODE_NIGHT_NO -> {
-                        SharedPreferenceUtils.putInt(NIGHT_MODE, AppCompatDelegate.MODE_NIGHT_YES)
+                        SharedPreferenceUtils.putInt(Fields.NIGHT_MODE, AppCompatDelegate.MODE_NIGHT_YES)
                         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                     }
                 }
             }
         }
 
-        binding.swEventNotification.setOnCheckedChangeListener { buttonView, isChecked ->
+        binding.swEventNotification.setOnCheckedChangeListener { buttonView, _ ->
             if (buttonView.isShown) { //ako nema ovog nakon aktiviranja switcha kod se neprestano pokrece
-                val receiveNotification = SharedPreferenceUtils.getBoolean(RECEIVE_NOTIFICATIONS, true) == true
-                SharedPreferenceUtils.putBoolean(RECEIVE_NOTIFICATIONS, !receiveNotification)
+                val receiveNotification = SharedPreferenceUtils.getBoolean(Fields.RECEIVE_NOTIFICATIONS_EVENTS, true) == true
+                SharedPreferenceUtils.putBoolean(Fields.RECEIVE_NOTIFICATIONS_EVENTS, !receiveNotification)
             }
         }
 
-        binding.swSurveyNotification.setOnCheckedChangeListener { buttonView, isChecked ->
+        binding.swSurveyNotification.setOnCheckedChangeListener { buttonView, _ ->
             if (buttonView.isShown) { //ako nema ovog nakon aktiviranja switcha kod se neprestano pokrece
-                val receiveNotification = SharedPreferenceUtils.getBoolean(RECEIVE_NOTIFICATIONS_SURVEYS, true) == true
-                SharedPreferenceUtils.putBoolean(RECEIVE_NOTIFICATIONS_SURVEYS, !receiveNotification)
+                val receiveNotification = SharedPreferenceUtils.getBoolean(Fields.RECEIVE_NOTIFICATIONS_SURVEYS, true) == true
+                SharedPreferenceUtils.putBoolean(Fields.RECEIVE_NOTIFICATIONS_SURVEYS, !receiveNotification)
             }
         }
 
@@ -112,8 +106,5 @@ class SettingsFragment : Fragment() {
     private fun getDarkMode(): Int {
         return resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
     }
-
-
-
 
 }

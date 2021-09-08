@@ -61,6 +61,7 @@
     <color name="blue_efri_fmtu_dark">#003370</color>
     <color name="blue_efri_fmtu">#0049a0</color>
     <color name="blue_efri_fmtu_light">#3d6aa1</color>
+    <color name="blue_efri_fmtu_medium_light">#5F87B7</color>
     <color name="blue_efri_fmtu_very_light">#dfe3e8</color>
 
     <color name="blue_fzsri_medri_very_dark">#00101a</color>
@@ -85,8 +86,10 @@
     <color name="blue_pravri_dark">#00006b</color>
     <color name="blue_pravri">#0000d3</color>
     <color name="blue_pravri_light">#3434bf</color>
+    <color name="blue_pravri_medium_light">#859DDC</color>
     <color name="blue_pravri_very_light">#dadae6</color>
 
+    <color name="blue_icon">#FF00B1EB</color>
 
 
 </resources>

@@ -4,10 +4,13 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import hr.uniri.szsur.data.model.User
 import hr.uniri.szsur.data.network.ResultWrapper.*
 import hr.uniri.szsur.data.repository.EnumsRepository
 import hr.uniri.szsur.data.repository.UserRepository
+import hr.uniri.szsur.util.SharedPreferenceUtils
+import hr.uniri.szsur.util.SharedPreferenceUtils.Fields
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -33,6 +36,9 @@ class MainViewModel : ViewModel() {
                 getUser()
                 getTags()
             }
+        } else {
+            getUser()
+            getTags()
         }
     }
 
@@ -51,6 +57,31 @@ class MainViewModel : ViewModel() {
                     }
                     is Success -> response.value
                 }
+
+            val fcmToken = SharedPreferenceUtils.getString(Fields.FCM_TOKEN, "")
+            if (response is Success && response.value.fcmToken != fcmToken) {
+                for (f in UserRepository.user.value!!.favorites) {
+                    Firebase.messaging.subscribeToTopic(f).addOnCompleteListener { }
+                }
+                updateFcmToken(fcmToken)
+            }
+        }
+    }
+
+    private suspend fun updateFcmToken(fcmToken: String?) {
+        val body = hashMapOf<String, String?>()
+        body["fcmToken"] = fcmToken
+        val response = UserRepository.updateUser(body)
+        UserRepository.user.value!!.fcmToken = when (response) {
+            is NetworkError -> {
+                Log.i("updateFcmToken", "NO CONNECTION")
+                ""
+            }
+            is GenericError -> {
+                Log.i("updateFcmToken", "ERROR ${response.code}")
+                ""
+            }
+            is Success -> fcmToken.toString()
         }
     }
 

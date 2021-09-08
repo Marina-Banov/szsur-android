@@ -8,6 +8,7 @@ import hr.uniri.szsur.data.model.Survey
 import hr.uniri.szsur.data.network.ResultWrapper.*
 import hr.uniri.szsur.data.repository.SurveysRepository
 import hr.uniri.szsur.util.SharedPreferenceUtils
+import hr.uniri.szsur.util.SharedPreferenceUtils.Fields
 import hr.uniri.szsur.util.filterByTags
 import hr.uniri.szsur.util.search
 import hr.uniri.szsur.util.sortByOrganisation
@@ -16,6 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.util.ArrayList
+
 
 class SurveyViewModel: ViewModel() {
 
@@ -52,7 +54,7 @@ class SurveyViewModel: ViewModel() {
 
             val surveys = sortByOrganisation(
                 SurveysRepository.surveys.value,
-                SharedPreferenceUtils.getString("selectedOrganisation", "SZSUR")
+                SharedPreferenceUtils.getString(Fields.SELECTED_ORGANIZATION, "SZSUR")
             )
             _surveys.value = surveys
             _displaySurveys.value = surveys

@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModel
 import hr.uniri.szsur.data.model.Event
 import hr.uniri.szsur.data.network.ResultWrapper.*
 import hr.uniri.szsur.data.repository.EventsRepository
-import hr.uniri.szsur.data.repository.SurveysRepository
 import hr.uniri.szsur.util.SharedPreferenceUtils
+import hr.uniri.szsur.util.SharedPreferenceUtils.Fields
 import hr.uniri.szsur.util.filterByTags
 import hr.uniri.szsur.util.search
 import hr.uniri.szsur.util.sortByOrganisation
@@ -53,7 +53,7 @@ class HomeViewModel : ViewModel() {
 
             val events = sortByOrganisation(
                 EventsRepository.events.value,
-                SharedPreferenceUtils.getString("selectedOrganisation", "SZSUR")
+                SharedPreferenceUtils.getString(Fields.SELECTED_ORGANIZATION, "SZSUR")
             )
             _events.value = events
             _displayEvents.value = events

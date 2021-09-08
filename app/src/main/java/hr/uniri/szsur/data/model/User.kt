@@ -14,6 +14,7 @@ data class User (
     val uid: String = "",
     val email: String = "",
     var favorites: List<String> = ArrayList(),
+    var fcmToken: String = "",
     val solvedSurveys: List<String> = ArrayList(),
     val organisation: String = "",
 ) : Parcelable
@@ -21,6 +22,7 @@ data class User (
 @JsonClass(generateAdapter = true)
 data class UserJson (
     val email: String = "",
+    val fcmToken: String = "",
     val favorites: List<FavoriteEntry> = ArrayList(),
     val solvedSurveys: List<String> = ArrayList(),
     val organisation: String = "",
@@ -39,6 +41,7 @@ class UserAdapter {
             UserRepository.uid,
             json.email,
             json.favorites.map{ it.id },
+            json.fcmToken,
             json.solvedSurveys,
             json.organisation,
 

@@ -8,6 +8,7 @@ import hr.uniri.szsur.data.repository.EventsRepository
 import hr.uniri.szsur.data.repository.SurveysRepository
 import hr.uniri.szsur.data.repository.UserRepository
 import hr.uniri.szsur.util.SharedPreferenceUtils
+import hr.uniri.szsur.util.SharedPreferenceUtils.Fields
 import hr.uniri.szsur.util.filterByTags
 import hr.uniri.szsur.util.search
 import hr.uniri.szsur.util.sortByOrganisation
@@ -40,7 +41,7 @@ class FavoritesViewModel: ViewModel() {
         }
         val favorites = sortByOrganisation(
             _favoriteItems.value,
-            SharedPreferenceUtils.getString("selectedOrganisation", "SZSUR")
+            SharedPreferenceUtils.getString(Fields.SELECTED_ORGANIZATION, "SZSUR")
         )
         _favoriteItems.value = favorites
         _displayItems.value = favorites
