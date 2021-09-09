@@ -160,7 +160,6 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="tint">?attr/accentTextColor</item>
         <item name="android:padding">@dimen/spacing_normal</item>
-        <item name="android:gravity">center</item>
         <item name="backgroundTint">?attr/cardBackgroundColor</item>
         <item name="android:background">@drawable/circle</item>
     </style>
