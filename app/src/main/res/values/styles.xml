@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="TextAppearance.SZSUR.WelcomeTitle" parent="TextAppearance.AppCompat.Title">
-        <item name="android:textColor">@color/blue_light</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">36sp</item>
     </style>
@@ -25,10 +25,10 @@
     </style>
 
     <style name="ThemeOverlay.SZSUR.TextInputLayout" parent="">
-        <item name="colorPrimary">@color/purple_light</item>
-        <item name="colorOnSurface">@color/purple_light</item>
+        <item name="colorPrimary">@color/blue_fzsri_medri_very_light</item>
+        <item name="colorOnSurface">@color/blue_fzsri_medri_very_light</item>
         <item name="android:textColorPrimary">@color/white</item>
-        <item name="colorControlActivated">@color/purple_light</item>
+        <item name="colorControlActivated">@color/blue_fzsri_medri_very_light</item>
         <item name="editTextStyle">@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox.Dense</item>
     </style>
 
