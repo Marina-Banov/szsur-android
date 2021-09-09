@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="TextAppearance.SZSUR.WelcomeTitle" parent="TextAppearance.AppCompat.Title">
-        <item name="android:textColor">@color/blue_light</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">36sp</item>
     </style>
@@ -25,10 +25,10 @@
     </style>
 
     <style name="ThemeOverlay.SZSUR.TextInputLayout" parent="">
-        <item name="colorPrimary">@color/purple_light</item>
-        <item name="colorOnSurface">@color/purple_light</item>
+        <item name="colorPrimary">@color/blue_fzsri_medri_very_light</item>
+        <item name="colorOnSurface">@color/blue_fzsri_medri_very_light</item>
         <item name="android:textColorPrimary">@color/white</item>
-        <item name="colorControlActivated">@color/purple_light</item>
+        <item name="colorControlActivated">@color/blue_fzsri_medri_very_light</item>
         <item name="editTextStyle">@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox.Dense</item>
     </style>
 
@@ -153,5 +153,14 @@
         <item name="colorControlNormal">?attr/colorPrimary</item>
         <item name="colorSwitchThumbNormal">?attr/lightTextColor</item> <!-- inactive thumb color -->
         <item name="android:colorForeground">?attr/lightTextColor</item><!-- inactive track color (30% transparency) -->
+    </style>
+
+    <style name="Widget.SZSUR.ContactsButton" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="tint">?attr/accentTextColor</item>
+        <item name="android:padding">@dimen/spacing_normal</item>
+        <item name="backgroundTint">?attr/cardBackgroundColor</item>
+        <item name="android:background">@drawable/circle</item>
     </style>
 </resources>

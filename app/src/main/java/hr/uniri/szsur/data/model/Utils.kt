@@ -6,8 +6,10 @@ import kotlinx.android.parcel.Parcelize
 
 
 @Parcelize
-data class FavoriteEntry(@Json(name="favoriteId") val id: String = "",
-                         val isEvent: Boolean = false) : Parcelable {
+data class FavoriteEntry(
+    @Json(name="favoriteId") val id: String = "",
+    val isEvent: Boolean = false,
+) : Parcelable {
     override fun equals(other: Any?): Boolean {
         if (other !is FavoriteEntry) return false
         return this.id == other.id
@@ -19,9 +21,21 @@ data class FavoriteEntry(@Json(name="favoriteId") val id: String = "",
 }
 
 @Parcelize
-data class UpdateFavorite(val liked: Boolean,
-                          val isEvent: Boolean,
-                          val favoriteId: String) : Parcelable
+data class UpdateFavorite(
+    val liked: Boolean,
+    val isEvent: Boolean,
+    val favoriteId: String,
+) : Parcelable
+
+@Parcelize
+data class Contacts(
+    val web: String = "",
+    val mail: String = "",
+    val facebook: String = "",
+    val linkedin: String = "",
+    val messenger: String = "",
+    val instagram: String = "",
+) : Parcelable
 
 @Parcelize
 data class UpdateOrganisation(val organisation: String) : Parcelable
@@ -30,5 +44,5 @@ data class UpdateOrganisation(val organisation: String) : Parcelable
 enum class QuestionType(val value: String) {
     SINGLE_CHOICE("single-choice"),
     MULTIPLE_CHOICE("multiple-choice"),
-    INPUT_TEXT("input-text")
+    INPUT_TEXT("input-text"),
 }

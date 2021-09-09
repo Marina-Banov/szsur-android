@@ -77,6 +77,8 @@
     <string name="msg_token_fmt" translatable="false">FCM registration Token: %s</string>
     <string name="fcm_message">FCM Message</string>
 
+    <string name="no_fb_messenger">Aplikacija Facebook messenger nije instalirana</string>
+
     <string name="theme">day</string>
     <string name="notifications">Y</string>
     <string name="choose_organisation">Odaberi zbor</string>

@@ -9,5 +9,5 @@ import kotlinx.android.parcel.RawValue
 data class SurveyAnswer(
     val surveyId: String = "",
     val active: Boolean = false,
-    val answers: @RawValue Any? = null
+    val answers: @RawValue Any? = null,
 ) : Parcelable

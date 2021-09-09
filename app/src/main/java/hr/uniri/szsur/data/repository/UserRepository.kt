@@ -26,6 +26,10 @@ object UserRepository {
         return NetworkUtils.safeApiCall { Api.retrofitService.getUser(uid) }
     }
 
+    suspend fun getOrganization(id: String): ResultWrapper<Organization> {
+        return NetworkUtils.safeApiCall { Api.retrofitService.getOrganization(id) }
+    }
+
     suspend fun updateFavorites(body: UpdateFavorite): ResultWrapper<ResponseBody> {
         return NetworkUtils.safeApiCall { Api.retrofitService.updateFavorites(uid, body) }
     }

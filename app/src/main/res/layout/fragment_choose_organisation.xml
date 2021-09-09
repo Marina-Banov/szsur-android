@@ -6,7 +6,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/purple_szsur">
+        android:background="@color/blue_fzsri_medri_dark">
 
         <TextView
             android:id="@+id/welcome_title"
@@ -105,8 +105,8 @@
             android:insetBottom="0dp"
             android:text="@string/continue_text"
             android:textAllCaps="false"
-            android:textColor="@color/purple_dark"
-            app:backgroundTint="@color/purple_light"
+            android:textColor="@color/blue_fzsri_medri_dark"
+            app:backgroundTint="@color/blue_fzsri_medri_very_light"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

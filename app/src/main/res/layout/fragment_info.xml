@@ -2,10 +2,21 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="hr.uniri.szsur.ui.info.InfoViewModel" />
+    </data>
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/screensBackgroundColor">
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="?attr/screensBackgroundColor"
+        android:layout_height="wrap_content"
         tools:context=".ui.info.InfoFragment"
         android:orientation="vertical"
         android:padding="@dimen/spacing_normal">
@@ -25,35 +36,16 @@
             android:paddingBottom="@dimen/spacing_small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/about_us_text"
+            android:text="@{viewModel.organization.description}"
             style="@style/TextAppearance.SZSUR.DetailsDescription" />
 
-        <ScrollView
+        <androidx.gridlayout.widget.GridLayout
+            android:id="@+id/button_container"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
-
-            <GridLayout
-                android:layout_gravity="center"
-                android:columnCount="4"
-                android:id="@+id/about_others"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                tools:items="@id/item_about_others">
-            </GridLayout>
-        </ScrollView>
-
-
-        <Button
-                android:id="@+id/feedback_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/about_feedback"
-                android:layout_centerInParent="true"
-                android:layout_alignParentEnd="true"
-                style="@style/Widget.SZSUR.ActionButton"
-                android:text="@string/about_feedback_btn"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_normal"
+            app:columnCount="3"
+            app:useDefaultMargins="true" />
 
         <TextView
             android:id="@+id/about_version"
@@ -64,4 +56,5 @@
             android:text="@string/app_version" />
 
     </LinearLayout>
+</ScrollView>
 </layout>
