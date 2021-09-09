@@ -35,7 +35,7 @@ class HomeFragment : Fragment() {
             viewModel.updateEvents(it)
         })
 
-        binding.homeRecyclerView.adapter = HomeAdapter {
+        binding.homeRecyclerView.adapter = HomeAdapter(context) {
             findNavController().navigate(
                 MainFragmentDirections.actionMainFragmentToEventDetailsFragment(it)
             )

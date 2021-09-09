@@ -143,17 +143,14 @@
 
     </LinearLayout>
 
-    <LinearLayout style="@style/Widget.SZSUR.SettingsItem" />
-
     <LinearLayout
         android:id="@+id/logout"
         style="@style/Widget.SZSUR.SettingsItem">
 
-      <ImageButton
+      <ImageView
           android:id="@+id/btn_logout"
           style="@style/Widget.SZSUR.SettingsItemIcon"
-          app:srcCompat="@drawable/ic_logout"
-          android:backgroundTint="?attr/screensBackgroundColor"/>
+          app:srcCompat="@drawable/ic_logout"/>
 
       <TextView
           style="@style/TextAppearance.SZSUR.UserSettings"

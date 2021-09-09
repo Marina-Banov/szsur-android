@@ -89,7 +89,7 @@ class SurveyResultsDetailsFragment : Fragment() {
         }
 
         binding.favoritesButton.setOnClickListener {
-            handleClick(viewModel.survey.value!!.documentId, false)
+            handleClick(viewModel.survey.value!!.documentId, false, context)
         }
 
         return binding.root

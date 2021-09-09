@@ -63,7 +63,7 @@ class EventDetailsFragment : Fragment() {
         }
 
         binding.favoritesButton.setOnClickListener {
-            handleClick(viewModel.event.value!!.documentId, true)
+            handleClick(viewModel.event.value!!.documentId, true, context)
         }
 
         binding.goBackBtn.setOnClickListener {

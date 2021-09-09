@@ -4,7 +4,7 @@
     <string name="app_version">1.0.0</string>
 
     <string name="welcome_title_text">Dobrodošao/la u aplikaciju SZSUR!</string>
-    <string name="welcome_description_text">U ovoj aplikaciji možeš vidjeti najnovije događaje organizirane od strane tvog studentskog zbora i pomoći nam u tome da studentima Tehničkog fakulteta ponudimo još zanimljivog sadržaja odgovaranjem na naše ankete. Da bi započeo korištenje ove aplikacije, prijavi se:</string>
+    <string name="welcome_description_text">U ovoj aplikaciji možeš vidjeti najnovije događaje organizirane od strane tvog studentskog zbora i pomoći nam u tome da studentima u Rijeci ponudimo još zanimljivog sadržaja odgovaranjem na naše ankete. Da bi započeo korištenje ove aplikacije, prijavi se:</string>
     <string name="about_us_text">
         Cilj Studentskog zbora Sveučilišta u Rijeci je osigurati da se dostojanstveno postiže akademski uspjeh te popularizirati
         studente kao vrijednu zajednicu i značajan dio hrvatskog društva. Kako bi uspješno savladali sve prepreke važno je pravovremeno
@@ -78,6 +78,10 @@
     <string name="fcm_message">FCM Message</string>
 
     <string name="no_fb_messenger">Aplikacija Facebook messenger nije instalirana</string>
+
+    <string name="anonymous_no_like">Registrirajte se kako biste mogli lajkati i primati obavijesti!</string>
+    <string name="error_occurred">Došlo je do pogreške!</string>
+    <string name="no_connection">Jeste li povezani s internetom?</string>
 
     <string name="theme">day</string>
     <string name="notifications">Y</string>

@@ -1,5 +1,6 @@
 package hr.uniri.szsur.ui.survey_list
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
@@ -10,16 +11,20 @@ import hr.uniri.szsur.databinding.LayoutCardSurveyBinding
 import hr.uniri.szsur.util.DiffCallback
 import hr.uniri.szsur.util.handleClick
 
-class SurveyListAdapter(private val showDetailsListener: (survey: Survey) -> Unit) :
-        ListAdapter<Survey, SurveyListAdapter.ViewHolder>(DiffCallback()) {
+class SurveyListAdapter(
+    private val context: Context?,
+    private val showDetailsListener: (survey: Survey) -> Unit
+) : ListAdapter<Survey, SurveyListAdapter.ViewHolder>(DiffCallback()) {
 
-    class ViewHolder(private var binding: LayoutCardSurveyBinding):
-            RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(
+        private val context: Context?,
+        private var binding: LayoutCardSurveyBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(survey: Survey) {
             binding.survey = survey
             binding.isFavorite = UserRepository.user.value!!.favorites.contains(survey.documentId)
             binding.favoritesButton.setOnClickListener {
-                handleClick(survey.documentId, false)
+                handleClick(survey.documentId, false, context)
             }
             binding.executePendingBindings()
         }
@@ -27,7 +32,7 @@ class SurveyListAdapter(private val showDetailsListener: (survey: Survey) -> Uni
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = LayoutCardSurveyBinding.inflate(LayoutInflater.from(parent.context))
-        return ViewHolder(binding)
+        return ViewHolder(context, binding)
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {

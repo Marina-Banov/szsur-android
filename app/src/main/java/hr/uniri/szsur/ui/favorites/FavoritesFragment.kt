@@ -47,7 +47,8 @@ class FavoritesFragment : Fragment() {
             viewModel.filterFavorites()
         })
 
-        binding.favoritesRecyclerView.adapter = FavoritesAdapter({
+        binding.favoritesRecyclerView.adapter = FavoritesAdapter(context,
+        {
             findNavController().navigate(
                 MainFragmentDirections.actionMainFragmentToEventDetailsFragment(it)
             )

@@ -49,7 +49,7 @@ class SurveyListFragment : Fragment() {
             { viewModel.setSurveys(filterByStatus(it, isPublished)) }
         )
 
-        binding.surveyRecyclerView.adapter = SurveyListAdapter {
+        binding.surveyRecyclerView.adapter = SurveyListAdapter(context) {
             if (it.published) {
                 findNavController().navigate(
                     MainFragmentDirections.actionMainFragmentToSurveyResultsDetailsFragment(it)
